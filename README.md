@@ -4,23 +4,17 @@
 
 ## Prerequisite
 
----
-
 - [Node.js](https://nodejs.org/ko)
 
 - [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)
 
 ## How to clone repository
 
----
-
 ```
 git clone https://github.com/mju-meetcord/Meetcord-App.git
 ```
 
 ## How to start
-
----
 
 ```
 yarn install
@@ -33,8 +27,6 @@ yarn start
 - Expo
 
 ## Convention
-
----
 
 ### Branch Naming Convention / [Git-Flow](https://ux.stories.pe.kr/183)
 
