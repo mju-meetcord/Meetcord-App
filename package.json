@@ -1,15 +1,14 @@
 {
   "name": "meetcord-app",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "src/App.tsx",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "prepare": "husky install",
-    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "build:types": "tsc --noEmit --pretty"
+    "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "expo": "~48.0.10",
