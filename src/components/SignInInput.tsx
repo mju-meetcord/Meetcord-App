@@ -2,10 +2,17 @@ import { TextInput, StyleSheet } from 'react-native';
 
 interface SignInInputProps {
   text: string;
+  secureTextEntry: boolean;
 }
 
-const SignInInput = ({ text }: SignInInputProps) => {
-  return <TextInput style={styles.inputBox} placeholder={text} />;
+const SignInInput = ({ text, secureTextEntry }: SignInInputProps) => {
+  return (
+    <TextInput
+      style={styles.inputBox}
+      placeholder={text}
+      secureTextEntry={secureTextEntry}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
