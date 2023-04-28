@@ -1,12 +1,11 @@
 import { registerRootComponent } from 'expo';
-import { SafeAreaView, View } from 'react-native';
-import SignIn from './screens/SignIn';
+import { SafeAreaView, Text, View } from 'react-native';
 
 const App = () => {
   return (
     <SafeAreaView>
       <View>
-        <SignIn />
+        <Text>Meetcord : 만남을 기록하다.</Text>
       </View>
     </SafeAreaView>
   );
