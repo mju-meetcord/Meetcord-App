@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SignInInput from '../components/SignInInput';
 
-const SignIn = () => {
+const SignIn = ({ navigation }: any) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.titleBox}>
@@ -17,7 +17,10 @@ const SignIn = () => {
       </View>
       <View style={styles.signUpBox}>
         <Text style={styles.welcomeTxt}>Meetcord가 처음이신가요?</Text>
-        <TouchableOpacity style={styles.signUpBtn}>
+        <TouchableOpacity
+          style={styles.signUpBtn}
+          onPress={() => navigation.navigate('register')}
+        >
           <Text style={styles.signUpBtnTxt}>회원가입</Text>
         </TouchableOpacity>
         <Text style={styles.welcomeTxt}>을 마치고 Meet에 참여하세요.</Text>

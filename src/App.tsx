@@ -1,16 +1,29 @@
 import { registerRootComponent } from 'expo';
 import { Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignIn from './screens/SignIn';
+import Register from './screens/Register';
+import { NavigationContainer } from '@react-navigation/native';
+
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <SafeAreaProvider>
-      <SafeAreaView edges={['bottom']}>
-        <View>
-          <Text>Meetcord : 만남을 기록하다.</Text>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='login'
+          component={SignIn}
+          options={{ headerShown: false }} // 이 부분을 추가해주세요
+        />
+        <Stack.Screen
+          name='register'
+          component={Register}
+          options={{ headerShown: false }} // 이 부분을 추가해주세요
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
