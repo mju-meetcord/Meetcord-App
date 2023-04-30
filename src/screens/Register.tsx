@@ -5,21 +5,24 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Image
 } from 'react-native';
 import ImageButton from '../components/ImageButton';
 import { Button, CheckBox, Icon } from '@rneui/themed';
 import { useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Modal from 'react-native-modal';
 
 const Register = ({ navigation }: any) => {
   const [check1, setCheck1] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const backBtnHandle = () => {
     navigation.navigate('login');
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.container}>
         <View style={styles.Container1}>
           <View style={styles.one}>
@@ -71,9 +74,10 @@ const Register = ({ navigation }: any) => {
               <Text style={styles.label as any}> 이메일*</Text>
               <TextInput
                 keyboardType='email-address'
-                style={styles.input}
+                style={styles.input_email}
                 placeholder='이메일을 입력해주세요.'
               />
+              <TouchableOpacity style={styles.doubleCheck} onPress={() => setModalVisible(true)}><Text style={styles.doubleCheck_text}>중복확인</Text></TouchableOpacity>
             </View>
             <View style={styles.itemBox}>
               <Text style={styles.label as any}> 비밀번호*</Text>
@@ -122,13 +126,48 @@ const Register = ({ navigation }: any) => {
             }}
           />
         </View>
+
+        <Modal
+          isVisible={modalVisible}
+          animationIn="fadeIn"
+          animationOut="fadeOut"
+          /*onBackdropPress={() => setModalVisible(false)}*/
+          onShow={() => {}}
+          style={{ flex: 1 ,zIndex:1,justifyContent:'center',alignItems:'center'}}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.Textstyle1}>사용할 수 있는 이메일 입니다!</Text>
+              <Text style={styles.Textstyle1}>Meetcord에서 보낸 메일을 확인하고, </Text>
+              <Text style={styles.Textstyle1}>보이는 숫자를 입력해 주세요.</Text>
+            </View>
+            <View style={styles.modalContainer}>
+              <View style={styles.inputBox}>
+                <TextInput style={{flex:0.8}} placeholderTextColor='#C6C6C6' placeholder='숫자 입력'></TextInput>
+              </View>
+            </View>
+            <View style={styles.modalContainer}>
+              <Button
+                title='완료'
+                buttonStyle={{
+                  borderRadius: 10,
+                  width: 80,
+                  height: 40,
+                }}
+                onPress={()=> setModalVisible(false)}
+              />
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor:'#FFFFFF',
+  },
   Container1: {
     display: 'flex',
     flexDirection: 'row',
@@ -237,6 +276,62 @@ const styles = StyleSheet.create({
     height: 100,
     paddingBottom: 10,
   },
+  input_email: {
+    flex: 0.45,
+    padding: 12
+  },
+  doubleCheck:{
+    flex:0.25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  doubleCheck_text:{
+    borderWidth:1,
+    width:'70%',
+    height:30,
+    textAlign:'center',
+    lineHeight:28,
+    borderRadius:5,
+  },
+  buttonContainer: {
+    maxWidth: 400,
+  },
+  button: {
+    backgroundColor: '#007AFF',
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    width:340,
+    height:300,
+    borderRadius:15,
+  },
+  modalText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  modalContainer:{
+    flex:0.3,
+    width:'100%',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  Textstyle1:{
+    fontSize: 15,
+    color: '#5496FF',
+    fontWeight:'bold'
+  },
+  inputBox:{
+    borderWidth:1,
+    width:'80%',
+    height:'50%',
+    borderRadius:10,
+    flexDirection:'row',
+    overflow:'hidden',
+    justifyContent:'center',
+    alignItems:'center'
+  }
 });
 
 export default Register;
