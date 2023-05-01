@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MeetSearchInput from '../components/MeetSearchInput';
 import MeetList from '../components/MeetList';
 
-const InitMeet = () => {
+const InitMeetScreen = () => {
   const { top } = useSafeAreaInsets();
 
   return (
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InitMeet;
+export default InitMeetScreen;
