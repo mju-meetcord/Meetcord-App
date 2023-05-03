@@ -11,7 +11,10 @@ const SignIn = ({ navigation }: any) => {
       <View style={styles.formBox}>
         <SignInInput text='이메일 입력' secureTextEntry={false} />
         <SignInInput text='비밀번호 입력' secureTextEntry={true} />
-        <TouchableOpacity style={styles.signInBtn}>
+        <TouchableOpacity
+          style={styles.signInBtn}
+          onPress={() => navigation.navigate('home')} // 테스트용 home 화면으로 바로 넘기기
+        >
           <Text style={styles.signInBtnTxt}>로그인</Text>
         </TouchableOpacity>
       </View>
