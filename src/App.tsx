@@ -4,6 +4,7 @@ import SignIn from './screens/SignIn';
 import Register from './screens/Register';
 import HomeScreen from './screens/HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import InitMeetScreen from './screens/InitMeetScreen';
 
 const Stack = createStackNavigator();
 

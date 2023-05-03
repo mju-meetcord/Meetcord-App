@@ -159,7 +159,6 @@ const Register = ({ navigation }: any) => {
             <View style={styles.modalContainer}>
               <View style={styles.inputBox}>
                 <TextInput
-                  keyboardType='numeric'
                   style={{ flex: 0.8 }}
                   placeholderTextColor='#C6C6C6'
                   placeholder='숫자 입력'
