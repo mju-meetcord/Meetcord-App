@@ -5,12 +5,11 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-  Image,
 } from 'react-native';
 import ImageButton from '../components/ImageButton';
-import { Button, CheckBox, Icon } from '@rneui/themed';
+import { Button, CheckBox } from '@rneui/themed';
 import { useState } from 'react';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 
 const Register = ({ navigation }: any) => {
@@ -29,6 +28,7 @@ const Register = ({ navigation }: any) => {
             <ImageButton
               onPress={backBtnHandle}
               source={require('../../assets/backBtn.png')}
+              color='#FFFFFF'
             ></ImageButton>
           </View>
           <View style={styles.two}>
