@@ -1,17 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ImageButton from './ImageButton';
-import { Button, CheckBox, Icon } from '@rneui/themed';
-import { useState } from 'react';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/Entypo';
 
 const BottomNav = ({ navigation }: any) => {
   const listBtnHandle = () => {
@@ -25,6 +14,7 @@ const BottomNav = ({ navigation }: any) => {
           onPress={listBtnHandle}
           source={require('../../assets/ListBtn.png')}
         />
+        <Icon name='home' style={{ color: '#FFF', width: 20, height: 20 }} />
       </View>
       <View style={styles.tapButton}>
         <ImageButton

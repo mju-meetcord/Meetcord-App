@@ -1,17 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-  Image,
-} from 'react-native';
-import ImageButton from '../components/ImageButton';
-import { Button, CheckBox, Icon } from '@rneui/themed';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useState } from 'react';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Modal from 'react-native-modal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomNav from '../components/BottomNav';
 import { Calendar } from 'react-native-calendars';
 

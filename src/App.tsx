@@ -24,7 +24,7 @@ const App = () => {
         />
         <Stack.Screen
           name='home'
-          component={Home}
+          component={HomeScreen}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
         />
       </Stack.Navigator>
