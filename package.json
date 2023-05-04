@@ -12,6 +12,7 @@
     "build-types": "tsc --noEmit --pretty"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
     "@rneui/base": "^4.0.0-rc.7",

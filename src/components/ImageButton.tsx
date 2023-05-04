@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-const ImageButton = ({ onPress, source, color, State }: any) => {
-  const [state, setState] = useState(false);
-
+const ImageButton = ({ onPress, source, color }: any) => {
   styles.btn.backgroundColor = color;
 
   return (
