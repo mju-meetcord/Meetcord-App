@@ -19,7 +19,7 @@ const HomeStack = () => {
         tabBarActiveTintColor: '#5496FF',
         tabBarInactiveTintColor: '#ffffff',
       }}
-      initialRouteName='home_tap'
+      initialRouteName='Home'
     >
       <Tab.Screen
         name='Meet'
