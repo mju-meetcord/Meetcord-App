@@ -5,6 +5,7 @@ import Register from './screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import InitMeetScreen from './screens/InitMeetScreen';
 import HomeStack from './components/BottomTabs';
+import CreateMeetScreen from './screens/CreateMeetScreen';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name='home'
           component={HomeStack}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
@@ -31,6 +32,11 @@ const App = () => {
           name='initMeet'
           component={InitMeetScreen}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
+        /> */}
+        <Stack.Screen
+          name='CreateMeet'
+          component={CreateMeetScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
