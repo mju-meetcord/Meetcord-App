@@ -13,6 +13,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+          name='register'
+          component={Register}
+          options={{ headerShown: false }} // 이 부분을 추가해주세요
+        />
+        <Stack.Screen
           name='home'
           component={HomeStack}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
@@ -20,11 +25,6 @@ const App = () => {
         <Stack.Screen
           name='login'
           component={SignIn}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
-        />
-        <Stack.Screen
-          name='register'
-          component={Register}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
         />
         <Stack.Screen

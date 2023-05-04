@@ -16,8 +16,119 @@ const Register = ({ navigation }: any) => {
   const [check1, setCheck1] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [name, setName] = useState('');
+  const [phoneNum, setPhoneNum] = useState('');
+  const [birth, setBirth] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+
+  const [email, setEmail] = useState('');
+  const [emailcheck, setEmailcheck] = useState(true);
+
+  const [token, setToken] = useState('');
+  const [otp, setOtp] = useState('');
+
+  const [emailEditable, setEmailEditable] = useState(true);
+  const [btnDisable, setBtnDisable] = useState(false);
+
+  const [otpError, setOtpError] = useState(false);
+
   const backBtnHandle = () => {
     navigation.navigate('login');
+  };
+
+  const emailAuth = () => {
+    // 이메일 정규식  test 함수로 정규식 확인 가능
+    const regex = new RegExp('[a-z0-9]+@[a-z]+\\.[a-z]{2,3}');
+    console.log(regex.test(email));
+    console.log(email);
+
+    if (regex.test(email)) {
+      setEmailcheck(true);
+    } else {
+      setEmailcheck(false);
+      return;
+    }
+
+    //setModalVisible(true);
+    fetch('http://121.124.131.142:4000/emailAuth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+
+        if (response.result == 200) {
+          setToken(response.token);
+          setModalVisible(true);
+        } else {
+          setEmailcheck(false);
+          return;
+        }
+      });
+  };
+
+  const otpSubmit = () => {
+    if (otp.length != 4) return;
+
+    fetch('http://121.124.131.142:4000/emailAuth', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        otp: otp,
+        token: token,
+      }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        if (response.result == 200) {
+          setEmailEditable(false);
+          setBtnDisable(true);
+          setModalVisible(false);
+        } else {
+          setOtpError(true);
+        }
+      })
+      .catch(error => console.error(error));
+  };
+
+  const submit = () => {
+    if (name == '') return;
+    if (phoneNum == '') return;
+    if (birth == '') return;
+    if (!emailcheck || !btnDisable) return;
+    if (password == '') return;
+    if (!check1) return;
+    if (password != password2) return;
+
+    fetch('http://121.124.131.142:4000/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        phoneNum: phoneNum,
+        birth: birth,
+        email: email,
+        password: password,
+      }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        alert(response.message);
+      })
+      .catch(error => console.error(error));
   };
 
   return (
@@ -53,6 +164,7 @@ const Register = ({ navigation }: any) => {
               <TextInput
                 style={styles.input}
                 placeholder='이름을 입력해주세요.'
+                onChangeText={text => setName(text)}
               />
             </View>
             <View style={styles.itemBox}>
@@ -60,6 +172,7 @@ const Register = ({ navigation }: any) => {
               <TextInput
                 style={styles.input}
                 placeholder='전화번호를 입력해주세요.'
+                onChangeText={text => setPhoneNum(text)}
               />
             </View>
             <View style={styles.itemBox}>
@@ -68,20 +181,34 @@ const Register = ({ navigation }: any) => {
                 keyboardType='numeric'
                 style={styles.input}
                 placeholder='생년월일을 입력해주세요.'
+                onChangeText={text => setBirth(text)}
               />
             </View>
             <View style={styles.itemBox}>
               <Text style={styles.label as any}> 이메일*</Text>
               <TextInput
                 keyboardType='email-address'
-                style={styles.input_email}
+                style={
+                  emailcheck ? styles.input_email : styles.input_email_error
+                }
                 placeholder='이메일을 입력해주세요.'
+                onChangeText={text => setEmail(text)}
+                editable={emailEditable}
               />
               <TouchableOpacity
                 style={styles.doubleCheck}
-                onPress={() => setModalVisible(true)}
+                onPress={emailAuth}
+                disabled={btnDisable}
               >
-                <Text style={styles.doubleCheck_text}>중복확인</Text>
+                <Text
+                  style={
+                    !btnDisable
+                      ? styles.doubleCheck_text
+                      : styles.doubleCheck_text_end
+                  }
+                >
+                  중복확인
+                </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.itemBox}>
@@ -90,6 +217,7 @@ const Register = ({ navigation }: any) => {
                 secureTextEntry={true}
                 style={styles.input}
                 placeholder='비밀번호를 입력해주세요.'
+                onChangeText={text => setPassword(text)}
               />
             </View>
             <View style={styles.itemBox}>
@@ -98,6 +226,7 @@ const Register = ({ navigation }: any) => {
                 secureTextEntry={true}
                 style={styles.input}
                 placeholder='비밀번호를 한번 더 입력해주세요.'
+                onChangeText={text => setPassword2(text)}
               />
             </View>
           </View>
@@ -129,6 +258,7 @@ const Register = ({ navigation }: any) => {
               width: 100,
               height: 40,
             }}
+            onPress={submit}
           />
         </View>
 
@@ -157,11 +287,12 @@ const Register = ({ navigation }: any) => {
               </Text>
             </View>
             <View style={styles.modalContainer}>
-              <View style={styles.inputBox}>
+              <View style={otpError ? styles.inputBox_error : styles.inputBox}>
                 <TextInput
                   style={{ flex: 0.8 }}
                   placeholderTextColor='#C6C6C6'
                   placeholder='숫자 입력'
+                  onChangeText={text => setOtp(text)}
                 ></TextInput>
               </View>
             </View>
@@ -173,7 +304,7 @@ const Register = ({ navigation }: any) => {
                   width: 80,
                   height: 40,
                 }}
-                onPress={() => setModalVisible(false)}
+                onPress={otpSubmit}
               />
             </View>
           </View>
@@ -298,7 +429,16 @@ const styles = StyleSheet.create({
   input_email: {
     flex: 0.45,
     padding: 12,
+    borderWidth: 0,
+    borderColor: 'red',
   },
+  input_email_error: {
+    flex: 0.45,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: 'red',
+  },
+
   doubleCheck: {
     flex: 0.25,
     justifyContent: 'center',
@@ -306,6 +446,15 @@ const styles = StyleSheet.create({
   },
   doubleCheck_text: {
     borderWidth: 1,
+    width: '70%',
+    height: 30,
+    textAlign: 'center',
+    lineHeight: 28,
+    borderRadius: 5,
+  },
+  doubleCheck_text_end: {
+    borderWidth: 1,
+    borderColor: 'green',
     width: '70%',
     height: 30,
     textAlign: 'center',
@@ -343,6 +492,17 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     borderWidth: 1,
+    width: '80%',
+    height: '50%',
+    borderRadius: 10,
+    flexDirection: 'row',
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputBox_error: {
+    borderWidth: 1,
+    borderColor: 'red',
     width: '80%',
     height: '50%',
     borderRadius: 10,
