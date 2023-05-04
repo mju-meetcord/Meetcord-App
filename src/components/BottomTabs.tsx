@@ -1,7 +1,8 @@
-import SignIn from '../screens/SignIn';
-import Register from '../screens/Register';
+import MeetScreen from '../screens/MeetScreen';
+import MemberScreen from '../screens/MemberScreen';
 import HomeScreen from '../screens/HomeScreen';
-import InitMeetScreen from '../screens/InitMeetScreen';
+import NotificationScreen from '../screens/NotificationScreen';
+import MypageScreen from '../screens/MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 import TapBarIcon from '../components/TapBarIcon';
@@ -21,8 +22,8 @@ const HomeStack = () => {
       initialRouteName='home_tap'
     >
       <Tab.Screen
-        name='temp1'
-        component={InitMeetScreen}
+        name='Meet'
+        component={MeetScreen}
         options={items => ({
           headerShown: false,
           tabBarLabel: '',
@@ -32,8 +33,8 @@ const HomeStack = () => {
         })}
       />
       <Tab.Screen
-        name='temp2'
-        component={Register}
+        name='Member'
+        component={MemberScreen}
         options={items => ({
           headerShown: false,
           tabBarLabel: '',
@@ -43,7 +44,7 @@ const HomeStack = () => {
         })}
       />
       <Tab.Screen
-        name='home_tap'
+        name='Home'
         component={HomeScreen}
         options={items => ({
           headerShown: false,
@@ -54,8 +55,8 @@ const HomeStack = () => {
         })}
       />
       <Tab.Screen
-        name='temp4'
-        component={SignIn}
+        name='Notification'
+        component={NotificationScreen}
         options={items => ({
           headerShown: false,
           tabBarLabel: '',
@@ -68,8 +69,8 @@ const HomeStack = () => {
         })}
       />
       <Tab.Screen
-        name='temp5'
-        component={InitMeetScreen}
+        name='Mypage'
+        component={MypageScreen}
         options={items => ({
           headerShown: false,
           tabBarLabel: '',
