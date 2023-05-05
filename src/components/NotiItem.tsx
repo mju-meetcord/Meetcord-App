@@ -5,15 +5,8 @@ const NotiItem = ({ title, date, onpress }: any) => {
   return (
     <TouchableOpacity onPress={onpress}>
       <View style={styles.itemBox}>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: '500',
-          }}
-        >
-          {title}
-        </Text>
-        <Text style={{ color: '#676767' }}> {date}</Text>
+        <Text style={styles.titleText}>{title}</Text>
+        <Text style={styles.dateText}>{date}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -24,13 +17,15 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 100,
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderColor: '#676767',
     left: '5%',
-    paddingLeft: 20,
+    paddingLeft: 10,
     justifyContent: 'center',
     gap: 10,
   },
+  titleText: { fontSize: 20, fontWeight: '500', paddingLeft: '6%' },
+  dateText: { color: '#676767', paddingLeft: '6%' },
 });
 
 export default NotiItem;

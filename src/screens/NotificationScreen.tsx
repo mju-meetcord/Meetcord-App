@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import NotiItem from '../components/notiItem';
+import NotiItem from '../components/NotiItem';
 
 const NotificationScreen = ({ navigation }: any) => {
   // 테스트용 더미 데이터
@@ -41,6 +41,7 @@ const NotificationScreen = ({ navigation }: any) => {
               }
             />
           ))}
+          <View style={styles.bottomDommy}></View>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -62,8 +63,11 @@ const styles = StyleSheet.create({
     left: 20,
   },
   main: {
-    backgroundColor: '#E9F1FF',
+    backgroundColor: '#FFFFFF',
     paddingTop: 10,
+  },
+  bottomDommy: {
+    height: 30,
   },
 });
 
