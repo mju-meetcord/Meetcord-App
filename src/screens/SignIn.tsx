@@ -32,7 +32,6 @@ const SignIn = ({ navigation }: any) => {
               navigation.navigate('initMeet');
             });
           });
-          alert('login 성공');
         } else if (status == 401) {
           alert(response.message);
         }
