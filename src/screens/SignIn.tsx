@@ -8,9 +8,7 @@ const SignIn = ({ navigation }: any) => {
   const [pw, setPw] = useState('');
 
   const loginSubmit = () => {
-    console.log(id);
-    console.log(pw);
-    //navigation.navigate('initMeet');
+    let status = 0;
 
     fetch('http://121.124.131.142:4000/login', {
       method: 'POST',
@@ -22,9 +20,12 @@ const SignIn = ({ navigation }: any) => {
         password: pw,
       }),
     })
-      .then(response => response.json())
       .then(response => {
-        if (response.token) {
+        status = response.status;
+        return response.json();
+      })
+      .then(response => {
+        if (status == 200) {
           AsyncStorage.setItem('UserToken', response.token, () => {
             AsyncStorage.getItem('UserToken', (err, result) => {
               console.log(result);
@@ -32,8 +33,8 @@ const SignIn = ({ navigation }: any) => {
             });
           });
           alert('login 성공');
-        } else {
-          alert('login fail');
+        } else if (status == 401) {
+          alert(response.message);
         }
       })
       .catch(error => console.error(error));
