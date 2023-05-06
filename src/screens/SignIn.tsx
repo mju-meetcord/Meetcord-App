@@ -1,7 +1,44 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SignInInput from '../components/SignInInput';
+import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = ({ navigation }: any) => {
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+
+  const loginSubmit = () => {
+    console.log(id);
+    console.log(pw);
+    //navigation.navigate('initMeet');
+
+    fetch('http://121.124.131.142:4000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: id,
+        password: pw,
+      }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.token) {
+          AsyncStorage.setItem('UserToken', response.token, () => {
+            AsyncStorage.getItem('UserToken', (err, result) => {
+              console.log(result);
+              navigation.navigate('initMeet');
+            });
+          });
+          alert('login 성공');
+        } else {
+          alert('login fail');
+        }
+      })
+      .catch(error => console.error(error));
+  };
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.titleBox}>
@@ -9,11 +46,21 @@ const SignIn = ({ navigation }: any) => {
         <Text style={styles.subTitle}>만남을 기록하다.</Text>
       </View>
       <View style={styles.formBox}>
-        <SignInInput text='이메일 입력' secureTextEntry={false} />
-        <SignInInput text='비밀번호 입력' secureTextEntry={true} />
+        <SignInInput
+          text='이메일 입력'
+          secureTextEntry={false}
+          setText={setId}
+          keyboardType={'email-address'}
+        />
+        <SignInInput
+          text='비밀번호 입력'
+          secureTextEntry={true}
+          setText={setPw}
+          keyboardType={'default'}
+        />
         <TouchableOpacity
           style={styles.signInBtn}
-          onPress={() => navigation.navigate('home')} // 테스트용 home 화면으로 바로 넘기기
+          onPress={loginSubmit} // 테스트용 home 화면으로 바로 넘기기
         >
           <Text style={styles.signInBtnTxt}>로그인</Text>
         </TouchableOpacity>
