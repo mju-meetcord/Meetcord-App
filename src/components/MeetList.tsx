@@ -1,4 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import MeetListItem from './MeetListItem';
+import { TempMeetList } from '../data/TempMeetList';
 
 const MeetList = () => {
   return (
@@ -6,7 +8,16 @@ const MeetList = () => {
       <View style={styles.listBox}>
         <Text style={styles.boxTitle}>나의 Meet 리스트</Text>
         <View style={styles.viewTopBox}>
-          <ScrollView></ScrollView>
+          <ScrollView>
+            {TempMeetList.map(item => (
+              <MeetListItem
+                src={item.meetImg}
+                meetName={item.meetName}
+                intro={item.meetIntroduce}
+                key={item.id}
+              />
+            ))}
+          </ScrollView>
         </View>
       </View>
     </View>
