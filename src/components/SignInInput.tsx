@@ -3,14 +3,23 @@ import { TextInput, StyleSheet } from 'react-native';
 interface SignInInputProps {
   text: string;
   secureTextEntry: boolean;
+  setText: any;
+  keyboardType: any;
 }
 
-const SignInInput = ({ text, secureTextEntry }: SignInInputProps) => {
+const SignInInput = ({
+  text,
+  secureTextEntry,
+  setText,
+  keyboardType,
+}: SignInInputProps) => {
   return (
     <TextInput
       style={styles.inputBox}
       placeholder={text}
       secureTextEntry={secureTextEntry}
+      onChangeText={text => setText(text)}
+      keyboardType={keyboardType}
     />
   );
 };
