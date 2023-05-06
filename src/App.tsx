@@ -14,7 +14,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name='login'
           component={SignIn}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
@@ -23,13 +23,13 @@ const App = () => {
           name='register'
           component={Register}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
-        />
+        /> */}
         <Stack.Screen
           name='initMeet'
           component={InitMeetScreen}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name='CreateMeet'
           component={CreateMeetScreen}
           options={{ headerShown: false }}
@@ -43,7 +43,7 @@ const App = () => {
           name='home'
           component={HomeStack}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
