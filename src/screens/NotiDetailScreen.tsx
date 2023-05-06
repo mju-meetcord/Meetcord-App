@@ -17,7 +17,13 @@ const NotiDetailScreen = ({ route, navigation }: any) => {
   // 테스트용 text
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{
+        height: '100%',
+        backgroundColor: '#FFFFFF',
+      }}
+      edges={['right', 'left', 'top']}
+    >
       <ScrollView style={styles.container}>
         <View style={styles.container}>
           <View style={styles.one}>
@@ -50,7 +56,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 25,
+    fontSize: 28,
     left: 50,
     top: 0,
   },
@@ -63,14 +69,14 @@ const styles = StyleSheet.create({
   },
 
   notiDate: {
-    fontSize: 23,
+    fontSize: 20,
     left: 35,
     top: 65,
     color: '#676767',
   },
 
   notiMessage: {
-    fontSize: 20,
+    fontSize: 18,
     width: '80%',
     left: '9%',
     top: 125,
