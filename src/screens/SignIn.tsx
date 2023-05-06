@@ -28,7 +28,6 @@ const SignIn = ({ navigation }: any) => {
         if (status == 200) {
           AsyncStorage.setItem('UserToken', response.token, () => {
             AsyncStorage.getItem('UserToken', (err, result) => {
-              console.log(result);
               navigation.navigate('initMeet');
             });
           });
