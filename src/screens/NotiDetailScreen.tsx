@@ -7,6 +7,7 @@ const NotiDetailScreen = ({ route }: any) => {
       <View>
         <Text>NotiDetailScreen</Text>
         <Text>{route.params.title}</Text>
+        <Text>커밋 테스트용</Text>
       </View>
     </SafeAreaView>
   );
