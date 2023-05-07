@@ -19,7 +19,7 @@ const InitMeetScreen = () => {
       <StatusBar backgroundColor='#E9F1FF' barStyle='dark-content' />
       <View style={styles.mainContainer}>
         <MeetLogo />
-        <MeetSearchInput />
+        <MeetSearchInput isMarginTop={true} />
         <MeetList />
         <View style={styles.btnWrapper}>
           <Text style={styles.createMeetTxt}>
