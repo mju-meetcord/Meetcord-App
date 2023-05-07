@@ -29,7 +29,7 @@ const MemberScreen = () => {
         </View>
         <ScrollView style={styles.main}>
           <Text style={styles.title2}>관리자--</Text>
-          <View style={{ minHeight: 100, maxHeight: 200, marginBottom: 60 }}>
+          <View style={styles.listBox}>
             {dummyData
               .filter(data => data.role == 'Admin')
               .map((data, i) => {
@@ -64,6 +64,11 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     left: 20,
+  },
+  listBox: {
+    minHeight: 100,
+    maxHeight: 200,
+    marginBottom: 60,
   },
   title2: {
     fontSize: 23,

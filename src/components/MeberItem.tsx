@@ -10,7 +10,7 @@ const MeberItem = ({ name, role, onpress }: any) => {
         </View>
         <View style={styles.textBox}>
           <Text style={styles.titleText}>{name}</Text>
-          <Text style={styles.dateText}>{role}</Text>
+          <Text style={styles.roleText}>{role}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flex: 0.7,
   },
   titleText: { fontSize: 20, fontWeight: '500', paddingLeft: '6%' },
-  dateText: { color: '#676767', paddingLeft: '6%' },
+  roleText: { color: '#676767', paddingLeft: '6%' },
 });
 
 export default MeberItem;
