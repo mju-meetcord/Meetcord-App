@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MeetListItem from './MeetListItem';
-import { TempMeetList } from '../data/TempMeetList';
+import { MeetListArr } from '../screens/MeetScreen';
 
 interface MeetListProps {
   hasMeet: boolean;
+  resultList: MeetListArr[];
 }
 
-const MeetList = ({ hasMeet }: MeetListProps) => {
+const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.listBox}>
@@ -14,7 +15,7 @@ const MeetList = ({ hasMeet }: MeetListProps) => {
         <View style={styles.viewTopBox}>
           <ScrollView keyboardDismissMode='on-drag'>
             {hasMeet &&
-              TempMeetList.map(item => (
+              resultList.map(item => (
                 <MeetListItem
                   src={item.meetImg}
                   meetName={item.meetName}
