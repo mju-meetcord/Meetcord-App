@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MeetListItem from './MeetListItem';
-import { MeetListArr } from '../screens/MeetScreen';
+import { Meet } from '../screens/MeetScreen';
 
 interface MeetListProps {
   hasMeet: boolean;
-  resultList: MeetListArr[];
+  resultList: Meet[];
 }
 
 const MeetList = ({ hasMeet, resultList }: MeetListProps) => {

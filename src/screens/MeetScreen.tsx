@@ -8,7 +8,7 @@ import MeetBtn from '../components/MeetBtn';
 import { useState, useEffect } from 'react';
 import { TempMeetList } from '../data/TempMeetList';
 
-export interface MeetListArr {
+export interface Meet {
   id: number;
   meetImg: ImageSourcePropType;
   meetName: string;
@@ -18,7 +18,7 @@ export interface MeetListArr {
 
 const MeetScreen = () => {
   const [hasMeet, setHasMeet] = useState(false);
-  const [resultMeetList, setResultMeetList] = useState<MeetListArr[]>([]);
+  const [resultMeetList, setResultMeetList] = useState<Meet[]>([]);
 
   useEffect(() => {
     const temp = TempMeetList.filter(item => item.isJoin);
