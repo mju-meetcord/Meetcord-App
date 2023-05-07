@@ -29,4 +29,16 @@ export const TempMeetList = [
     meetName: '더글로리에 진심인 사람들',
     meetIntroduce: '내가 어떤 심정으로 참고 있는   데!!!!!!!!!!!!!!!!!',
   },
+  {
+    id: 6,
+    meetImg: require('assets/testImg.png'),
+    meetName: '스노볼 귀여워',
+    meetIntroduce: '귀여움은 세상을 구해',
+  },
+  {
+    id: 7,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: '스노볼 귀여워22',
+    meetIntroduce: '스노볼은 세상을 구해',
+  },
 ];
