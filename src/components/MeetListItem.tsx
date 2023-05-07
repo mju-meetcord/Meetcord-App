@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
   },
   meetImg: {
     marginRight: 15,
+    width: 40,
+    height: 40,
+    borderRadius: 50,
   },
   meetInfoBox: {
     justifyContent: 'space-between',
