@@ -2,21 +2,26 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import MeetListItem from './MeetListItem';
 import { TempMeetList } from '../data/TempMeetList';
 
-const MeetList = () => {
+interface MeetListProps {
+  hasMeet: boolean;
+}
+
+const MeetList = ({ hasMeet }: MeetListProps) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.listBox}>
         <Text style={styles.boxTitle}>나의 Meet 리스트</Text>
         <View style={styles.viewTopBox}>
           <ScrollView keyboardDismissMode='on-drag'>
-            {TempMeetList.map(item => (
-              <MeetListItem
-                src={item.meetImg}
-                meetName={item.meetName}
-                intro={item.meetIntroduce}
-                key={item.id}
-              />
-            ))}
+            {hasMeet &&
+              TempMeetList.map(item => (
+                <MeetListItem
+                  src={item.meetImg}
+                  meetName={item.meetName}
+                  intro={item.meetIntroduce}
+                  key={item.id}
+                />
+              ))}
           </ScrollView>
         </View>
       </View>
