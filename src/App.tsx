@@ -3,10 +3,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from './screens/SignIn';
 import Register from './screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
-import InitMeetScreen from './screens/InitMeetScreen';
 import HomeStack from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
+import MeetScreen from './screens/MeetScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,8 +30,8 @@ const App = () => {
           options={{ headerShown: false }} // 이 부분을 추가해주세요
         />
         <Stack.Screen
-          name='initMeet'
-          component={InitMeetScreen}
+          name='Meet'
+          component={MeetScreen}
           options={{ headerShown: false }} // 이 부분을 추가해주세요
         />
         <Stack.Screen
