@@ -17,22 +17,26 @@ export interface Meet {
 }
 
 const MeetScreen = () => {
-  const [hasMeet, setHasMeet] = useState(false);
-  const [resultMeetList, setResultMeetList] = useState<Meet[]>([]);
+  const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
+  const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
+
+  const hasMeet = () => {
+    return !!result.length;
+  };
 
   useEffect(() => {
-    const temp = TempMeetList.filter(item => item.isJoin);
-    temp && setHasMeet(true);
-    setResultMeetList(temp);
+    if (hasMeet()) {
+      setJoinMeetList(result);
+    }
   }, []);
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      {!hasMeet && <MeetLogo />}
+      {!hasMeet() && <MeetLogo />}
       <MeetSearchInput />
-      <MeetList hasMeet={hasMeet} resultList={resultMeetList} />
-      {hasMeet && <MeetBtn />}
-      {!hasMeet && <InitMeetBtn />}
+      <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
+      {hasMeet() && <MeetBtn />}
+      {!hasMeet() && <InitMeetBtn />}
     </SafeAreaView>
   );
 };
