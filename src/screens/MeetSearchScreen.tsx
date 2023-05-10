@@ -1,28 +1,37 @@
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ImageSourcePropType,
 } from 'react-native';
 import MeetSearchInput from '../components/MeetSearchInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetListItem from '../components/MeetListItem';
 import BackButton from 'assets/back_btn.svg';
-import { TempMeetList } from '../data/TempMeetList';
+import { useState } from 'react';
+
+export interface Meet {
+  id: number;
+  meetImg: ImageSourcePropType;
+  meetName: string;
+  meetIntroduce: string;
+}
 
 const MeetSearchSreen = () => {
+  const [resultList, setResultList] = useState<Meet[]>([]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topWrap}>
         <TouchableOpacity style={styles.backButton}>
           <BackButton />
         </TouchableOpacity>
-        <MeetSearchInput isMarginTop={false} />
+        <MeetSearchInput isMarginTop={false} setResultList={setResultList} />
       </View>
       <View style={styles.searchListBox}>
         <ScrollView keyboardDismissMode='on-drag'>
-          {TempMeetList.map(item => (
+          {resultList.map(item => (
             <MeetListItem
               src={item.meetImg}
               meetName={item.meetName}

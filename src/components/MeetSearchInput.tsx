@@ -1,11 +1,26 @@
+import { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import SearchIcon from '../../assets/search_icon.svg';
+import { TempMeetList } from '../data/TempMeetList';
+import { Meet } from '../screens/MeetSearchScreen';
 
 interface inputStyleProps {
   isMarginTop: boolean;
+  setResultList: React.Dispatch<React.SetStateAction<Meet[]>>;
 }
 
-const MeetSearchInput = ({ isMarginTop }: inputStyleProps) => {
+const MeetSearchInput = ({ isMarginTop, setResultList }: inputStyleProps) => {
+  const [inputText, setInpuText] = useState('');
+
+  const handleSubmit = () => {
+    if (!inputText) {
+      setResultList([]);
+      return;
+    }
+    const temp = TempMeetList.filter(item => item.meetName.includes(inputText));
+    setResultList(temp);
+  };
+
   return (
     <View style={styles(isMarginTop).topContainer}>
       <View style={styles(isMarginTop).wrapper}>
@@ -13,6 +28,9 @@ const MeetSearchInput = ({ isMarginTop }: inputStyleProps) => {
         <TextInput
           style={styles(isMarginTop).searchInput}
           placeholder='Meet 검색하기...'
+          onChangeText={text => setInpuText(text)}
+          returnKeyType='search'
+          onSubmitEditing={handleSubmit}
         />
       </View>
     </View>
