@@ -7,18 +7,25 @@ import { Meet } from '../screens/MeetSearchScreen';
 interface inputStyleProps {
   isMarginTop: boolean;
   setResultList: React.Dispatch<React.SetStateAction<Meet[]>>;
+  setIsSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MeetSearchInput = ({ isMarginTop, setResultList }: inputStyleProps) => {
+const MeetSearchInput = ({
+  isMarginTop,
+  setResultList,
+  setIsSearch,
+}: inputStyleProps) => {
   const [inputText, setInpuText] = useState('');
 
   const handleSubmit = () => {
     if (!inputText) {
       setResultList([]);
+      setIsSearch(false);
       return;
     }
     const temp = TempMeetList.filter(item => item.meetName.includes(inputText));
     setResultList(temp);
+    setIsSearch(true);
   };
 
   return (

@@ -41,4 +41,52 @@ export const TempMeetList = [
     meetName: '스노볼 귀여워22',
     meetIntroduce: '스노볼은 세상을 구해',
   },
+  {
+    id: 8,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test1',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 9,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test2',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 10,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test3',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 11,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test4',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 12,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test5',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 13,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test6',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 14,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test7',
+    meetIntroduce: 'CUTE',
+  },
+  {
+    id: 15,
+    meetImg: require('assets/testImg2.jpg'),
+    meetName: 'test8',
+    meetIntroduce: 'CUTE',
+  },
 ];
