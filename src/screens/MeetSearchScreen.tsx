@@ -21,7 +21,7 @@ export interface Meet {
 
 const MeetSearchSreen = () => {
   const [resultList, setResultList] = useState<Meet[]>([]);
-  const listLength = !resultList.length ? 1 : resultList.length;
+  const listLength = resultList.length;
   const [isSearch, setIsSearch] = useState(false);
 
   return (
@@ -38,7 +38,7 @@ const MeetSearchSreen = () => {
       </View>
       <View style={styles(listLength).searchListBox}>
         <ScrollView keyboardDismissMode='on-drag'>
-          {!resultList.length ? (
+          {!listLength ? (
             !isSearch ? (
               <Text style={styles(listLength).emptyText}>
                 가입하고 싶은 Meet의 이름을 입력해주세요!
@@ -84,6 +84,7 @@ const styles = (len: number) =>
       marginTop: 23,
       width: 325,
       height: len * 60,
+      minHeight: 60,
       maxHeight: 420,
       backgroundColor: 'rgba(255, 255, 255, 0.8)',
     },
