@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from './screens/SignIn';
 import Register from './screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
-import InitMeetScreen from './screens/InitMeetScreen';
 import HomeStack from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
