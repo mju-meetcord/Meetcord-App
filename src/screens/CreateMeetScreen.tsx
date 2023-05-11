@@ -4,6 +4,9 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Image,
+  Keyboard,
+  Pressable,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -12,41 +15,143 @@ import {
 import { Shadow } from 'react-native-shadow-2';
 import BackBtn from '../../assets/back_btn.svg';
 import ProfileIcon from '../../assets/icon_profile.svg';
+import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CreateMeetScreen = () => {
+const CreateMeetScreen = ({ navigation }: any) => {
+  const [image, setImage] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+
   const { top } = useSafeAreaInsets();
+
+  const selectImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Permission denied!');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const submitMeetData = async () => {
+    let status = 0;
+
+    const formData = new FormData();
+
+    const imageData = {
+      uri: image,
+      name: name + '.jpg',
+      type: 'image/jpg',
+    };
+
+    formData.append('image', imageData, name + '.jpg');
+
+    //formData.append('token');
+    formData.append('name', name);
+    formData.append('description', description);
+
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      formData.append('token', result ? result.toString() : '');
+
+      fetch('http://121.124.131.142:4000/meet', {
+        method: 'PUT',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => {
+          status = response.status;
+          return response.json();
+        })
+        .then(response => {
+          if (status == 200) {
+            alert(response.message);
+            navigation.navigate('home');
+          } else if (status == 401) {
+            alert(response.message);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+  };
 
   return (
     <SafeAreaView edges={['bottom']}>
       <View style={[styles.statusBarPlaceholder, { height: top }]} />
-      <View style={styles.wrapper}>
+      <Pressable
+        style={styles.wrapper}
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
         <BackBtn style={styles.backBtn} />
         <Text style={styles.title}>새로운 Meet 만들기</Text>
         <Shadow startColor='rgba(0, 0, 0, 0.25)' distance={4} offset={[0, 4]}>
           <View style={styles.meetInfoBox}>
-            <ProfileIcon style={styles.meetImg} />
+            <TouchableOpacity
+              style={styles.meetImg}
+              onPress={() => {
+                selectImage();
+              }}
+            >
+              {image ? (
+                <Image
+                  source={{ uri: image }}
+                  style={{ width: 200, height: 200 }}
+                />
+              ) : (
+                <ProfileIcon />
+              )}
+            </TouchableOpacity>
             <View style={styles.nameInputBox}>
               <TextInput
                 style={styles.meetNameInput}
                 placeholder='Meet 이름을 입력해주세요.'
                 placeholderTextColor='#676767'
+                maxLength={15}
+                onChangeText={text => {
+                  setName(text);
+                }}
               />
-              <Text style={styles.txtCount}>7/15</Text>
+              <Text style={styles.txtCount}>{name.length}/15</Text>
             </View>
             <View style={styles.introInputBox}>
               <TextInput
                 style={styles.meetIntroInput}
                 placeholder='우리만의 Meet을 소개해보세요.'
                 placeholderTextColor='#676767'
+                multiline={true}
+                maxLength={80}
+                onChangeText={text => {
+                  setDescription(text);
+                }}
               />
-              <Text style={styles.txtCount}>11/80</Text>
+              <Text style={styles.txtCount}>{description.length}/80</Text>
             </View>
           </View>
         </Shadow>
-        <TouchableOpacity style={styles.meetCreateBtn}>
+        <TouchableOpacity
+          style={styles.meetCreateBtn}
+          onPress={() => {
+            submitMeetData();
+          }}
+        >
           <Text style={styles.meetCreateBtnTxt}>Meet 시작하기</Text>
         </TouchableOpacity>
-      </View>
+      </Pressable>
     </SafeAreaView>
   );
 };
@@ -79,6 +184,11 @@ const styles = StyleSheet.create({
   },
   meetImg: {
     marginTop: 26,
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    overflow: 'hidden',
+    alignItems: 'center',
   },
   nameInputBox: {
     flexDirection: 'row',
@@ -103,16 +213,16 @@ const styles = StyleSheet.create({
   },
   introInputBox: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     width: 287,
-    height: 35,
+    height: 80,
     justifyContent: 'space-between',
   },
   meetIntroInput: {
     color: '#676767',
     fontWeight: '500',
     fontSize: 14,
-    width: 188,
+    width: '80%',
     paddingVertical: 8.5,
   },
   meetCreateBtn: {
