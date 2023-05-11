@@ -6,7 +6,7 @@ const NotiDetailScreen = ({ route, navigation }: any) => {
   const backBtnHandle = () => {
     navigation.navigate('Notification');
     // navigation.pop();
-    // console.log('에러방지용');
+    console.log('테스트용');
   };
 
   const dummyData = {
