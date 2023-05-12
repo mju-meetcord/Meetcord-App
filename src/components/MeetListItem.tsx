@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     padding: 10,
-    width: 325,
+    width: 340,
     height: 60,
   },
   meetImg: {
@@ -44,11 +44,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 14,
     lineHeight: 24,
+    width: 260,
   },
   meetIntro: {
     fontWeight: '500',
     fontSize: 11,
     lineHeight: 24,
+    width: 260,
   },
 });
 

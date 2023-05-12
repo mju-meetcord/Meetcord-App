@@ -1,8 +1,7 @@
-import { StyleSheet, ImageSourcePropType } from 'react-native';
+import { StyleSheet, ImageSourcePropType, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetSearchInput from '../components/MeetSearchInput';
 import MeetList from '../components/MeetList';
-import InitMeetBtn from '../components/InitMeetBtn';
 import MeetLogo from '../components/MeetLogo';
 import MeetBtn from '../components/MeetBtn';
 import { useState, useEffect } from 'react';
@@ -36,11 +35,15 @@ const MeetScreen = () => {
 
   return (
     <SafeAreaView style={styles.mainContainer}>
-      {!hasMeet() && <MeetLogo />}
+      <MeetLogo />
       <MeetSearchInput />
       <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
-      {hasMeet() && <MeetBtn />}
-      {!hasMeet() && <InitMeetBtn />}
+      <View style={styles.buttonBox}>
+        {!hasMeet() && (
+          <Text style={styles.adviceText}>새로운 Meet을 만들고 싶은가요?</Text>
+        )}
+        <MeetBtn />
+      </View>
     </SafeAreaView>
   );
 };
@@ -51,6 +54,20 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#E9F1FF',
     alignItems: 'center',
+  },
+  buttonBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    width: 325,
+    justifyContent: 'flex-end',
+  },
+  adviceText: {
+    fontWeight: '400',
+    color: '#676767',
+    fontSize: 13,
+    lineHeight: 15,
+    marginRight: 5,
   },
 });
 

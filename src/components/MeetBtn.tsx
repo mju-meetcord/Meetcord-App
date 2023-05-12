@@ -1,22 +1,16 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
 const MeetBtn = () => {
   return (
-    <View style={styles.btnBox}>
-      <TouchableOpacity style={styles.createMeetBtn}>
-        <Icon name='plus' size={15} color={'#5496FF'} />
-        <Text style={styles.btnTxt}>Meet 생성</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.createMeetBtn}>
+      <Icon name='plus' size={15} color={'#5496FF'} />
+      <Text style={styles.btnTxt}>Meet 생성</Text>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  btnBox: {
-    width: 325,
-    alignItems: 'flex-end',
-  },
   createMeetBtn: {
     backgroundColor: '#ffffff',
     width: 112,
@@ -26,7 +20,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#5496ff',
-    marginTop: 20,
     flexDirection: 'row',
   },
   btnTxt: {
