@@ -6,8 +6,12 @@ import MypageScreen from '../screens/MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 import TapBarIcon from '../components/TapBarIcon';
+import { BottomTabParamList, StackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList>();
+
+type BottomTabProps = StackScreenProps<StackParamList, 'BottomTab'>;
 
 const HomeStack = () => {
   return (

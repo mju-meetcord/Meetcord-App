@@ -11,13 +11,17 @@ import { Button, CheckBox } from '@rneui/themed';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
+import { StackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const Register = ({ navigation }: any) => {
+export type RegisterScreenProps = StackScreenProps<StackParamList, 'Register'>;
+
+const Register = ({ navigation }: RegisterScreenProps) => {
   const [check1, setCheck1] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const backBtnHandle = () => {
-    navigation.navigate('login');
+    navigation.navigate('Login');
   };
 
   return (

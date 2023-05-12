@@ -2,8 +2,17 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NotiItem from '../components/NotiItem';
+import { BottomTabParamList, StackParamList } from '../types';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const NotificationScreen = ({ navigation }: any) => {
+type NotificationScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList, 'Notification'>,
+  StackScreenProps<StackParamList>
+>;
+
+const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
   // 테스트용 더미 데이터
   const dummyData = [
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
@@ -37,7 +46,7 @@ const NotificationScreen = ({ navigation }: any) => {
               date={data.date}
               key={i}
               onpress={() =>
-                navigation.navigate('notiDetail', { title: data.title })
+                navigation.navigate('NotiDetail', { title: data.title })
               }
             />
           ))}

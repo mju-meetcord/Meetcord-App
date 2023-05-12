@@ -2,8 +2,12 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SignInInput from '../components/SignInInput';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const SignIn = ({ navigation }: any) => {
+export type SignInScreenProps = StackScreenProps<StackParamList, 'Login'>;
+
+const SignIn = ({ navigation }: SignInScreenProps) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
 
@@ -28,7 +32,7 @@ const SignIn = ({ navigation }: any) => {
         if (status == 200) {
           AsyncStorage.setItem('UserToken', response.token, () => {
             AsyncStorage.getItem('UserToken', (err, result) => {
-              navigation.navigate('initMeet');
+              navigation.navigate('Meet');
             });
           });
         } else if (status == 401) {
@@ -68,7 +72,7 @@ const SignIn = ({ navigation }: any) => {
         <Text style={styles.welcomeTxt}>Meetcord가 처음이신가요?</Text>
         <TouchableOpacity
           style={styles.signUpBtn}
-          onPress={() => navigation.navigate('register')}
+          onPress={() => navigation.navigate('Register')}
         >
           <Text style={styles.signUpBtnTxt}>회원가입</Text>
         </TouchableOpacity>

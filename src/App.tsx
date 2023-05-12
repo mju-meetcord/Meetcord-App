@@ -7,32 +7,33 @@ import HomeStack from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
 import MeetScreen from './screens/MeetScreen';
+import { StackParamList } from './types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<StackParamList>();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='home'
+          name='BottomTab'
           component={HomeStack}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='login'
+          name='Login'
           component={SignIn}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='register'
+          name='Register'
           component={Register}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name='Meet'
           component={MeetScreen}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name='CreateMeet'
@@ -40,9 +41,9 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='notiDetail'
+          name='NotiDetail'
           component={NotiDetail}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
