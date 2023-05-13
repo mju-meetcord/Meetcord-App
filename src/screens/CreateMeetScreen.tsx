@@ -97,7 +97,12 @@ const CreateMeetScreen = ({ navigation }: any) => {
           Keyboard.dismiss();
         }}
       >
-        <BackBtn style={styles.backBtn} />
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => navigation.pop()}
+        >
+          <BackBtn />
+        </TouchableOpacity>
         <Text style={styles.title}>새로운 Meet 만들기</Text>
         <Shadow startColor='rgba(0, 0, 0, 0.25)' distance={4} offset={[0, 4]}>
           <View style={styles.meetInfoBox}>
