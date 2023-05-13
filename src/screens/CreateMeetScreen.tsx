@@ -46,6 +46,16 @@ const CreateMeetScreen = ({ navigation }: any) => {
   };
 
   const submitMeetData = async () => {
+    // 유효성 체크
+    if (name == '') {
+      alert('Meet 이름이 입력되지 않았습니다.');
+      return;
+    }
+    if (description == '') {
+      alert('Meet의 소개글이 입력되지 않았습니다.');
+      return;
+    }
+
     let status = 0;
 
     const formData = new FormData();
@@ -110,7 +120,8 @@ const CreateMeetScreen = ({ navigation }: any) => {
               {image ? (
                 <Image
                   source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
+                  style={styles.image}
+                  resizeMode='cover'
                 />
               ) : (
                 <ProfileIcon />
@@ -189,6 +200,10 @@ const styles = StyleSheet.create({
     borderRadius: 52,
     overflow: 'hidden',
     alignItems: 'center',
+  },
+  image: {
+    width: 104,
+    height: 104,
   },
   nameInputBox: {
     flexDirection: 'row',
