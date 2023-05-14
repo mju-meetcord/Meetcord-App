@@ -18,7 +18,9 @@ const MeetListItem = ({ src, meetName, intro }: ListItemProps) => {
       <Image source={src} style={styles.meetImg} />
       <View style={styles.meetInfoBox}>
         <Text style={styles.meetName}>{meetName}</Text>
-        <Text style={styles.meetIntro}>{intro}</Text>
+        <Text style={styles.meetIntro} numberOfLines={1}>
+          {intro}
+        </Text>
       </View>
     </View>
   );
