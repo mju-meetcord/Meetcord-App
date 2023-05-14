@@ -21,32 +21,29 @@ export interface Meet {
 
 const MeetSearchSreen = () => {
   const [resultList, setResultList] = useState<Meet[]>([]);
-  const listLength = resultList.length;
   const [isSearch, setIsSearch] = useState(false);
 
   return (
-    <SafeAreaView style={styles(listLength).container}>
-      <View style={styles(listLength).topWrap}>
-        <TouchableOpacity style={styles(listLength).backButton}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.topWrap}>
+        <TouchableOpacity style={styles.backButton}>
           <BackButton />
         </TouchableOpacity>
         <MeetSearchInput
-          isMarginTop={false}
+          hasWideMarginTop={false}
           setResultList={setResultList}
           setIsSearch={setIsSearch}
         />
       </View>
-      <View style={styles(listLength).searchListBox}>
+      <View style={styles.searchListBox}>
         <ScrollView keyboardDismissMode='on-drag'>
-          {!listLength ? (
+          {!resultList.length ? (
             !isSearch ? (
-              <Text style={styles(listLength).emptyText}>
+              <Text style={styles.emptyText}>
                 가입하고 싶은 Meet의 이름을 입력해주세요!
               </Text>
             ) : (
-              <Text style={styles(listLength).emptyText}>
-                검색어를 다시 입력해주세요!
-              </Text>
+              <Text style={styles.emptyText}>검색어를 다시 입력해주세요!</Text>
             )
           ) : null}
           {resultList.map(item => (
@@ -63,31 +60,29 @@ const MeetSearchSreen = () => {
   );
 };
 
-const styles = (len: number) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#E9F1FF',
-      height: '100%',
-      alignItems: 'center',
-    },
-    topWrap: {
-      width: 325,
-    },
-    backButton: {
-      alignSelf: 'flex-start',
-    },
-    emptyText: {
-      textAlign: 'center',
-    },
-    searchListBox: {
-      marginTop: 23,
-      width: 325,
-      height: len * 60,
-      minHeight: 60,
-      maxHeight: 420,
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#E9F1FF',
+    height: '100%',
+    alignItems: 'center',
+  },
+  topWrap: {
+    width: 325,
+  },
+  backButton: {
+    alignSelf: 'flex-start',
+  },
+  emptyText: {
+    textAlign: 'center',
+  },
+  searchListBox: {
+    marginTop: 23,
+    width: 325,
+    minHeight: 60,
+    maxHeight: 420,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+});
 
 export default MeetSearchSreen;
