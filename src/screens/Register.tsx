@@ -11,10 +11,13 @@ import { Button, CheckBox } from '@rneui/themed';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
-import { StackParamList } from '../types';
+import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
-export type RegisterScreenProps = StackScreenProps<StackParamList, 'Register'>;
+export type RegisterScreenProps = StackScreenProps<
+  RootStackParamList,
+  'Register'
+>;
 
 const Register = ({ navigation }: RegisterScreenProps) => {
   const [check1, setCheck1] = useState(false);

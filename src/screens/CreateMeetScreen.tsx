@@ -12,10 +12,10 @@ import {
 import { Shadow } from 'react-native-shadow-2';
 import BackBtn from '../../assets/back_btn.svg';
 import ProfileIcon from '../../assets/icon_profile.svg';
-import { StackParamList } from '../types';
+import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
-type CreateMeetScreenProps = StackScreenProps<StackParamList, 'CreateMeet'>;
+type CreateMeetScreenProps = StackScreenProps<RootStackParamList, 'CreateMeet'>;
 
 const CreateMeetScreen = () => {
   const { top } = useSafeAreaInsets();

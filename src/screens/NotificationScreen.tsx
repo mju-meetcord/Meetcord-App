@@ -2,14 +2,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NotiItem from '../components/NotiItem';
-import { BottomTabParamList, StackParamList } from '../types';
+import { BottomTabParamList, RootStackParamList } from '../types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 type NotificationScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Notification'>,
-  StackScreenProps<StackParamList>
+  StackScreenProps<RootStackParamList>
 >;
 
 const NotificationScreen = ({ navigation }: NotificationScreenProps) => {

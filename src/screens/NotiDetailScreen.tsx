@@ -1,9 +1,9 @@
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StackParamList } from '../types';
+import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
-type NotiDetailScreenProps = StackScreenProps<StackParamList, 'NotiDetail'>;
+type NotiDetailScreenProps = StackScreenProps<RootStackParamList, 'NotiDetail'>;
 
 const NotiDetailScreen = ({ route }: NotiDetailScreenProps) => {
   return (

@@ -1,7 +1,5 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
-
-export type StackParamList = {
-  BottomTab: NavigatorScreenParams<BottomTabParamList>;
+export type RootStackParamList = {
+  BottomTab: undefined;
   Login: undefined;
   Register: undefined;
   Meet: undefined;

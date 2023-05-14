@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SignInInput from '../components/SignInInput';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackParamList } from '../types';
+import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
-export type SignInScreenProps = StackScreenProps<StackParamList, 'Login'>;
+export type SignInScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
 
 const SignIn = ({ navigation }: SignInScreenProps) => {
   const [id, setId] = useState('');

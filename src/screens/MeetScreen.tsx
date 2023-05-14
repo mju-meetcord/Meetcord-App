@@ -6,7 +6,7 @@ import MeetLogo from '../components/MeetLogo';
 import MeetBtn from '../components/MeetBtn';
 import { useState, useEffect } from 'react';
 import { TempMeetList } from '../data/TempMeetList';
-import { StackParamList } from '../types';
+import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
 export interface Meet {
@@ -17,7 +17,7 @@ export interface Meet {
   isJoin: boolean;
 }
 
-type MeetScreenProps = StackScreenProps<StackParamList, 'Meet'>;
+type MeetScreenProps = StackScreenProps<RootStackParamList, 'Meet'>;
 
 const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
