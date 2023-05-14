@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
-export type SignInScreenProps = StackScreenProps<RootStackParamList, 'Login'>;
+export type SignInScreenProps = StackScreenProps<RootStackParamList, 'SignIn'>;
 
 const SignIn = ({ navigation }: SignInScreenProps) => {
   const [id, setId] = useState('');

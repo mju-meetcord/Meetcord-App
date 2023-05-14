@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   BottomTab: undefined;
-  Login: undefined;
+  SignIn: undefined;
   Register: undefined;
   InitMeet: undefined;
   CreateMeet: undefined;

@@ -24,7 +24,7 @@ const Register = ({ navigation }: RegisterScreenProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const backBtnHandle = () => {
-    navigation.navigate('Login');
+    navigation.navigate('SignIn');
   };
 
   return (
