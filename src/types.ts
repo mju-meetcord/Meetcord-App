@@ -6,7 +6,7 @@ export type RootStackParamList = {
   BottomTab: undefined;
   Login: undefined;
   Register: undefined;
-  Meet: undefined;
+  InitMeet: undefined;
   CreateMeet: undefined;
   NotiDetail: {
     title: string;

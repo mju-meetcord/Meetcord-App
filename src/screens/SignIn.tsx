@@ -32,7 +32,7 @@ const SignIn = ({ navigation }: SignInScreenProps) => {
         if (status == 200) {
           AsyncStorage.setItem('UserToken', response.token, () => {
             AsyncStorage.getItem('UserToken', (err, result) => {
-              navigation.navigate('Meet');
+              navigation.navigate('InitMeet');
             });
           });
         } else if (status == 401) {

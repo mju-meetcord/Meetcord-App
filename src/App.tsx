@@ -31,7 +31,7 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='Meet'
+          name='InitMeet'
           component={MeetScreen}
           options={{ headerShown: false }}
         />
