@@ -1,11 +1,18 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import ImageButton from '../components/ImageButton';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import BackBtn from '../../assets/back_btn.svg';
 
 const NotiDetailScreen = ({ route, navigation }: any) => {
-  const backBtnHandle = () => {
-    navigation.navigate('Notification');
-  };
+  const { top } = useSafeAreaInsets();
 
   const dummyData = {
     title: 'test123',
@@ -19,61 +26,68 @@ const NotiDetailScreen = ({ route, navigation }: any) => {
     <SafeAreaView
       style={{
         height: '100%',
-        backgroundColor: '#E9F1FF',
+        backgroundColor: '#FFFFFF',
       }}
-      edges={['right', 'left', 'top']}
+      edges={['bottom']}
     >
+      <View style={[styles.statusBarPlaceholder, { height: top }]}></View>
+      <View style={styles.topContainer}>
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.backBtn}
+            onPress={() => navigation.pop()}
+          >
+            <BackBtn />
+          </TouchableOpacity>
+          <Text style={styles.NotiDetail}>공지사항</Text>
+        </View>
+        <Text style={styles.title}>{route.params.title}</Text>
+        <Text style={styles.date}>{dummyData.date}</Text>
+      </View>
       <ScrollView>
-        <View style={styles.Container}>
-          <View style={styles.backBtn}>
-            <ImageButton
-              onPress={backBtnHandle}
-              source={require('../../assets/backBtn.png')}
-              color='#E9F1FF'
-            ></ImageButton>
-            <Text style={styles.title}>공지사항</Text>
-          </View>
-          <Text style={styles.notiTittle}>{route.params.title}</Text>
-          <Text style={styles.notiDate}>{dummyData.date}</Text>
-        </View>
-        <View style={styles.message}>
-          <Text style={styles.notiMessage}>{dummyData.message}</Text>
-        </View>
+        <Text style={styles.message}>{dummyData.message}</Text>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  Container: {
+  topContainer: {
     backgroundColor: '#E9F1FF',
     borderBottomWidth: 1,
     borderColor: '#C6C6C6',
   },
 
-  backBtn: {
-    justifyContent: 'flex-start',
-    marginTop: 25,
-    marginLeft: 20,
-    flexDirection: 'row',
+  statusBarPlaceholder: {
+    backgroundColor: '#E9F1FF',
+  },
+
+  container: {
     alignItems: 'center',
-    marginBottom: 45,
+    flexDirection: 'row',
+    marginLeft: 12,
+    marginTop: 40,
+  },
+
+  backBtn: {
+    marginLeft: 12,
+  },
+
+  NotiDetail: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 12,
   },
 
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-
-  notiTittle: {
     fontSize: 20,
-
     fontWeight: 'bold',
+    marginTop: 45,
     marginBottom: 10,
     marginLeft: 25,
   },
 
-  notiDate: {
+  date: {
     fontSize: 16,
     color: '#676767',
     marginLeft: 25,
@@ -81,11 +95,6 @@ const styles = StyleSheet.create({
   },
 
   message: {
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-  },
-
-  notiMessage: {
     fontSize: 16,
     width: '85%',
     marginTop: 14,
