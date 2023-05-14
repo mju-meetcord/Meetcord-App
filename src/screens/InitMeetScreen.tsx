@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MeetSearchInput from '../components/MeetSearchInput';
 import MeetList from '../components/MeetList';
 
-const InitMeetScreen = () => {
+const InitMeetScreen = ({ navigation }: any) => {
   const { top } = useSafeAreaInsets();
 
   return (
@@ -26,7 +26,12 @@ const InitMeetScreen = () => {
             새로운 Meet을 만들고 싶은가요?
           </Text>
           <TouchableOpacity style={styles.createMeetBtn}>
-            <Text style={styles.btnTxt}>Meet 생성</Text>
+            <Text
+              style={styles.btnTxt}
+              onPress={() => navigation.navigate('CreateMeet')}
+            >
+              Meet 생성
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
