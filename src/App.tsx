@@ -1,4 +1,5 @@
 import { registerRootComponent } from 'expo';
+import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from './screens/SignIn';
 import Register from './screens/Register';
@@ -46,6 +47,7 @@ const App = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
+      <StatusBar style='auto' />
     </NavigationContainer>
   );
 };
