@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 type BottomTabProps = StackScreenProps<StackParamList, 'BottomTab'>;
 
-const HomeStack = () => {
+const BottomTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeStack;
+export default BottomTabs;

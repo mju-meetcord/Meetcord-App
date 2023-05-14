@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from './screens/SignIn';
 import Register from './screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeStack from './components/BottomTabs';
+import BottomTabs from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
 import MeetScreen from './screens/MeetScreen';
@@ -17,7 +17,7 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen
           name='BottomTab'
-          component={HomeStack}
+          component={BottomTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
