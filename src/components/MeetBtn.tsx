@@ -1,9 +1,13 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const MeetBtn = () => {
+type MeetBtnProps = {
+  onPress: () => void;
+};
+
+const MeetBtn = ({ onPress }: MeetBtnProps) => {
   return (
-    <TouchableOpacity style={styles.createMeetBtn}>
+    <TouchableOpacity style={styles.createMeetBtn} onPress={onPress}>
       <Icon name='plus' size={15} color={'#5496FF'} />
       <Text style={styles.btnTxt}>Meet 생성</Text>
     </TouchableOpacity>

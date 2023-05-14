@@ -6,8 +6,8 @@ import MeetLogo from '../components/MeetLogo';
 import MeetBtn from '../components/MeetBtn';
 import { useState, useEffect } from 'react';
 import { TempMeetList } from '../data/TempMeetList';
-import { RootStackParamList } from '../types';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NavigationProp } from '../types';
+import { useNavigation } from '@react-navigation/native';
 
 export interface Meet {
   id: number;
@@ -17,11 +17,10 @@ export interface Meet {
   isJoin: boolean;
 }
 
-type MeetScreenProps = StackScreenProps<RootStackParamList, 'Meet'>;
-
 const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
   const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
+  const navigation = useNavigation<NavigationProp>();
 
   const hasMeet = () => {
     return !!result.length;
@@ -33,6 +32,10 @@ const MeetScreen = () => {
     }
   }, []);
 
+  const onPressMeetBtn = () => {
+    navigation.navigate('CreateMeet');
+  };
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <MeetLogo />
@@ -42,7 +45,7 @@ const MeetScreen = () => {
         {!hasMeet() && (
           <Text style={styles.adviceText}>새로운 Meet을 만들고 싶은가요?</Text>
         )}
-        <MeetBtn />
+        <MeetBtn onPress={onPressMeetBtn} />
       </View>
     </SafeAreaView>
   );
