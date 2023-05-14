@@ -18,13 +18,15 @@ import ProfileIcon from '../../assets/icon_profile.svg';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const CreateMeetScreen = ({ navigation }: any) => {
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../types';
+const CreateMeetScreen = () => {
   const [image, setImage] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   const { top } = useSafeAreaInsets();
+  const navigation = useNavigation<NavigationProp>();
 
   const selectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -91,7 +93,7 @@ const CreateMeetScreen = ({ navigation }: any) => {
         .then(response => {
           if (status == 200) {
             alert(response.message);
-            navigation.navigate('home');
+            navigation.navigate('Home');
           } else if (status == 401) {
             alert(response.message);
           }

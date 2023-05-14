@@ -4,36 +4,37 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from './screens/SignIn';
 import Register from './screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
-import InitMeetScreen from './screens/InitMeetScreen';
-import HomeStack from './components/BottomTabs';
+import BottomTabs from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
+import MeetScreen from './screens/MeetScreen';
+import { RootStackParamList } from './types';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='login'
+          name='BottomTab'
+          component={BottomTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='SignIn'
           component={SignIn}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='home'
-          component={HomeStack}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
-        />
-        <Stack.Screen
-          name='register'
+          name='Register'
           component={Register}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='initMeet'
-          component={InitMeetScreen}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          name='InitMeet'
+          component={MeetScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name='CreateMeet'
@@ -41,9 +42,9 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='notiDetail'
+          name='NotiDetail'
           component={NotiDetail}
-          options={{ headerShown: false }} // 이 부분을 추가해주세요
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
       <StatusBar style='auto' />

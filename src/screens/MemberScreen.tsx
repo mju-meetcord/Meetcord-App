@@ -1,6 +1,10 @@
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeberItem from '../components/MeberItem';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { BottomTabParamList } from '../types';
+
+type MemberScreenProps = BottomTabScreenProps<BottomTabParamList, 'Member'>;
 
 const MemberScreen = () => {
   const groupName = '명지바람';

@@ -6,10 +6,14 @@ import MypageScreen from '../screens/MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 import TapBarIcon from '../components/TapBarIcon';
+import { BottomTabParamList, RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-const HomeStack = () => {
+type BottomTabProps = StackScreenProps<RootStackParamList, 'BottomTab'>;
+
+const BottomTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -94,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeStack;
+export default BottomTabs;
