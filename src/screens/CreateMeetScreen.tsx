@@ -60,13 +60,15 @@ const CreateMeetScreen = ({ navigation }: any) => {
 
     const formData = new FormData();
 
-    const imageData = {
-      uri: image,
-      name: name + '.jpg',
-      type: 'image/jpg',
-    };
+    if (image != '') {
+      const imageData = {
+        uri: image,
+        name: name + '.jpg',
+        type: 'image/jpg',
+      };
 
-    formData.append('image', imageData, name + '.jpg');
+      formData.append('image', imageData, name + '.jpg');
+    }
 
     //formData.append('token');
     formData.append('name', name);
