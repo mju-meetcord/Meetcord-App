@@ -12,7 +12,8 @@ const MeetLogo = () => {
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
-    marginTop: 25,
+    marginTop: 31,
+    marginBottom: 44,
   },
   mainTitle: {
     color: '#5496FF',

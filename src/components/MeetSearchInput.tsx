@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wrapper: {
-    width: 325,
+    width: 340,
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
