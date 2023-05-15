@@ -1,31 +1,28 @@
-import { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import SearchIcon from '../../assets/search_icon.svg';
-import { TempMeetList } from '../data/TempMeetList';
 
 interface inputStyleProps {
-  hasWideMarginTop?: boolean;
-  onSubmitEditing?: () => void;
+  inputText?: string;
+  setInputText: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmit: () => void;
 }
 
 const MeetSearchInput = ({
-  hasWideMarginTop,
-  onSubmitEditing,
+  inputText,
+  setInputText,
+  handleSubmit,
 }: inputStyleProps) => {
-  const [inputText, setInpuText] = useState('');
-
   return (
-    <View
-      style={hasWideMarginTop ? styles.wideMarginTop : styles.narrowMarginTop}
-    >
+    <View style={styles.topContainer}>
       <View style={styles.wrapper}>
         <SearchIcon style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder='Meet 검색하기...'
-          onChangeText={text => setInpuText(text)}
+          value={inputText}
+          onChangeText={text => setInputText(text)}
           returnKeyType='search'
-          // onSubmitEditing={handleSubmit}
+          onSubmitEditing={handleSubmit}
         />
       </View>
     </View>
@@ -33,14 +30,9 @@ const MeetSearchInput = ({
 };
 
 const styles = StyleSheet.create({
-  wideMarginTop: {
-    marginTop: 54,
-  },
-  narrowMarginTop: {
-    marginTop: 16,
-  },
   topContainer: {
     alignItems: 'center',
+    marginTop: 21,
   },
   wrapper: {
     width: 340,

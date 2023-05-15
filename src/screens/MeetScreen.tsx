@@ -1,10 +1,10 @@
+import { useState, useEffect } from 'react';
 import { StyleSheet, ImageSourcePropType, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetSearchInput from '../components/MeetSearchInput';
 import MeetList from '../components/MeetList';
 import MeetLogo from '../components/MeetLogo';
 import MeetBtn from '../components/MeetBtn';
-import { useState, useEffect } from 'react';
 import { TempMeetList } from '../data/TempMeetList';
 import { NavigationProp } from '../types';
 import { useNavigation } from '@react-navigation/native';
@@ -19,6 +19,7 @@ export interface Meet {
 
 const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
+  const [inputText, setInputText] = useState('');
   const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
   const navigation = useNavigation<NavigationProp>();
 
@@ -36,10 +37,19 @@ const MeetScreen = () => {
     navigation.navigate('CreateMeet');
   };
 
+  const handleSubmit = () => {
+    setInputText('');
+    navigation.navigate('MeetSearch');
+  };
+
   return (
     <SafeAreaView style={styles.mainContainer}>
       <MeetLogo />
-      <MeetSearchInput />
+      <MeetSearchInput
+        inputText={inputText}
+        setInputText={setInputText}
+        handleSubmit={handleSubmit}
+      />
       <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
       <View style={styles.buttonBox}>
         {!hasMeet() && (

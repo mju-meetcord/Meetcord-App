@@ -1,57 +1,91 @@
+import { useState } from 'react';
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ImageSourcePropType,
 } from 'react-native';
 import MeetSearchInput from '../components/MeetSearchInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetListItem from '../components/MeetListItem';
 import BackButton from 'assets/back_btn.svg';
-import { useState } from 'react';
-
-// export interface Meet {
-//   id: number;
-//   meetImg: ImageSourcePropType;
-//   meetName: string;
-//   meetIntroduce: string;
-// }
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../types';
+import { Meet } from './MeetScreen';
+import { TempMeetList } from '../data/TempMeetList';
+import MeetBtn from '../components/MeetBtn';
 
 const MeetSearchSreen = () => {
-  // const [resultList, setResultList] = useState<Meet[]>([]);
-  // const [isSearch, setIsSearch] = useState(false);
+  const [resultList, setResultList] = useState<Meet[]>([]);
+  const [inputText, setInputText] = useState('');
+  const [resultText, setResultText] = useState('');
+
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleSubmit = () => {
+    setResultText(inputText);
+    if (!inputText) {
+      setResultList([]);
+      return;
+    }
+    const temp = TempMeetList.filter(item => item.meetName.includes(inputText));
+    setResultList(temp);
+  };
+
+  const onPressMeetBtn = () => {
+    navigation.navigate('CreateMeet');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.topWrap}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.pop()}
+        >
           <BackButton />
         </TouchableOpacity>
-        <MeetSearchInput hasWideMarginTop={false} />
+        <MeetSearchInput
+          setInputText={setInputText}
+          handleSubmit={handleSubmit}
+        />
       </View>
-      <View style={styles.searchListBox}>
-        <ScrollView keyboardDismissMode='on-drag'>
-          {/* {!resultList.length ? (
-            !isSearch ? (
-              <Text style={styles.emptyText}>
-                가입하고 싶은 Meet의 이름을 입력해주세요!
+      <View>
+        <Text style={styles.searchResultText}>
+          &apos;{resultText}&apos; 검색 결과
+        </Text>
+        {!resultList.length ? (
+          <>
+            <View style={styles.emptyResultBox}>
+              <Text style={styles.emptyResultText}>
+                검색 결과가 없습니다. Meet이름과 {'\n'}초대코드를 다시
+                확인해주세요.
               </Text>
-            ) : (
-              <Text style={styles.emptyText}>검색어를 다시 입력해주세요!</Text>
-            )
-          ) : null}
-          {resultList.map(item => (
-            <MeetListItem
-              src={item.meetImg}
-              meetName={item.meetName}
-              intro={item.meetIntroduce}
-              key={item.id}
-            />
-          ))} */}
-        </ScrollView>
+            </View>
+            <View style={styles.buttonBox}>
+              <Text style={styles.adviceText}>
+                새로운 Meet을 만들고 싶은가요?
+              </Text>
+              <MeetBtn onPress={onPressMeetBtn} />
+            </View>
+          </>
+        ) : (
+          <View style={styles.searchListBox}>
+            <ScrollView keyboardDismissMode='on-drag'>
+              {resultList.map(item => (
+                <MeetListItem
+                  src={item.meetImg}
+                  meetName={item.meetName}
+                  intro={item.meetIntroduce}
+                  key={item.id}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        )}
       </View>
+      <Text style={styles.searchScreenLogo}>Meetcord</Text>
     </SafeAreaView>
   );
 };
@@ -64,20 +98,57 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   topWrap: {
-    width: 325,
+    width: 340,
   },
   backButton: {
     alignSelf: 'flex-start',
+    marginTop: 20,
   },
-  emptyText: {
-    textAlign: 'center',
+  searchResultText: {
+    marginBottom: 8,
+    marginLeft: 10,
+    marginTop: 31,
   },
   searchListBox: {
-    marginTop: 23,
-    width: 325,
+    width: 340,
     minHeight: 60,
     maxHeight: 420,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  emptyResultBox: {
+    width: 340,
+    height: 360,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyResultText: {
+    textAlign: 'center',
+    fontSize: 18,
+    lineHeight: 25,
+    color: '#5496FF',
+  },
+  buttonBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    width: 340,
+    justifyContent: 'flex-end',
+  },
+  adviceText: {
+    fontWeight: '400',
+    color: '#676767',
+    fontSize: 13,
+    lineHeight: 15,
+    marginRight: 5,
+  },
+  searchScreenLogo: {
+    fontWeight: '700',
+    fontSize: 80,
+    color: 'rgba(84, 150, 255, 0.3)',
+    lineHeight: 80,
+    position: 'absolute',
+    bottom: 0,
   },
 });
 
