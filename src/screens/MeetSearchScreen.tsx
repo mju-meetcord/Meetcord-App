@@ -12,16 +12,16 @@ import MeetListItem from '../components/MeetListItem';
 import BackButton from 'assets/back_btn.svg';
 import { useState } from 'react';
 
-export interface Meet {
-  id: number;
-  meetImg: ImageSourcePropType;
-  meetName: string;
-  meetIntroduce: string;
-}
+// export interface Meet {
+//   id: number;
+//   meetImg: ImageSourcePropType;
+//   meetName: string;
+//   meetIntroduce: string;
+// }
 
 const MeetSearchSreen = () => {
-  const [resultList, setResultList] = useState<Meet[]>([]);
-  const [isSearch, setIsSearch] = useState(false);
+  // const [resultList, setResultList] = useState<Meet[]>([]);
+  // const [isSearch, setIsSearch] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,15 +29,11 @@ const MeetSearchSreen = () => {
         <TouchableOpacity style={styles.backButton}>
           <BackButton />
         </TouchableOpacity>
-        <MeetSearchInput
-          hasWideMarginTop={false}
-          setResultList={setResultList}
-          setIsSearch={setIsSearch}
-        />
+        <MeetSearchInput hasWideMarginTop={false} />
       </View>
       <View style={styles.searchListBox}>
         <ScrollView keyboardDismissMode='on-drag'>
-          {!resultList.length ? (
+          {/* {!resultList.length ? (
             !isSearch ? (
               <Text style={styles.emptyText}>
                 가입하고 싶은 Meet의 이름을 입력해주세요!
@@ -53,7 +49,7 @@ const MeetSearchSreen = () => {
               intro={item.meetIntroduce}
               key={item.id}
             />
-          ))}
+          ))} */}
         </ScrollView>
       </View>
     </SafeAreaView>
