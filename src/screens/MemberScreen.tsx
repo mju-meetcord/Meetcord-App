@@ -10,8 +10,7 @@ import MeberItem from '../components/MeberItem';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from '../types';
 import { useState } from 'react';
-import Modal from 'react-native-modal';
-import MemberModer from '../components/MemberModer';
+import MemberModal from '../components/MemberModal';
 
 type MemberScreenProps = BottomTabScreenProps<BottomTabParamList, 'Member'>;
 
@@ -95,7 +94,7 @@ const MemberScreen = () => {
           )}
         </ScrollView>
       </View>
-      <MemberModer
+      <MemberModal
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}
       />

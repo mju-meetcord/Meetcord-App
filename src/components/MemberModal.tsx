@@ -1,8 +1,8 @@
 import Modal from 'react-native-modal';
 import { View, Text, StyleSheet } from 'react-native';
-import { MemberModerProps } from '../types';
+import { MemberModalProps } from '../types';
 
-const MemberModer = ({ isVisible, onBackdropPress }: MemberModerProps) => {
+const MemberModal = ({ isVisible, onBackdropPress }: MemberModalProps) => {
   return (
     <Modal
       isVisible={isVisible}
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MemberModer;
+export default MemberModal;
