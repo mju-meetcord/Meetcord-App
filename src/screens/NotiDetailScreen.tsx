@@ -10,8 +10,12 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import BackBtn from '../../assets/back_btn.svg';
+import { RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const NotiDetailScreen = ({ route, navigation }: any) => {
+type NotiDetailScreenProps = StackScreenProps<RootStackParamList, 'NotiDetail'>;
+
+const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
   const { top } = useSafeAreaInsets();
 
   const dummyData = {
