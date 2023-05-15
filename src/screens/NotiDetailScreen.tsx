@@ -47,6 +47,7 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
         </View>
         <Text style={styles.title}>{route.params.title}</Text>
         <Text style={styles.date}>{dummyData.date}</Text>
+        <View style={styles.border} />
       </View>
       <ScrollView>
         <Text style={styles.message}>{dummyData.message}</Text>
@@ -58,12 +59,16 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
 const styles = StyleSheet.create({
   topContainer: {
     backgroundColor: '#E9F1FF',
-    borderBottomWidth: 1,
-    borderColor: '#C6C6C6',
   },
 
   statusBarPlaceholder: {
     backgroundColor: '#E9F1FF',
+  },
+
+  border: {
+    borderBottomWidth: 1,
+    borderColor: '#C6C6C6',
+    marginHorizontal: 6,
   },
 
   container: {
