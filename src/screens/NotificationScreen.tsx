@@ -31,7 +31,7 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
     <SafeAreaView
       style={{
         height: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#E9F1FF',
       }}
       edges={['right', 'left', 'top']}
     >
@@ -63,13 +63,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   topBar: {
-    height: 100,
-    justifyContent: 'center',
+    height: 120,
+    justifyContent: 'flex-end',
+    backgroundColor: '#E9F1FF',
+    paddingBottom: 20,
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
-    left: 20,
+    left: 25,
   },
   main: {
     backgroundColor: '#FFFFFF',

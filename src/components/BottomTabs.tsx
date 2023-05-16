@@ -23,7 +23,7 @@ const BottomTabs = () => {
         tabBarActiveTintColor: '#5496FF',
         tabBarInactiveTintColor: '#ffffff',
       }}
-      initialRouteName='Home'
+      initialRouteName='Notification'
     >
       <Tab.Screen
         name='Meet'
