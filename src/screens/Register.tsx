@@ -377,9 +377,9 @@ const styles = StyleSheet.create({
     height: 320,
   },
   box: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#676767',
-    borderRadius: 10,
+    borderRadius: 5,
     width: 360,
     height: 300,
     overflow: 'hidden',
