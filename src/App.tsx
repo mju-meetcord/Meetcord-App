@@ -17,7 +17,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name='BottomTab'
           component={BottomTabs}
           options={{ headerShown: false }}
@@ -33,6 +33,11 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name='InitMeet'
+          component={MeetScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name='CreateMeet'
           component={CreateMeetScreen}
           options={{ headerShown: false }}
@@ -41,20 +46,10 @@ const App = () => {
           name='NotiDetail'
           component={NotiDetail}
           options={{ headerShown: false }}
-        /> */}
-        <Stack.Screen
-          name='InitMeet'
-          component={MeetScreen}
-          options={{ headerShown: false }}
         />
         <Stack.Screen
           name='MeetSearch'
           component={MeetSearchSreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='CreateMeet'
-          component={CreateMeetScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
