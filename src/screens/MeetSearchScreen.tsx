@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -11,17 +11,24 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetListItem from '../components/MeetListItem';
 import BackButton from 'assets/back_btn.svg';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from '../types';
+import { NavigationProp, RootStackParamList } from '../types';
 import { Meet } from './MeetScreen';
 import { TempMeetList } from '../data/TempMeetList';
 import MeetBtn from '../components/MeetBtn';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const MeetSearchSreen = () => {
+type MeetSearchScreenProps = StackScreenProps<RootStackParamList, 'MeetSearch'>;
+
+const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
   const [resultList, setResultList] = useState<Meet[]>([]);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState(route.params.meetSearchText);
   const [resultText, setResultText] = useState('');
 
   const navigation = useNavigation<NavigationProp>();
+
+  useEffect(() => {
+    handleSubmit();
+  }, [route.params.meetSearchText]);
 
   const handleSubmit = () => {
     setResultText(inputText);
@@ -47,6 +54,7 @@ const MeetSearchSreen = () => {
           <BackButton />
         </TouchableOpacity>
         <MeetSearchInput
+          inputText={inputText}
           setInputText={setInputText}
           handleSubmit={handleSubmit}
         />

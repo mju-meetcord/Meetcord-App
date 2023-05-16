@@ -38,15 +38,13 @@ const MeetScreen = () => {
   };
 
   const handleSubmit = () => {
-    setInputText('');
-    navigation.navigate('MeetSearch');
+    navigation.navigate('MeetSearch', { meetSearchText: inputText });
   };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <MeetLogo />
       <MeetSearchInput
-        inputText={inputText}
         setInputText={setInputText}
         handleSubmit={handleSubmit}
       />
