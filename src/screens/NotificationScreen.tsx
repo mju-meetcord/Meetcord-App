@@ -6,6 +6,7 @@ import { BottomTabParamList, RootStackParamList } from '../types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect, useState } from 'react';
 
 type NotificationScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Notification'>,
@@ -13,8 +14,10 @@ type NotificationScreenProps = CompositeScreenProps<
 >;
 
 const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
+  const [data, setData] = useState([{ title: '', created_at: '' }]);
+
   // 테스트용 더미 데이터
-  const dummyData = [
+  /*const dummyData = [
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
@@ -25,7 +28,24 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
     { title: 'test123', date: '2023.06.05 (화) 10:00' },
-  ];
+  ];*/
+
+  useEffect(() => {
+    fetch(`http://121.124.131.142:4000/notification?name=${'코사모'}`, {
+      // 검색어를 URL에 추가하여 GET 요청
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        setData(response.data);
+        console.log(data);
+      })
+      .catch(error => console.error(error));
+  }, []);
 
   return (
     <SafeAreaView
@@ -40,10 +60,10 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
           <Text style={styles.title}>공지 게시판</Text>
         </View>
         <ScrollView style={styles.main}>
-          {dummyData.map((data, i) => (
+          {data.map((data, i) => (
             <NotiItem
               title={data.title}
-              date={data.date}
+              date={data.created_at}
               key={i}
               onpress={() =>
                 navigation.navigate('NotiDetail', { title: data.title })
