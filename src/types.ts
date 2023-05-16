@@ -9,7 +9,7 @@ export type RootStackParamList = {
   InitMeet: undefined;
   CreateMeet: undefined;
   NotiDetail: {
-    title: string;
+    id: string;
   };
 };
 

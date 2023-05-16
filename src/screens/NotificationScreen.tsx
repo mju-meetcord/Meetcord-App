@@ -14,7 +14,9 @@ type NotificationScreenProps = CompositeScreenProps<
 >;
 
 const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
-  const [data, setData] = useState([{ title: '', created_at: '' }]);
+  const [data, setData] = useState([
+    { title: '', created_at: '', notification_id: '' },
+  ]);
 
   // 테스트용 더미 데이터
   /*const dummyData = [
@@ -66,7 +68,7 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
               date={data.created_at}
               key={i}
               onpress={() =>
-                navigation.navigate('NotiDetail', { title: data.title })
+                navigation.navigate('NotiDetail', { id: data.notification_id })
               }
             />
           ))}
