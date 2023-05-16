@@ -18,6 +18,7 @@ import { Meet } from './MeetScreen';
 import { TempMeetList } from '../data/TempMeetList';
 import MeetBtn from '../components/MeetBtn';
 import { StackScreenProps } from '@react-navigation/stack';
+import CreateMeetOfferText from '../components/CreateMeetOfferText';
 
 type MeetSearchScreenProps = StackScreenProps<RootStackParamList, 'MeetSearch'>;
 
@@ -75,9 +76,7 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
                 </Text>
               </View>
               <View style={styles.buttonBox}>
-                <Text style={styles.adviceText}>
-                  새로운 Meet을 만들고 싶은가요?
-                </Text>
+                <CreateMeetOfferText />
                 <MeetBtn onPress={onPressMeetBtn} />
               </View>
             </>
@@ -146,13 +145,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     width: 340,
     justifyContent: 'flex-end',
-  },
-  adviceText: {
-    fontWeight: '400',
-    color: '#676767',
-    fontSize: 13,
-    lineHeight: 15,
-    marginRight: 5,
   },
   searchScreenLogo: {
     fontWeight: '700',

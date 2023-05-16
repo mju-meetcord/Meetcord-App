@@ -3,7 +3,6 @@ import {
   StyleSheet,
   ImageSourcePropType,
   View,
-  Text,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
@@ -15,6 +14,7 @@ import MeetBtn from '../components/MeetBtn';
 import { TempMeetList } from '../data/TempMeetList';
 import { NavigationProp } from '../types';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import CreateMeetOfferText from '../components/CreateMeetOfferText';
 
 export interface Meet {
   id: number;
@@ -67,11 +67,7 @@ const MeetScreen = () => {
         />
         <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
         <View style={styles.buttonBox}>
-          {!hasMeet() && (
-            <Text style={styles.adviceText}>
-              새로운 Meet을 만들고 싶은가요?
-            </Text>
-          )}
+          {!hasMeet() && <CreateMeetOfferText />}
           <MeetBtn onPress={onPressMeetBtn} />
         </View>
       </SafeAreaView>
@@ -92,13 +88,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     width: 325,
     justifyContent: 'flex-end',
-  },
-  adviceText: {
-    fontWeight: '400',
-    color: '#676767',
-    fontSize: 13,
-    lineHeight: 15,
-    marginRight: 5,
   },
 });
 
