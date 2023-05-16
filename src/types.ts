@@ -25,3 +25,8 @@ export type NavigationProp = CompositeNavigationProp<
   StackNavigationProp<RootStackParamList>,
   BottomTabNavigationProp<BottomTabParamList>
 >;
+
+export type MemberModalProps = {
+  isVisible: boolean;
+  onBackdropPress: () => void;
+};
