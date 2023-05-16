@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   ImageSourcePropType,
@@ -14,7 +14,7 @@ import MeetLogo from '../components/MeetLogo';
 import MeetBtn from '../components/MeetBtn';
 import { TempMeetList } from '../data/TempMeetList';
 import { NavigationProp } from '../types';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export interface Meet {
   id: number;
@@ -29,6 +29,12 @@ const MeetScreen = () => {
   const [inputText, setInputText] = useState('');
   const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
   const navigation = useNavigation<NavigationProp>();
+
+  useFocusEffect(
+    useCallback(() => {
+      setInputText('');
+    }, [])
+  );
 
   const hasMeet = () => {
     return !!result.length;
