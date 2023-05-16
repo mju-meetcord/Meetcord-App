@@ -6,19 +6,11 @@ const MemberModal = ({ isVisible, onBackdropPress }: MemberModalProps) => {
   return (
     <Modal
       isVisible={isVisible}
-      animationIn='fadeIn'
-      animationOut='fadeOut'
+      animationIn='fadeInUp'
+      animationOut='fadeOutDown'
       onBackdropPress={onBackdropPress}
-      style={{
-        flex: 1,
-        zIndex: 1,
-        justifyContent: 'flex-end',
-        paddingBottom: 106,
-        width: '90%',
-        margin: 0,
-        marginLeft: '5%',
-      }}
-      backdropColor='transparent'
+      style={styles.container}
+      backdropColor='#00000033'
     >
       <View style={styles.modal}>
         <View style={styles.modalTop}>
@@ -36,6 +28,15 @@ const MemberModal = ({ isVisible, onBackdropPress }: MemberModalProps) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    zIndex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 110,
+    width: '94%',
+    margin: 0,
+    marginLeft: '3%',
+  },
   modal: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 220,
     borderRadius: 15,
-    borderWidth: 1,
     overflow: 'hidden',
+    borderWidth: 1,
   },
   modalTop: {
     width: '100%',
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 4,
   },
   modalText: {
     fontSize: 18,
