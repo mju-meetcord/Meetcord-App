@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import MeetSearchInput from '../components/MeetSearchInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -45,56 +47,58 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topWrap}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.pop()}
-        >
-          <BackButton />
-        </TouchableOpacity>
-        <MeetSearchInput
-          inputText={inputText}
-          setInputText={setInputText}
-          handleSubmit={handleSubmit}
-        />
-      </View>
-      <View>
-        <Text style={styles.searchResultText}>
-          &apos;{resultText}&apos; 검색 결과
-        </Text>
-        {!resultList.length ? (
-          <>
-            <View style={styles.emptyResultBox}>
-              <Text style={styles.emptyResultText}>
-                검색 결과가 없습니다. Meet이름과 {'\n'}초대코드를 다시
-                확인해주세요.
-              </Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.topWrap}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.pop()}
+          >
+            <BackButton />
+          </TouchableOpacity>
+          <MeetSearchInput
+            inputText={inputText}
+            setInputText={setInputText}
+            handleSubmit={handleSubmit}
+          />
+        </View>
+        <View>
+          <Text style={styles.searchResultText}>
+            &apos;{resultText}&apos; 검색 결과
+          </Text>
+          {!resultList.length ? (
+            <>
+              <View style={styles.emptyResultBox}>
+                <Text style={styles.emptyResultText}>
+                  검색 결과가 없습니다. Meet이름과 {'\n'}초대코드를 다시
+                  확인해주세요.
+                </Text>
+              </View>
+              <View style={styles.buttonBox}>
+                <Text style={styles.adviceText}>
+                  새로운 Meet을 만들고 싶은가요?
+                </Text>
+                <MeetBtn onPress={onPressMeetBtn} />
+              </View>
+            </>
+          ) : (
+            <View style={styles.searchListBox}>
+              <ScrollView keyboardDismissMode='on-drag'>
+                {resultList.map(item => (
+                  <MeetListItem
+                    src={item.meetImg}
+                    meetName={item.meetName}
+                    intro={item.meetIntroduce}
+                    key={item.id}
+                  />
+                ))}
+              </ScrollView>
             </View>
-            <View style={styles.buttonBox}>
-              <Text style={styles.adviceText}>
-                새로운 Meet을 만들고 싶은가요?
-              </Text>
-              <MeetBtn onPress={onPressMeetBtn} />
-            </View>
-          </>
-        ) : (
-          <View style={styles.searchListBox}>
-            <ScrollView keyboardDismissMode='on-drag'>
-              {resultList.map(item => (
-                <MeetListItem
-                  src={item.meetImg}
-                  meetName={item.meetName}
-                  intro={item.meetIntroduce}
-                  key={item.id}
-                />
-              ))}
-            </ScrollView>
-          </View>
-        )}
-      </View>
-      <Text style={styles.searchScreenLogo}>Meetcord</Text>
-    </SafeAreaView>
+          )}
+        </View>
+        <Text style={styles.searchScreenLogo}>Meetcord</Text>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

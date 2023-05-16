@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, ImageSourcePropType, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  ImageSourcePropType,
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetSearchInput from '../components/MeetSearchInput';
 import MeetList from '../components/MeetList';
@@ -38,24 +45,31 @@ const MeetScreen = () => {
   };
 
   const handleSubmit = () => {
-    navigation.navigate('MeetSearch', { meetSearchText: inputText });
+    navigation.navigate('MeetSearch', {
+      meetSearchText: inputText,
+    });
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer}>
-      <MeetLogo />
-      <MeetSearchInput
-        setInputText={setInputText}
-        handleSubmit={handleSubmit}
-      />
-      <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
-      <View style={styles.buttonBox}>
-        {!hasMeet() && (
-          <Text style={styles.adviceText}>새로운 Meet을 만들고 싶은가요?</Text>
-        )}
-        <MeetBtn onPress={onPressMeetBtn} />
-      </View>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.mainContainer}>
+        <MeetLogo />
+        <MeetSearchInput
+          inputText={inputText}
+          setInputText={setInputText}
+          handleSubmit={handleSubmit}
+        />
+        <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
+        <View style={styles.buttonBox}>
+          {!hasMeet() && (
+            <Text style={styles.adviceText}>
+              새로운 Meet을 만들고 싶은가요?
+            </Text>
+          )}
+          <MeetBtn onPress={onPressMeetBtn} />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
