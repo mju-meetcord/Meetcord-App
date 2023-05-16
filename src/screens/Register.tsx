@@ -11,6 +11,7 @@ import { Button, CheckBox } from '@rneui/themed';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
+import PersonalInfoBox from '../components/PersonalInfoBox';
 
 const Register = ({ navigation }: any) => {
   const [check1, setCheck1] = useState(false);
@@ -237,7 +238,7 @@ const Register = ({ navigation }: any) => {
           </Text>
         </View>
         <View style={styles.Container5}>
-          <View style={styles.box}></View>
+          <PersonalInfoBox />
         </View>
         <View style={styles.Container6}>
           <CheckBox
@@ -416,7 +417,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    height: 300,
   },
   Container6: {},
   Container7: {
