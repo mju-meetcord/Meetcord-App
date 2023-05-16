@@ -1,8 +1,12 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { Calendar } from 'react-native-calendars';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { BottomTabParamList } from '../types';
 
-const HomeScreen = ({ navigation }: any) => {
+type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
+
+const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
   const [schedule, setSchedule] = useState(false);

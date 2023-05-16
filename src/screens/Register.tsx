@@ -12,8 +12,15 @@ import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Modal from 'react-native-modal';
 import PersonalInfoBox from '../components/PersonalInfoBox';
+import { RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const Register = ({ navigation }: any) => {
+export type RegisterScreenProps = StackScreenProps<
+  RootStackParamList,
+  'Register'
+>;
+
+const Register = ({ navigation }: RegisterScreenProps) => {
   const [check1, setCheck1] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -35,7 +42,7 @@ const Register = ({ navigation }: any) => {
   const [otpError, setOtpError] = useState(false);
 
   const backBtnHandle = () => {
-    navigation.navigate('login');
+    navigation.navigate('SignIn');
   };
 
   const emailAuth = () => {

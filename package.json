@@ -12,12 +12,14 @@
     "build-types": "tsc --noEmit --pretty"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.17.11",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
     "@rneui/base": "^4.0.0-rc.7",
     "@rneui/themed": "^4.0.0-rc.7",
-    "expo": "~48.0.10",
+    "expo": "^48.0.16",
+    "expo-image-picker": "^14.1.1",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-native": "0.71.7",
@@ -26,6 +28,7 @@
     "react-native-gesture-handler": "^2.9.0",
     "react-native-modal": "^13.0.1",
     "react-native-safe-area-context": "4.5.0",
+    "react-native-shadow-2": "^7.0.7",
     "react-native-svg": "13.4.0",
     "react-native-vector-icons": "^9.2.0"
   },
