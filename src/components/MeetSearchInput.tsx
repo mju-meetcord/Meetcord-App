@@ -1,8 +1,8 @@
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Keyboard } from 'react-native';
 import SearchIcon from '../../assets/search_icon.svg';
 
 interface inputStyleProps {
-  inputText?: string;
+  inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   handleSubmit: () => void;
 }
@@ -12,10 +12,14 @@ const MeetSearchInput = ({
   setInputText,
   handleSubmit,
 }: inputStyleProps) => {
+  const onPressSearchIcon = () => {
+    handleSubmit();
+    Keyboard.dismiss();
+  };
   return (
     <View style={styles.topContainer}>
       <View style={styles.wrapper}>
-        <SearchIcon style={styles.searchIcon} />
+        <SearchIcon style={styles.searchIcon} onPress={onPressSearchIcon} />
         <TextInput
           style={styles.searchInput}
           placeholder='Meet 검색하기...'
