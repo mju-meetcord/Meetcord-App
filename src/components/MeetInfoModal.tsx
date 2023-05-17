@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 52,
   },
   bottomBox: {
-    height: 466,
+    height: 465,
     backgroundColor: '#ffffff',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
