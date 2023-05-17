@@ -15,6 +15,7 @@ import { TempMeetList } from '../data/TempMeetList';
 import { NavigationProp } from '../types';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CreateMeetOfferText from '../components/CreateMeetOfferText';
+import MeetInfoModal from '../components/MeetInfoModal';
 
 export interface Meet {
   id: number;
@@ -27,6 +28,7 @@ export interface Meet {
 const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
   const [inputText, setInputText] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
   const navigation = useNavigation<NavigationProp>();
 
@@ -56,6 +58,10 @@ const MeetScreen = () => {
     });
   };
 
+  const onPressMeetModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.mainContainer}>
@@ -65,7 +71,17 @@ const MeetScreen = () => {
           setInputText={setInputText}
           handleSubmit={handleSubmit}
         />
-        <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
+        <MeetList
+          hasMeet={hasMeet()}
+          resultList={joinMeetList}
+          onPressListItem={onPressMeetModal}
+        />
+        {isModalVisible && (
+          <MeetInfoModal
+            isModalVisible={isModalVisible}
+            handleBackButtonPress={onPressMeetModal}
+          />
+        )}
         <View style={styles.buttonBox}>
           {!hasMeet() && <CreateMeetOfferText />}
           <MeetBtn onPress={onPressMeetBtn} />
