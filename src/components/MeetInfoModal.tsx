@@ -46,9 +46,17 @@ const MeetInfoModal = ({
               있다면 이런 느낌
             </Text>
           </View>
-          <TouchableOpacity style={styles.joinMeetButton}>
+          {/* <TouchableOpacity style={styles.joinMeetButton}>
             <Text style={styles.joinButtonText}>가입 신청</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <View style={styles.bottomButtonBox}>
+            <TouchableOpacity style={styles.hasJoinedButton}>
+              <Text style={styles.hasJoinedButtonText}>나의 Meet</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton}>
+              <Text style={styles.cancelButtonText}>탈퇴</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </Modal>
@@ -135,6 +143,45 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#ffffff',
     textAlign: 'center',
+  },
+  bottomButtonBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 56,
+  },
+  hasJoinedButton: {
+    backgroundColor: '#ffffff',
+    borderColor: '#5496FF',
+    borderWidth: 2,
+    width: 280,
+    height: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hasJoinedButtonText: {
+    color: '#5496FF',
+    fontWeight: '700',
+    fontSize: 24,
+    lineHeight: 24,
+    letterSpacing: 2,
+  },
+  cancelButton: {
+    width: 70,
+    height: 40,
+    borderColor: '#676767',
+    borderWidth: 2,
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  cancelButtonText: {
+    color: '#676767',
+    fontSize: 20,
+    lineHeight: 24,
+    fontWeight: '600',
   },
 });
 
