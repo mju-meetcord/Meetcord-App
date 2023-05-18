@@ -110,7 +110,7 @@ const CreateNotiScreen = ({ navigation }: CreateNotiScreenProps) => {
           <Text style={styles.date}>{new Date().toISOString()}</Text>
           <View style={styles.border} />
         </View>
-        <ScrollView>
+        <ScrollView style={{ minHeight: 530 }}>
           <TextInput
             placeholder='내용을 입력해주세요.'
             style={styles.messageInput}
@@ -121,6 +121,9 @@ const CreateNotiScreen = ({ navigation }: CreateNotiScreenProps) => {
             }}
           />
         </ScrollView>
+        <View style={styles.bottomBox}>
+          <Text style={styles.bottomText}>Meetcord</Text>
+        </View>
       </Pressable>
     </SafeAreaView>
   );
@@ -158,9 +161,11 @@ const styles = StyleSheet.create({
     marginTop: 45,
     marginBottom: 10,
     marginLeft: 25,
-    width: '80%',
+    width: '85%',
     fontWeight: 'bold',
     fontSize: 20,
+    borderWidth: 2,
+    borderColor: '#5496FF',
   },
 
   backBtn: {},
@@ -183,6 +188,19 @@ const styles = StyleSheet.create({
     width: '85%',
     marginTop: 14,
     marginHorizontal: 25,
+    borderWidth: 2,
+    height: 530,
+    borderColor: '#5496FF',
+  },
+  bottomBox: {
+    height: 100,
+  },
+  bottomText: {
+    fontSize: 96,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#5496FF33',
+    marginTop: -14,
   },
 });
 
