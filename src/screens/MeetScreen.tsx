@@ -80,6 +80,7 @@ const MeetScreen = () => {
           <MeetInfoModal
             isModalVisible={isModalVisible}
             handleBackButtonPress={onPressMeetModal}
+            hasJoined={true}
           />
         )}
         <View style={styles.buttonBox}>

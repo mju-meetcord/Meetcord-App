@@ -106,6 +106,7 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
           <MeetInfoModal
             isModalVisible={isModalVisible}
             handleBackButtonPress={onPressMeetModal}
+            hasJoined={false}
           />
         )}
         <Text style={styles.searchScreenLogo}>Meetcord</Text>
