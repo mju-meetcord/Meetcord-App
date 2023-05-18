@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Register: undefined;
   InitMeet: undefined;
   CreateMeet: undefined;
+  CreateNoti: undefined;
   NotiDetail: {
     id: string;
   };

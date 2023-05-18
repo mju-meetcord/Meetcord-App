@@ -64,7 +64,7 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
             <TouchableOpacity
               disabled={!isAdmin}
               onPress={() => {
-                alert('test123');
+                navigation.navigate('CreateNoti');
               }}
             >
               <Text style={isAdmin ? styles.addBtn : styles.addBtnDisable}>
