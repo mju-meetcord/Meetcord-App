@@ -13,9 +13,65 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import BackBtn from '../../assets/back_btn.svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+import { RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const CreateNotiScreen = () => {
+export type CreateNotiScreenProps = StackScreenProps<
+  RootStackParamList,
+  'CreateNoti'
+>;
+
+const CreateNotiScreen = ({ navigation }: CreateNotiScreenProps) => {
   const { top } = useSafeAreaInsets();
+
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+
+  const submitNoti = () => {
+    if (title == '') {
+      alert('공지 제목이 입력되지 않았습니다.');
+      return;
+    }
+
+    if (message == '') {
+      alert('공지 내용이 입력되지 않았습니다.');
+      return;
+    }
+
+    // 유효성 체크
+    let status = 0;
+
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch('http://121.124.131.142:4000/notification', {
+        method: 'PUT',
+        body: JSON.stringify({
+          token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwiaWF0IjoxNjg0NDE1MjA1LCJleHAiOjE2ODUwMjAwMDV9.I8yYp8xYh5KpMsx0jTNF8Js2USEjAjaP3cdsWFfJ5nk',
+          title: title,
+          message: message,
+          group: '코사모',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          status = response.status;
+          return response.json();
+        })
+        .then(response => {
+          if (status == 200) {
+            alert(response.message);
+            navigation.pop();
+          } else if (status == 401) {
+            alert(response.message);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+  };
 
   return (
     <SafeAreaView
@@ -39,24 +95,30 @@ const CreateNotiScreen = () => {
               </TouchableOpacity>
               <Text style={styles.NotiDetail}>공지 추가</Text>
             </View>
-            <TouchableOpacity>
-              <Text style={styles.addBtn}>추가</Text>
+            <TouchableOpacity onPress={submitNoti}>
+              <Text style={styles.addBtn}>완료</Text>
             </TouchableOpacity>
           </View>
           <TextInput
             placeholder='제목을 입력해주세요.'
             style={styles.titleInput}
             placeholderTextColor={'#878787'}
+            onChangeText={text => {
+              setTitle(text);
+            }}
           />
           <Text style={styles.date}>{new Date().toISOString()}</Text>
           <View style={styles.border} />
         </View>
         <ScrollView>
           <TextInput
-            placeholder='제목을 입력해주세요.'
+            placeholder='내용을 입력해주세요.'
             style={styles.messageInput}
             placeholderTextColor={'#676767'}
             multiline={true}
+            onChangeText={text => {
+              setMessage(text);
+            }}
           />
         </ScrollView>
       </Pressable>

@@ -20,6 +20,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '../types';
+
 const CreateMeetScreen = () => {
   const [image, setImage] = useState('');
   const [name, setName] = useState('');

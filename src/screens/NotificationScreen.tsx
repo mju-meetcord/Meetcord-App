@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import NotiItem from '../components/NotiItem';
 import { BottomTabParamList, RootStackParamList } from '../types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { CompositeScreenProps } from '@react-navigation/native';
+import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 
@@ -14,26 +14,24 @@ type NotificationScreenProps = CompositeScreenProps<
 >;
 
 const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
+  const isFoused = useIsFocused();
+
   const [data, setData] = useState([
     { title: '', created_at: '', notification_id: '' },
   ]);
   const [isAdmin, setIsAdmin] = useState(true);
 
-  // 테스트용 더미 데이터
-  /*const dummyData = [
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-    { title: 'test123', date: '2023.06.05 (화) 10:00' },
-  ];*/
+  useEffect(() => {
+    return () => {
+      getNotiData();
+    };
+  }, [isFoused]);
 
   useEffect(() => {
+    getNotiData();
+  }, []);
+
+  const getNotiData = () => {
     fetch(`http://121.124.131.142:4000/notification?name=${'코사모'}`, {
       method: 'get',
       headers: {
@@ -42,12 +40,10 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         setData(response.data);
-        console.log(data);
       })
       .catch(error => console.error(error));
-  }, []);
+  };
 
   return (
     <SafeAreaView

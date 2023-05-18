@@ -28,58 +28,55 @@ const BottomTabs = () => {
       <Tab.Screen
         name='Meet'
         component={MeetScreen}
-        options={items => ({
+        options={() => ({
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: () => (
-            <TapBarIcon Name={'v-card'} active={items.navigation.isFocused()} />
+          tabBarIcon: ({ focused }) => (
+            <TapBarIcon Name={'v-card'} active={focused} />
           ),
         })}
       />
       <Tab.Screen
         name='Member'
         component={MemberScreen}
-        options={items => ({
+        options={() => ({
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: () => (
-            <TapBarIcon Name={'users'} active={items.navigation.isFocused()} />
+          tabBarIcon: ({ focused }) => (
+            <TapBarIcon Name={'users'} active={focused} />
           ),
         })}
       />
       <Tab.Screen
         name='Home'
         component={HomeScreen}
-        options={items => ({
+        options={() => ({
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: () => (
-            <TapBarIcon Name={'home'} active={items.navigation.isFocused()} />
+          tabBarIcon: ({ focused }) => (
+            <TapBarIcon Name={'home'} active={focused} />
           ),
         })}
       />
       <Tab.Screen
         name='Notification'
         component={NotificationScreen}
-        options={items => ({
+        options={() => ({
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: () => (
-            <TapBarIcon
-              Name={'notification'}
-              active={items.navigation.isFocused()}
-            />
+          tabBarIcon: ({ focused }) => (
+            <TapBarIcon Name={'notification'} active={focused} />
           ),
         })}
       />
       <Tab.Screen
         name='Mypage'
         component={MypageScreen}
-        options={items => ({
+        options={() => ({
           headerShown: false,
           tabBarLabel: '',
-          tabBarIcon: () => (
-            <TapBarIcon Name={'user'} active={items.navigation.isFocused()} />
+          tabBarIcon: ({ focused }) => (
+            <TapBarIcon Name={'user'} active={focused} />
           ),
         })}
       />
