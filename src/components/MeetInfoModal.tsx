@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     justifyContent: 'space-around',
-    marginRight: 60,
+    marginRight: 50,
   },
   meetDetailInfoBox: {
     alignItems: 'center',
