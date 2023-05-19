@@ -67,13 +67,6 @@ const MeetScreen = () => {
           handleSubmit={handleSubmit}
         />
         <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
-        {/* {isModalVisible && (
-          <MeetInfoModal
-            isModalVisible={isModalVisible}
-            handleBackButtonPress={onPressMeetModal}
-            hasJoined={true}
-          />
-        )} */}
         <View style={styles.buttonBox}>
           {!hasMeet() && <CreateMeetOfferText />}
           <MeetBtn onPress={onPressMeetBtn} />
@@ -93,7 +86,7 @@ const styles = StyleSheet.create({
   buttonBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 26,
     width: 325,
     justifyContent: 'flex-end',
   },
