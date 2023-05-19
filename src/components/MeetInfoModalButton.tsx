@@ -11,9 +11,9 @@ const MeetInfoModalButton = ({
 }: MeetModalButtonProps) => {
   return (
     <View style={styles.bottomButtonBox}>
-      <TouchableOpacity style={styles.hasJoinedButton}>
+      <View style={styles.hasJoinedButton}>
         <Text style={styles.hasJoinedButtonText}>{firstText}</Text>
-      </TouchableOpacity>
+      </View>
       <TouchableOpacity style={styles.cancelButton}>
         <Text style={styles.cancelButtonText}>{secondText}</Text>
       </TouchableOpacity>
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     color: '#5496FF',
     fontWeight: '700',
     fontSize: 24,
-    lineHeight: 24,
     letterSpacing: 2,
   },
   cancelButton: {
