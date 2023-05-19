@@ -18,9 +18,7 @@ const MeetList = ({ hasMeet, resultList, onPressListItem }: MeetListProps) => {
             {hasMeet ? (
               resultList.map(item => (
                 <MeetListItem
-                  src={item.meetImg}
-                  meetName={item.meetName}
-                  intro={item.meetIntroduce}
+                  meetInfo={item}
                   key={item.id}
                   handleListItemPress={onPressListItem}
                 />

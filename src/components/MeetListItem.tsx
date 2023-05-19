@@ -7,26 +7,23 @@ import {
   TouchableOpacity,
 } from 'react-native';
 interface ListItemProps {
-  src: ImageSourcePropType;
-  meetName: string;
-  intro: string;
+  meetInfo: {
+    meetImg: ImageSourcePropType;
+    meetName: string;
+    meetIntroduce: string;
+  };
   handleListItemPress: () => void;
 }
 
-const MeetListItem = ({
-  src,
-  meetName,
-  intro,
-  handleListItemPress,
-}: ListItemProps) => {
+const MeetListItem = ({ meetInfo, handleListItemPress }: ListItemProps) => {
   return (
     <TouchableOpacity onPress={handleListItemPress}>
       <View style={styles.wrapper}>
-        <Image source={src} style={styles.meetImg} />
+        <Image source={meetInfo.meetImg} style={styles.meetImg} />
         <View style={styles.meetInfoBox}>
-          <Text style={styles.meetName}>{meetName}</Text>
+          <Text style={styles.meetName}>{meetInfo.meetName}</Text>
           <Text style={styles.meetIntro} numberOfLines={1}>
-            {intro}
+            {meetInfo.meetIntroduce}
           </Text>
         </View>
       </View>
