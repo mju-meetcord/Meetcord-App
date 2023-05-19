@@ -5,10 +5,9 @@ import { Meet } from '../screens/MeetScreen';
 interface MeetListProps {
   hasMeet: boolean;
   resultList: Meet[];
-  onPressListItem: () => void;
 }
 
-const MeetList = ({ hasMeet, resultList, onPressListItem }: MeetListProps) => {
+const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.listBox}>
@@ -19,8 +18,8 @@ const MeetList = ({ hasMeet, resultList, onPressListItem }: MeetListProps) => {
               resultList.map(item => (
                 <MeetListItem
                   meetInfo={item}
+                  userJoinInfo={item}
                   key={item.id}
-                  handleListItemPress={onPressListItem}
                 />
               ))
             ) : (

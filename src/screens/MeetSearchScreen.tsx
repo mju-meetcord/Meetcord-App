@@ -19,7 +19,6 @@ import { TempMeetList } from '../data/TempMeetList';
 import MeetBtn from '../components/MeetBtn';
 import { StackScreenProps } from '@react-navigation/stack';
 import CreateMeetOfferText from '../components/CreateMeetOfferText';
-import MeetInfoModal from '../components/MeetInfoModal';
 
 type MeetSearchScreenProps = StackScreenProps<RootStackParamList, 'MeetSearch'>;
 
@@ -27,7 +26,6 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
   const [resultList, setResultList] = useState<Meet[]>([]);
   const [inputText, setInputText] = useState(route.params.meetSearchText);
   const [resultText, setResultText] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const navigation = useNavigation<NavigationProp>();
 
@@ -47,10 +45,6 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
 
   const onPressMeetBtn = () => {
     navigation.navigate('CreateMeet');
-  };
-
-  const onPressMeetModal = () => {
-    setIsModalVisible(!isModalVisible);
   };
 
   return (
@@ -92,21 +86,14 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
                 {resultList.map(item => (
                   <MeetListItem
                     meetInfo={item}
+                    userJoinInfo={item}
                     key={item.id}
-                    handleListItemPress={onPressMeetModal}
                   />
                 ))}
               </ScrollView>
             </View>
           )}
         </View>
-        {isModalVisible && (
-          <MeetInfoModal
-            isModalVisible={isModalVisible}
-            handleBackButtonPress={onPressMeetModal}
-            hasJoined={false}
-          />
-        )}
         <Text style={styles.searchScreenLogo}>Meetcord</Text>
       </SafeAreaView>
     </TouchableWithoutFeedback>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -6,18 +7,28 @@ import {
   ImageSourcePropType,
   TouchableOpacity,
 } from 'react-native';
+import MeetInfoModal from './MeetInfoModal';
 interface ListItemProps {
   meetInfo: {
     meetImg: ImageSourcePropType;
     meetName: string;
     meetIntroduce: string;
   };
-  handleListItemPress: () => void;
+  userJoinInfo: {
+    hasJoined: boolean;
+    isWaiting: boolean;
+  };
 }
 
-const MeetListItem = ({ meetInfo, handleListItemPress }: ListItemProps) => {
+const MeetListItem = ({ meetInfo, userJoinInfo }: ListItemProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handlePress = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   return (
-    <TouchableOpacity onPress={handleListItemPress}>
+    <TouchableOpacity onPress={handlePress}>
       <View style={styles.wrapper}>
         <Image source={meetInfo.meetImg} style={styles.meetImg} />
         <View style={styles.meetInfoBox}>
@@ -27,6 +38,14 @@ const MeetListItem = ({ meetInfo, handleListItemPress }: ListItemProps) => {
           </Text>
         </View>
       </View>
+      {isModalVisible && (
+        <MeetInfoModal
+          isModalVisible={isModalVisible}
+          meetInfo={meetInfo}
+          userJoinInfo={userJoinInfo}
+          handleBackButtonPress={handlePress}
+        />
+      )}
     </TouchableOpacity>
   );
 };

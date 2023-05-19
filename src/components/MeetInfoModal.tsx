@@ -1,20 +1,34 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ImageSourcePropType,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import BackButton from './BackButton';
 import MeetInfoModalButton from './MeetInfoModalButton';
 
 type MeetInfoModalProps = {
   isModalVisible: boolean;
+  meetInfo: {
+    meetImg: ImageSourcePropType;
+    meetName: string;
+    meetIntroduce: string;
+  };
+  userJoinInfo: {
+    hasJoined: boolean;
+    isWaiting: boolean;
+  };
   handleBackButtonPress: () => void;
-  hasJoined: boolean;
-  isWaiting?: boolean;
 };
 
 const MeetInfoModal = ({
   isModalVisible,
+  meetInfo,
+  userJoinInfo,
   handleBackButtonPress,
-  hasJoined,
-  isWaiting,
 }: MeetInfoModalProps) => {
   return (
     <Modal
@@ -26,14 +40,11 @@ const MeetInfoModal = ({
       <View style={styles.innerContainer}>
         <View style={styles.topBox}>
           <BackButton onPress={handleBackButtonPress} />
-          <Text style={styles.meetName}>명지바람 6조</Text>
+          <Text style={styles.meetName}>{meetInfo.meetName}</Text>
         </View>
         <View style={styles.bottomBox}>
           <View style={styles.meetInfoBox}>
-            <Image
-              source={require('../../assets/testImg.png')}
-              style={styles.meetImage}
-            />
+            <Image source={meetInfo.meetImg} style={styles.meetImage} />
             <View style={styles.meetDetailInfoBox}>
               <Text style={styles.meetDetailText}>6명</Text>
               <Text style={styles.meetDetailTextLabel}>구성원</Text>
@@ -45,15 +56,12 @@ const MeetInfoModal = ({
           </View>
           <View style={styles.meetIntroBox}>
             <Text style={styles.meetIntroText} numberOfLines={6}>
-              세기의 천재들이 모여서 만드는 개쩌는 졸작 당신도 늦지 않았다.
-              명지대학교 컴퓨터 공학과 수석 졸업을 원한다면 언제든 join! 앞으로
-              20글자만 더 쓰면 끝이당 휴 80자 넘긴 했는데 만약에 글이 여기까지
-              있다면 이런 느낌
+              {meetInfo.meetIntroduce}
             </Text>
           </View>
-          {hasJoined ? (
+          {userJoinInfo.hasJoined ? (
             <MeetInfoModalButton firstText='나의 Meet' secondText='탈퇴' />
-          ) : isWaiting ? (
+          ) : userJoinInfo.isWaiting ? (
             <MeetInfoModalButton firstText='승인 대기' secondText='취소' />
           ) : (
             <TouchableOpacity style={styles.joinMeetButton}>
@@ -87,7 +95,6 @@ const styles = StyleSheet.create({
   meetName: {
     color: '#000000',
     fontSize: 24,
-    lineHeight: 24,
     fontWeight: '600',
     marginTop: 52,
   },
