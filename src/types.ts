@@ -3,6 +3,9 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
+  ModifyNoti: {
+    id: string;
+  };
   BottomTab: undefined;
   SignIn: undefined;
   Register: undefined;

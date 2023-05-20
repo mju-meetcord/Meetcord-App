@@ -14,16 +14,28 @@ import BackBtn from '../../assets/back_btn.svg';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
 type NotiDetailScreenProps = StackScreenProps<RootStackParamList, 'NotiDetail'>;
 
 const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
+  const isFoused = useIsFocused();
   const { top } = useSafeAreaInsets();
 
   const [data, setData] = useState({ title: '', created_at: '', message: '' });
   const [isAdmin, setIsAdmin] = useState(true);
 
   useEffect(() => {
+    return () => {
+      getData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
     fetch(
       `http://121.124.131.142:4000/notificationDtail?id=${route.params.id}`,
       {
@@ -36,11 +48,10 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
     )
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         setData(response.data);
       })
       .catch(error => console.error(error));
-  }, []);
+  };
 
   const submitDelreq = () => {
     fetch(`http://121.124.131.142:4000/notificationDtail`, {
@@ -53,7 +64,6 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         navigation.pop();
       })
       .catch(error => console.error(error));
@@ -99,7 +109,7 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
             <TouchableOpacity
               disabled={!isAdmin}
               onPress={() => {
-                alert('편집');
+                navigation.navigate('ModifyNoti', { id: route.params.id });
               }}
             >
               <Text style={isAdmin ? styles.modifyBtn : styles.btn}>편집</Text>
@@ -110,9 +120,12 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
         <Text style={styles.date}>{data.created_at}</Text>
         <View style={styles.border} />
       </View>
-      <ScrollView>
+      <ScrollView style={{ minHeight: 530 }}>
         <Text style={styles.message}>{data.message}</Text>
       </ScrollView>
+      <View style={styles.bottomBox}>
+        <Text style={styles.bottomText}>Meetcord</Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -185,12 +198,21 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginBottom: 14,
   },
-
   message: {
     fontSize: 16,
     width: '85%',
     marginTop: 14,
     marginHorizontal: 25,
+  },
+  bottomBox: {
+    height: 100,
+  },
+  bottomText: {
+    fontSize: 96,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#5496FF33',
+    marginTop: -14,
   },
 });
 
