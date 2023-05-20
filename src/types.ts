@@ -15,6 +15,9 @@ export type RootStackParamList = {
   NotiDetail: {
     id: string;
   };
+  MeetSearch: {
+    meetSearchText: string;
+  };
 };
 
 export type BottomTabParamList = {

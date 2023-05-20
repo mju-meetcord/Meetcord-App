@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     marginTop: 31,
-    marginBottom: 44,
+    marginBottom: 23,
   },
   mainTitle: {
     color: '#5496FF',

@@ -17,9 +17,8 @@ const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
             {hasMeet ? (
               resultList.map(item => (
                 <MeetListItem
-                  src={item.meetImg}
-                  meetName={item.meetName}
-                  intro={item.meetIntroduce}
+                  meetInfo={item}
+                  userJoinInfo={item}
                   key={item.id}
                 />
               ))
@@ -57,11 +56,11 @@ const styles = StyleSheet.create({
   viewTopBox: {
     alignSelf: 'center',
     width: 340,
-    height: 300,
+    height: 360,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
   },
   emptyListBox: {
-    height: 300,
+    height: 360,
     backgroundColor: 'none',
     justifyContent: 'center',
   },
