@@ -1,28 +1,52 @@
+import { useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Image,
   ImageSourcePropType,
+  TouchableOpacity,
 } from 'react-native';
-
+import MeetInfoModal from './MeetInfoModal';
 interface ListItemProps {
-  src: ImageSourcePropType;
-  meetName: string;
-  intro: string;
+  meetInfo: {
+    meetImg: ImageSourcePropType;
+    meetName: string;
+    meetIntroduce: string;
+  };
+  userJoinInfo: {
+    hasJoined: boolean;
+    isWaiting: boolean;
+  };
 }
 
-const MeetListItem = ({ src, meetName, intro }: ListItemProps) => {
+const MeetListItem = ({ meetInfo, userJoinInfo }: ListItemProps) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const handlePress = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
   return (
-    <View style={styles.wrapper}>
-      <Image source={src} style={styles.meetImg} />
-      <View style={styles.meetInfoBox}>
-        <Text style={styles.meetName}>{meetName}</Text>
-        <Text style={styles.meetIntro} numberOfLines={1}>
-          {intro}
-        </Text>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={styles.wrapper}>
+        <Image source={meetInfo.meetImg} style={styles.meetImg} />
+        <View style={styles.meetInfoBox}>
+          <Text style={styles.meetName}>{meetInfo.meetName}</Text>
+          <Text style={styles.meetIntro} numberOfLines={1}>
+            {meetInfo.meetIntroduce}
+          </Text>
+        </View>
       </View>
-    </View>
+      {isModalVisible && (
+        <MeetInfoModal
+          isModalVisible={isModalVisible}
+          meetInfo={meetInfo}
+          userJoinInfo={userJoinInfo}
+          handleBackButtonPress={handlePress}
+        />
+      )}
+    </TouchableOpacity>
   );
 };
 

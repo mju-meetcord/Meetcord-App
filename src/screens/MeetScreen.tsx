@@ -21,13 +21,14 @@ export interface Meet {
   meetImg: ImageSourcePropType;
   meetName: string;
   meetIntroduce: string;
-  isJoin: boolean;
+  hasJoined: boolean;
+  isWaiting: boolean;
 }
 
 const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
   const [inputText, setInputText] = useState('');
-  const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
+  const result = TempMeetList.filter(item => item.hasJoined); // 목업 데이터 테스트
   const navigation = useNavigation<NavigationProp>();
 
   useFocusEffect(
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   buttonBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 26,
     width: 325,
     justifyContent: 'flex-end',
   },

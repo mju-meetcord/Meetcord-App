@@ -85,9 +85,8 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
               <ScrollView keyboardDismissMode='on-drag'>
                 {resultList.map(item => (
                   <MeetListItem
-                    src={item.meetImg}
-                    meetName={item.meetName}
-                    intro={item.meetIntroduce}
+                    meetInfo={item}
+                    userJoinInfo={item}
                     key={item.id}
                   />
                 ))}
