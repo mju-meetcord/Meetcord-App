@@ -23,7 +23,7 @@ export type CreateNotiScreenProps = StackScreenProps<
   'CreateNoti'
 >;
 
-const CreateNotiScreen = ({ navigation }: CreateNotiScreenProps) => {
+const CreateNotiScreen = ({ route, navigation }: CreateNotiScreenProps) => {
   const { top } = useSafeAreaInsets();
 
   const [title, setTitle] = useState('');
@@ -51,7 +51,7 @@ const CreateNotiScreen = ({ navigation }: CreateNotiScreenProps) => {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwiaWF0IjoxNjg0NDE1MjA1LCJleHAiOjE2ODUwMjAwMDV9.I8yYp8xYh5KpMsx0jTNF8Js2USEjAjaP3cdsWFfJ5nk',
           title: title,
           message: message,
-          group: '코사모',
+          group: route.params.meetname,
         }),
         headers: {
           'Content-Type': 'application/json',
