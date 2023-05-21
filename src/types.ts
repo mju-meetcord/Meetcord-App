@@ -3,15 +3,26 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
+  ModifyNoti: {
+    id: string;
+  };
   BottomTab: undefined;
   SignIn: undefined;
   Register: undefined;
   InitMeet: undefined;
   CreateMeet: undefined;
-  NotiDetail: {
-    title: string;
+  CreateNoti: {
+    meetname: string;
   };
   ModifyMypage: undefined;
+  NotiDetail: {
+    id: string;
+    isAdmin: boolean;
+  };
+  MeetSearch: {
+    meetSearchText: string;
+  };
+  Splash: undefined;
 };
 
 export type BottomTabParamList = {
@@ -26,3 +37,8 @@ export type NavigationProp = CompositeNavigationProp<
   StackNavigationProp<RootStackParamList>,
   BottomTabNavigationProp<BottomTabParamList>
 >;
+
+export type MemberModalProps = {
+  isVisible: boolean;
+  onBackdropPress: () => void;
+};

@@ -19,11 +19,9 @@ const MeberItem = ({ name, role, onpress }: any) => {
 
 const styles = StyleSheet.create({
   itemBox: {
-    width: '90%',
+    width: '100%',
     height: 100,
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderColor: '#676767',
     left: '5%',
     paddingLeft: 10,
     flexDirection: 'row',

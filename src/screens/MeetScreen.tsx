@@ -1,53 +1,144 @@
-import { StyleSheet, ImageSourcePropType, View, Text } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  StyleSheet,
+  ImageSourcePropType,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeetSearchInput from '../components/MeetSearchInput';
 import MeetList from '../components/MeetList';
 import MeetLogo from '../components/MeetLogo';
 import MeetBtn from '../components/MeetBtn';
-import { useState, useEffect } from 'react';
-import { TempMeetList } from '../data/TempMeetList';
 import { NavigationProp } from '../types';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import CreateMeetOfferText from '../components/CreateMeetOfferText';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 export interface Meet {
   id: number;
   meetImg: ImageSourcePropType;
   meetName: string;
   meetIntroduce: string;
-  isJoin: boolean;
+  role: string;
+  hasJoined: boolean;
+  isWaiting: boolean;
 }
 
 const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
-  const result = TempMeetList.filter(item => item.isJoin); // 목업 데이터 테스트
+  const [inputText, setInputText] = useState('');
+  const [result, setResult] = useState([]);
   const navigation = useNavigation<NavigationProp>();
+
+  const isFoused = useIsFocused();
+
+  useEffect(() => {
+    return () => {
+      getMyMeetList();
+    };
+  }, [isFoused]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setInputText('');
+    }, [])
+  );
 
   const hasMeet = () => {
     return !!result.length;
   };
 
   useEffect(() => {
+    getMyMeetList();
+  }, []);
+
+  const getMyMeetList = () => {
+    let status = 0;
+
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch('http://121.124.131.142:4000/mymeet', {
+        method: 'POST',
+        body: JSON.stringify({
+          token: result,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          status = response.status;
+          return response.json();
+        })
+        .then(response => {
+          if (status == 200) {
+            const meetData = response.data.map(
+              (item: {
+                group_id: number;
+                profile: ImageSourcePropType;
+                name: string;
+                description: string;
+                role: string;
+              }) => {
+                return {
+                  id: item.group_id,
+                  meetImg: {
+                    uri: 'http://121.124.131.142:4000/images/' + item.profile,
+                  },
+                  meetName: item.name,
+                  meetIntroduce: item.description,
+                  role: item.role,
+                  hasJoined: item.role !== 'waiting',
+                  isWaiting: item.role === 'waiting',
+                };
+              }
+            );
+
+            setJoinMeetList(meetData);
+            setResult(
+              meetData.filter((item: { hasJoined: boolean }) => item.hasJoined)
+            );
+          } else if (status == 401) {
+            //alert(response.message);
+            console.log(response);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+
     if (hasMeet()) {
       setJoinMeetList(result);
     }
-  }, []);
+  };
 
   const onPressMeetBtn = () => {
     navigation.navigate('CreateMeet');
   };
 
+  const handleSubmit = () => {
+    navigation.navigate('MeetSearch', {
+      meetSearchText: inputText,
+    });
+  };
+
   return (
-    <SafeAreaView style={styles.mainContainer}>
-      <MeetLogo />
-      <MeetSearchInput />
-      <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
-      <View style={styles.buttonBox}>
-        {!hasMeet() && (
-          <Text style={styles.adviceText}>새로운 Meet을 만들고 싶은가요?</Text>
-        )}
-        <MeetBtn onPress={onPressMeetBtn} />
-      </View>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.mainContainer}>
+        <MeetLogo />
+        <MeetSearchInput
+          inputText={inputText}
+          setInputText={setInputText}
+          handleSubmit={handleSubmit}
+        />
+        <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
+        <View style={styles.buttonBox}>
+          {!hasMeet() && <CreateMeetOfferText />}
+          <MeetBtn onPress={onPressMeetBtn} />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -61,16 +152,9 @@ const styles = StyleSheet.create({
   buttonBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: 26,
     width: 325,
     justifyContent: 'flex-end',
-  },
-  adviceText: {
-    fontWeight: '400',
-    color: '#676767',
-    fontSize: 13,
-    lineHeight: 15,
-    marginRight: 5,
   },
 });
 
