@@ -50,7 +50,6 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response);
         const meetData = response.data.map(
           (item: {
             group_id: number;
