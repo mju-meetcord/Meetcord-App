@@ -46,21 +46,6 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
     }
   };
 
-  const submitMeetData = async () => {
-    const formData = new FormData();
-
-    if (image != '') {
-      const imageData = {
-        uri: image,
-        nickname: nickname + '.jpg',
-        type: 'image/jpg',
-      };
-
-      formData.append('image', imageData, nickname + '.jpg');
-    }
-    formData.append('nickname', nickname);
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -154,7 +139,6 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
         <Text
           style={styles.modifyMypageBox}
           onPress={() => {
-            submitMeetData();
             navigation.pop();
           }}
         >
