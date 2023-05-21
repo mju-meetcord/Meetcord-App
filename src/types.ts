@@ -11,9 +11,12 @@ export type RootStackParamList = {
   Register: undefined;
   InitMeet: undefined;
   CreateMeet: undefined;
-  CreateNoti: undefined;
+  CreateNoti: {
+    meetname: string;
+  };
   NotiDetail: {
     id: string;
+    isAdmin: boolean;
   };
   MeetSearch: {
     meetSearchText: string;

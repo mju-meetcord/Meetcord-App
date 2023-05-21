@@ -21,6 +21,7 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
     { title: '', created_at: '', notification_id: '' },
   ]);
   const [isAdmin, setIsAdmin] = useState(true);
+  const [groupname, setGroupname] = useState('');
 
   useEffect(() => {
     return () => {
@@ -34,6 +35,9 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
 
   const getNotiData = () => {
     AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
       fetch(`http://121.124.131.142:4000/notification?name=${result}`, {
         method: 'get',
         headers: {
@@ -75,7 +79,7 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
             <TouchableOpacity
               disabled={!isAdmin}
               onPress={() => {
-                navigation.navigate('CreateNoti');
+                navigation.navigate('CreateNoti', { meetname: groupname });
               }}
             >
               <Text style={isAdmin ? styles.addBtn : styles.addBtnDisable}>
@@ -91,7 +95,10 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
               date={data.created_at}
               key={i}
               onpress={() =>
-                navigation.navigate('NotiDetail', { id: data.notification_id })
+                navigation.navigate('NotiDetail', {
+                  id: data.notification_id,
+                  isAdmin: isAdmin,
+                })
               }
             />
           ))}
