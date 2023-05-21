@@ -9,6 +9,7 @@ import BottomTabs from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
 import MeetScreen from './screens/MeetScreen';
+import ModifyMypageScreen from './screens/ModifyMypageScreen';
 import CreateNotiScreen from './screens/CreateNotiScreen';
 import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
@@ -55,6 +56,7 @@ const App = () => {
           component={NotiDetail}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name='ModifyMypage' component={ModifyMypageScreen} />
         <Stack.Screen
           name='CreateNoti'
           component={CreateNotiScreen}

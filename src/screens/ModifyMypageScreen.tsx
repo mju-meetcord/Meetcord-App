@@ -1,35 +1,64 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { BottomTabParamList, RootStackParamList } from '../types';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { RootStackParamList } from '../types';
 import ProfileIcon from '../../assets/icon_profile.svg';
-import { CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import BackBtn from '../../assets/back_btn.svg';
+import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 
-type MypageScreenProps = CompositeScreenProps<
-  BottomTabScreenProps<BottomTabParamList, 'Mypage'>,
-  StackScreenProps<RootStackParamList>
+type ModifyMypageScreenProps = StackScreenProps<
+  RootStackParamList,
+  'ModifyMypage'
 >;
 
-const MypageScreen = ({ navigation }: MypageScreenProps) => {
+const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
   const { top } = useSafeAreaInsets();
+  const [image, setImage] = useState('');
+  const [nickname, setNickname] = useState('');
 
-  const logout = () => {
-    Alert.alert('Alert', '로그아웃 하겠습니까?', [
-      {
-        text: 'YES',
-        onPress: () => console.log(),
-        style: 'default',
-      },
-      {
-        text: 'NO',
-        onPress: () => console.log(),
-        style: 'destructive',
-      },
-    ]);
+  const selectImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Permission denied!');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const submitMeetData = async () => {
+    const formData = new FormData();
+
+    if (image != '') {
+      const imageData = {
+        uri: image,
+        nickname: nickname + '.jpg',
+        type: 'image/jpg',
+      };
+
+      formData.append('image', imageData, nickname + '.jpg');
+    }
+    formData.append('nickname', nickname);
   };
 
   return (
@@ -42,11 +71,30 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
     >
       <View style={[styles.statusBarPlaceholder, { height: top }]} />
       <View style={styles.topContainer}>
-        <Text style={styles.MyPage}>마이 페이지</Text>
+        <Text style={styles.MyPage}>마이 페이지 수정</Text>
       </View>
+      <TouchableOpacity>
+        <BackBtn style={styles.backBtn} onPress={() => navigation.pop()} />
+      </TouchableOpacity>
       <View style={styles.container1}>
-        <ProfileIcon />
+        <TouchableOpacity
+          style={styles.proImg}
+          onPress={() => {
+            selectImage();
+          }}
+        >
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={styles.image}
+              resizeMode='cover'
+            />
+          ) : (
+            <ProfileIcon />
+          )}
+        </TouchableOpacity>
       </View>
+
       <View style={styles.Container2}>
         <View style={styles.Container3}>
           <View style={styles.section}>
@@ -58,12 +106,21 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
         </View>
         <View style={styles.border} />
         <View style={styles.Container3}>
-          <View style={styles.section}>
-            <Text style={styles.box}>닉네임</Text>
+          <View style={styles.modifySection}>
+            <Text style={styles.modifyBox}>닉네임</Text>
           </View>
-          <View style={styles.userSection}>
-            <Text style={styles.userBox}>몽키매직</Text>
-          </View>
+          <TouchableOpacity>
+            <View style={styles.modifyUserSection}>
+              <TextInput
+                style={styles.modifyNickname}
+                maxLength={15}
+                onChangeText={setNickname}
+                value={nickname}
+              >
+                <Text style={styles.modifyUserBox}>몽키매직</Text>
+              </TextInput>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.border} />
         <View style={styles.Container3}>
@@ -93,15 +150,16 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.fixProfile}
-        onPress={() => navigation.navigate('ModifyMypage')}
-      >
-        <Text style={styles.fixBox}>프로필 수정하기</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.logOut} onPress={logout}>
-        <Text>로그아웃</Text>
+      <TouchableOpacity style={styles.modifyMypage}>
+        <Text
+          style={styles.modifyMypageBox}
+          onPress={() => {
+            submitMeetData();
+            navigation.pop();
+          }}
+        >
+          프로필 저장하기
+        </Text>
       </TouchableOpacity>
       <View style={styles.bottomBox}>
         <Text style={styles.bottomText}>Meetcord</Text>
@@ -130,7 +188,7 @@ const styles = StyleSheet.create({
 
   container1: {
     backgroundColor: '#FFFFFF',
-    marginTop: 55,
+    marginTop: 19,
     marginBottom: 45,
     alignItems: 'center',
   },
@@ -151,6 +209,24 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
 
+  backBtn: {
+    marginLeft: 20,
+    marginTop: 20,
+  },
+
+  image: {
+    width: 104,
+    height: 104,
+  },
+
+  proImg: {
+    marginTop: 26,
+    width: 104,
+    height: 104,
+    borderRadius: 52,
+    overflow: 'hidden',
+    alignItems: 'center',
+  },
   section: {
     width: '25%',
     height: '100%',
@@ -163,6 +239,7 @@ const styles = StyleSheet.create({
 
   box: {
     fontSize: 16,
+    color: '#676767',
   },
 
   userSection: {
@@ -170,14 +247,15 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#E9F1FF',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'flex-end',
+    alignItems: 'center',
     borderRadius: 10,
   },
 
   userBox: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#676767',
   },
 
   border: {
@@ -186,12 +264,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
 
-  fixProfile: {
+  modifyMypage: {
     marginTop: 30,
     alignItems: 'center',
   },
 
-  fixBox: {
+  modifyMypageBox: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#5496FF',
@@ -209,15 +287,50 @@ const styles = StyleSheet.create({
   },
 
   bottomBox: {
+    marginTop: 126,
     height: 100,
-    marginTop: 58,
-    alignItems: 'center',
   },
   bottomText: {
     fontSize: 96,
     fontWeight: 'bold',
+    textAlign: 'center',
     color: '#5496FF',
     opacity: 0.3,
+  },
+  modifySection: {
+    width: '25%',
+    height: '100%',
+    backgroundColor: '#E9F1FF',
+    alignItems: 'center',
+    marginRight: 20,
+    flexDirection: 'row',
+    borderRadius: 10,
+  },
+  modifyBox: {
+    color: '#000000',
+    fontSize: 16,
+  },
+  modifyUserSection: {
+    width: '84%',
+    height: '100%',
+    backgroundColor: '#E9F1FF',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  modifyUserBox: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+  modifyNickname: {
+    height: '100%',
+    backgroundColor: '#E9F1FF',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    borderRadius: 10,
   },
 });
 export default MypageScreen;
