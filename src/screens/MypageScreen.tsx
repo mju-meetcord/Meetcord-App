@@ -210,13 +210,14 @@ const styles = StyleSheet.create({
 
   bottomBox: {
     height: 100,
-    marginTop: 66,
+    marginTop: 58,
     alignItems: 'center',
   },
   bottomText: {
     fontSize: 96,
     fontWeight: 'bold',
-    color: '#5496FF33',
+    color: '#5496FF',
+    opacity: 0.3,
   },
 });
 export default MypageScreen;

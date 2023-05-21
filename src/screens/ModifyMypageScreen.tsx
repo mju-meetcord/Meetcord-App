@@ -294,7 +294,8 @@ const styles = StyleSheet.create({
     fontSize: 96,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#5496FF33',
+    color: '#5496FF',
+    opacity: 0.3,
   },
   modifySection: {
     width: '25%',
@@ -324,7 +325,6 @@ const styles = StyleSheet.create({
   },
 
   modifyNickname: {
-    // width: '84%',
     height: '100%',
     backgroundColor: '#E9F1FF',
     flexDirection: 'row',
