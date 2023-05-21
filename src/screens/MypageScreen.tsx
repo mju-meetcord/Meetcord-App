@@ -6,7 +6,6 @@ import {
 import { BottomTabParamList } from '../types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import ProfileIcon from '../../assets/icon_profile.svg';
-import * as ImagePicker from 'expo-image-picker';
 
 type MypageScreen = BottomTabScreenProps<BottomTabParamList, 'Mypage'>;
 
@@ -96,8 +95,8 @@ const MypageScreen = () => {
       <TouchableOpacity style={styles.logOut} onPress={logout}>
         <Text>로그아웃</Text>
       </TouchableOpacity>
-      <View style={styles.logo}>
-        <Text style={styles.logoBox}>Meetcord</Text>
+      <View style={styles.bottomBox}>
+        <Text style={styles.bottomText}>Meetcord</Text>
       </View>
     </SafeAreaView>
   );
@@ -201,16 +200,15 @@ const styles = StyleSheet.create({
     color: '#676767',
   },
 
-  logo: {
-    marginTop: 81,
-    // marginLeft: 12,
+  bottomBox: {
+    height: 100,
+    marginTop: 66,
     alignItems: 'center',
   },
-  logoBox: {
-    fontSize: 80,
-    fontWeight: '700',
-    color: '#5496FF',
-    opacity: 0.3,
+  bottomText: {
+    fontSize: 96,
+    fontWeight: 'bold',
+    color: '#5496FF33',
   },
 });
 export default MypageScreen;
