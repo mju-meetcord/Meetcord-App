@@ -10,9 +10,11 @@ import {
 import MeetInfoModal from './MeetInfoModal';
 interface ListItemProps {
   meetInfo: {
+    id: number;
     meetImg: ImageSourcePropType;
     meetName: string;
     meetIntroduce: string;
+    role: string;
   };
   userJoinInfo: {
     hasJoined: boolean;

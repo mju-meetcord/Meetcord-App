@@ -21,6 +21,7 @@ export interface Meet {
   meetImg: ImageSourcePropType;
   meetName: string;
   meetIntroduce: string;
+  role: string;
   hasJoined: boolean;
   isWaiting: boolean;
 }
@@ -75,6 +76,7 @@ const MeetScreen = () => {
                   },
                   meetName: item.name,
                   meetIntroduce: item.description,
+                  role: item.role,
                   hasJoined: item.role !== 'waiting',
                   isWaiting: item.role === 'waiting',
                 };

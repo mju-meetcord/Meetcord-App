@@ -10,14 +10,17 @@ import Modal from 'react-native-modal';
 import BackButton from './BackButton';
 import MeetInfoModalButton from './MeetInfoModalButton';
 import { NavigationProp } from '../types';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type MeetInfoModalProps = {
   isModalVisible: boolean;
   meetInfo: {
+    id: number;
     meetImg: ImageSourcePropType;
     meetName: string;
     meetIntroduce: string;
+    role: string;
   };
   userJoinInfo: {
     hasJoined: boolean;
@@ -70,6 +73,9 @@ const MeetInfoModal = ({
               secondText='탈퇴'
               onpress={() => {
                 handleBackButtonPress();
+                AsyncStorage.setItem('group_id', meetInfo.id.toString());
+                AsyncStorage.setItem('group_name', meetInfo.meetName);
+                AsyncStorage.setItem('group_role', meetInfo.role);
                 navigation.navigate('BottomTab');
               }}
             />
