@@ -15,6 +15,7 @@ import { NavigationProp } from '../types';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CreateMeetOfferText from '../components/CreateMeetOfferText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 export interface Meet {
   id: number;
@@ -32,6 +33,14 @@ const MeetScreen = () => {
   const [result, setResult] = useState([]);
   const navigation = useNavigation<NavigationProp>();
 
+  const isFoused = useIsFocused();
+
+  useEffect(() => {
+    return () => {
+      getMyMeetList();
+    };
+  }, [isFoused]);
+
   useFocusEffect(
     useCallback(() => {
       setInputText('');
@@ -43,6 +52,10 @@ const MeetScreen = () => {
   };
 
   useEffect(() => {
+    getMyMeetList();
+  }, []);
+
+  const getMyMeetList = () => {
     let status = 0;
 
     AsyncStorage.getItem('UserToken', (err, result) => {
@@ -98,7 +111,7 @@ const MeetScreen = () => {
     if (hasMeet()) {
       setJoinMeetList(result);
     }
-  }, []);
+  };
 
   const onPressMeetBtn = () => {
     navigation.navigate('CreateMeet');
