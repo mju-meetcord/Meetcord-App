@@ -56,7 +56,11 @@ const App = () => {
           component={NotiDetail}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name='ModifyMypage' component={ModifyMypageScreen} />
+        <Stack.Screen
+          name='ModifyMypage'
+          component={ModifyMypageScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name='CreateNoti'
           component={CreateNotiScreen}
