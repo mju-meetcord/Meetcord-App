@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
+  ImageSourcePropType,
 } from 'react-native';
 import MeetSearchInput from '../components/MeetSearchInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,7 +16,6 @@ import BackButton from 'assets/back_btn.svg';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp, RootStackParamList } from '../types';
 import { Meet } from './MeetScreen';
-import { TempMeetList } from '../data/TempMeetList';
 import MeetBtn from '../components/MeetBtn';
 import { StackScreenProps } from '@react-navigation/stack';
 import CreateMeetOfferText from '../components/CreateMeetOfferText';
@@ -35,12 +35,46 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
 
   const handleSubmit = () => {
     setResultText(inputText);
+
     if (!inputText) {
       setResultList([]);
       return;
     }
-    const temp = TempMeetList.filter(item => item.meetName.includes(inputText));
-    setResultList(temp);
+
+    fetch(`http://121.124.131.142:4000/meet?keyword=${inputText}`, {
+      // 검색어를 URL에 추가하여 GET 요청
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        const meetData = response.data.map(
+          (item: {
+            group_id: number;
+            profile: ImageSourcePropType;
+            name: string;
+            description: string;
+          }) => {
+            return {
+              id: item.group_id,
+              meetImg: {
+                uri: 'http://121.124.131.142:4000/images/' + item.profile,
+              },
+              meetName: item.name,
+              meetIntroduce: item.description,
+              role: 'none',
+              hasJoined: false,
+              isWaiting: false,
+            };
+          }
+        );
+
+        setResultList(meetData);
+      })
+      .catch(error => console.error(error));
   };
 
   const onPressMeetBtn = () => {
