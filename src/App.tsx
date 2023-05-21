@@ -9,7 +9,6 @@ import BottomTabs from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
 import MeetScreen from './screens/MeetScreen';
-// import SplashScreen from './screens/SplashScreen';
 import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -53,11 +52,6 @@ const App = () => {
           component={NotiDetail}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name='Splash'
-          component={SplashScreen}
-          options={{ headerShown: false }}
-        ></Stack.Screen> */}
       </Stack.Navigator>
       <StatusBar style='auto' />
     </NavigationContainer>
