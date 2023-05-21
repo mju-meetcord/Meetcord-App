@@ -18,6 +18,7 @@ export type RootStackParamList = {
   MeetSearch: {
     meetSearchText: string;
   };
+  Splash: undefined;
 };
 
 export type BottomTabParamList = {

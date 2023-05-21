@@ -1,6 +1,7 @@
 import { registerRootComponent } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
+import SplashScreen from './screens/SplashScreen';
 import SignIn from './screens/SignIn';
 import Register from './screens/Register';
 import { NavigationContainer } from '@react-navigation/native';
@@ -19,6 +20,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name='Splash'
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name='SignIn'
           component={SignIn}
