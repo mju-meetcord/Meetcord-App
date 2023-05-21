@@ -23,7 +23,7 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
   const { top } = useSafeAreaInsets();
 
   const [data, setData] = useState({ title: '', created_at: '', message: '' });
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(route.params.isAdmin);
 
   useEffect(() => {
     return () => {

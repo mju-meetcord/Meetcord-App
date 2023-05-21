@@ -16,6 +16,7 @@ export type RootStackParamList = {
   };
   NotiDetail: {
     id: string;
+    isAdmin: boolean;
   };
   MeetSearch: {
     meetSearchText: string;

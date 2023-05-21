@@ -95,7 +95,10 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
               date={data.created_at}
               key={i}
               onpress={() =>
-                navigation.navigate('NotiDetail', { id: data.notification_id })
+                navigation.navigate('NotiDetail', {
+                  id: data.notification_id,
+                  isAdmin: isAdmin,
+                })
               }
             />
           ))}
