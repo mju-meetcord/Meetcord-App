@@ -6,6 +6,7 @@ export const TempMeetList = [
     meetIntroduce: '전국구 맛집 탐방 동아리 입니당',
     hasJoined: true,
     isWaiting: false,
+    role: 'member',
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const TempMeetList = [
     meetIntroduce: '노래 못하는건 참아도 소스 찍먹은 못참아',
     hasJoined: false,
     isWaiting: false,
+    role: 'member',
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ export const TempMeetList = [
     meetIntroduce: '세기의 천재들이 모여서 만드는 개쩌는 졸작',
     hasJoined: true,
     isWaiting: false,
+    role: 'member',
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ export const TempMeetList = [
     meetIntroduce: '지금도 집에 가고 싶다?       예!!!!',
     hasJoined: false,
     isWaiting: false,
+    role: 'member',
   },
   {
     id: 5,
@@ -38,6 +42,7 @@ export const TempMeetList = [
     meetIntroduce: '내가 어떤 심정으로 참고 있는   데!!!!!!!!!!!!!!!!!',
     hasJoined: true,
     isWaiting: false,
+    role: 'member',
   },
   {
     id: 6,
@@ -46,6 +51,7 @@ export const TempMeetList = [
     meetIntroduce: '귀여움은 세상을 구해',
     hasJoined: true,
     isWaiting: false,
+    role: 'member',
   },
   {
     id: 7,
@@ -54,5 +60,6 @@ export const TempMeetList = [
     meetIntroduce: '스노볼은 세상을 구해',
     hasJoined: false,
     isWaiting: true,
+    role: 'member',
   },
 ];

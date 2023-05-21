@@ -9,13 +9,18 @@ import {
 import Modal from 'react-native-modal';
 import BackButton from './BackButton';
 import MeetInfoModalButton from './MeetInfoModalButton';
+import { NavigationProp } from '../types';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type MeetInfoModalProps = {
   isModalVisible: boolean;
   meetInfo: {
+    id: number;
     meetImg: ImageSourcePropType;
     meetName: string;
     meetIntroduce: string;
+    role: string;
   };
   userJoinInfo: {
     hasJoined: boolean;
@@ -30,12 +35,15 @@ const MeetInfoModal = ({
   userJoinInfo,
   handleBackButtonPress,
 }: MeetInfoModalProps) => {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <Modal
       isVisible={isModalVisible}
       swipeDirection='left'
       style={styles.modalContainer}
       onModalHide={handleBackButtonPress}
+      onBackdropPress={handleBackButtonPress}
     >
       <View style={styles.innerContainer}>
         <View style={styles.topBox}>
@@ -60,9 +68,25 @@ const MeetInfoModal = ({
             </Text>
           </View>
           {userJoinInfo.hasJoined ? (
-            <MeetInfoModalButton firstText='나의 Meet' secondText='탈퇴' />
+            <MeetInfoModalButton
+              firstText='나의 Meet'
+              secondText='탈퇴'
+              onpress={() => {
+                handleBackButtonPress();
+                AsyncStorage.setItem('group_id', meetInfo.id.toString());
+                AsyncStorage.setItem('group_name', meetInfo.meetName);
+                AsyncStorage.setItem('group_role', meetInfo.role);
+                navigation.navigate('BottomTab');
+              }}
+            />
           ) : userJoinInfo.isWaiting ? (
-            <MeetInfoModalButton firstText='승인 대기' secondText='취소' />
+            <MeetInfoModalButton
+              firstText='승인 대기'
+              secondText='취소'
+              onpress={() => {
+                handleBackButtonPress();
+              }}
+            />
           ) : (
             <TouchableOpacity style={styles.joinMeetButton}>
               <Text style={styles.joinButtonText}>가입 신청</Text>

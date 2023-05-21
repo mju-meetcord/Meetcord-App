@@ -9,6 +9,9 @@ import BottomTabs from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
 import MeetScreen from './screens/MeetScreen';
+import CreateNotiScreen from './screens/CreateNotiScreen';
+import ModifyNotiScreen from './screens/ModifyNotiScreen';
+import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -21,15 +24,15 @@ const App = () => {
           name='Splash'
           component={SplashScreen}
           options={{ headerShown: false }}
-        ></Stack.Screen>
-        <Stack.Screen
-          name='BottomTab'
-          component={BottomTabs}
-          options={{ headerShown: false }}
         />
         <Stack.Screen
           name='SignIn'
           component={SignIn}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='BottomTab'
+          component={BottomTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -50,6 +53,21 @@ const App = () => {
         <Stack.Screen
           name='NotiDetail'
           component={NotiDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='CreateNoti'
+          component={CreateNotiScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='ModifyNoti'
+          component={ModifyNotiScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='MeetSearch'
+          component={MeetSearchSreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

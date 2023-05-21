@@ -1,12 +1,18 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const NotiItem = ({ title, date, onpress }: any) => {
   return (
     <TouchableOpacity onPress={onpress}>
       <View style={styles.itemBox}>
-        <Text style={styles.titleText}>{title}</Text>
-        <Text style={styles.dateText}>{date}</Text>
+        <View style={styles.textBox}>
+          <Text style={styles.titleText}>{title}</Text>
+          <Text style={styles.dateText}>{date}</Text>
+        </View>
+        <View style={styles.iconBox}>
+          <Icon name={'navigate-next'} size={45} style={{ color: '#878787' }} />
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -19,13 +25,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderColor: '#676767',
-    left: '5%',
+    left: '10%',
     paddingLeft: 10,
+    flexDirection: 'row',
+  },
+  textBox: {
+    width: '90%',
     justifyContent: 'center',
     gap: 10,
   },
   titleText: { fontSize: 20, fontWeight: '500', paddingLeft: '6%' },
   dateText: { color: '#676767', paddingLeft: '6%' },
+  iconBox: {
+    width: '10%',
+    justifyContent: 'center',
+  },
 });
 
 export default NotiItem;

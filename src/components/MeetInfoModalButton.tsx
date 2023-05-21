@@ -3,17 +3,19 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 type MeetModalButtonProps = {
   firstText: string;
   secondText: string;
+  onpress: () => void;
 };
 
 const MeetInfoModalButton = ({
   firstText,
   secondText,
+  onpress,
 }: MeetModalButtonProps) => {
   return (
     <View style={styles.bottomButtonBox}>
-      <View style={styles.hasJoinedButton}>
+      <TouchableOpacity style={styles.hasJoinedButton} onPress={onpress}>
         <Text style={styles.hasJoinedButtonText}>{firstText}</Text>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.cancelButton}>
         <Text style={styles.cancelButtonText}>{secondText}</Text>
       </TouchableOpacity>
