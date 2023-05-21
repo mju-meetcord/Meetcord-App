@@ -3,13 +3,18 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { BottomTabParamList } from '../types';
+import { BottomTabParamList, RootStackParamList } from '../types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import ProfileIcon from '../../assets/icon_profile.svg';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-type MypageScreen = BottomTabScreenProps<BottomTabParamList, 'Mypage'>;
+type MypageScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList, 'Mypage'>,
+  StackScreenProps<RootStackParamList>
+>;
 
-const MypageScreen = () => {
+const MypageScreen = ({ navigation }: MypageScreenProps) => {
   const { top } = useSafeAreaInsets();
 
   const logout = () => {
@@ -37,7 +42,7 @@ const MypageScreen = () => {
     >
       <View style={[styles.statusBarPlaceholder, { height: top }]} />
       <View style={styles.topContainer}>
-        <Text style={styles.MyPage}>마이페이지</Text>
+        <Text style={styles.MyPage}>마이 페이지</Text>
       </View>
       <View style={styles.container1}>
         <ProfileIcon />
@@ -88,7 +93,10 @@ const MypageScreen = () => {
           </View>
         </View>
       </View>
-      <TouchableOpacity style={styles.fixProfile}>
+      <TouchableOpacity
+        style={styles.fixProfile}
+        onPress={() => navigation.navigate('ModifyMypage')}
+      >
         <Text style={styles.fixBox}>프로필 수정하기</Text>
       </TouchableOpacity>
 
