@@ -94,7 +94,7 @@ const CreateMeetScreen = () => {
         .then(response => {
           if (status == 200) {
             alert(response.message);
-            navigation.navigate('Home');
+            navigation.pop();
           } else if (status == 401) {
             alert(response.message);
           }

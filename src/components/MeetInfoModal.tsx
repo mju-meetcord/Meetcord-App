@@ -9,6 +9,8 @@ import {
 import Modal from 'react-native-modal';
 import BackButton from './BackButton';
 import MeetInfoModalButton from './MeetInfoModalButton';
+import { NavigationProp } from '../types';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 type MeetInfoModalProps = {
   isModalVisible: boolean;
@@ -30,12 +32,15 @@ const MeetInfoModal = ({
   userJoinInfo,
   handleBackButtonPress,
 }: MeetInfoModalProps) => {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <Modal
       isVisible={isModalVisible}
       swipeDirection='left'
       style={styles.modalContainer}
       onModalHide={handleBackButtonPress}
+      onBackdropPress={handleBackButtonPress}
     >
       <View style={styles.innerContainer}>
         <View style={styles.topBox}>
@@ -60,9 +65,22 @@ const MeetInfoModal = ({
             </Text>
           </View>
           {userJoinInfo.hasJoined ? (
-            <MeetInfoModalButton firstText='나의 Meet' secondText='탈퇴' />
+            <MeetInfoModalButton
+              firstText='나의 Meet'
+              secondText='탈퇴'
+              onpress={() => {
+                handleBackButtonPress();
+                navigation.navigate('BottomTab');
+              }}
+            />
           ) : userJoinInfo.isWaiting ? (
-            <MeetInfoModalButton firstText='승인 대기' secondText='취소' />
+            <MeetInfoModalButton
+              firstText='승인 대기'
+              secondText='취소'
+              onpress={() => {
+                handleBackButtonPress();
+              }}
+            />
           ) : (
             <TouchableOpacity style={styles.joinMeetButton}>
               <Text style={styles.joinButtonText}>가입 신청</Text>
