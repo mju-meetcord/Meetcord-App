@@ -20,13 +20,13 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='BottomTab'
-          component={BottomTabs}
+          name='SignIn'
+          component={SignIn}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='SignIn'
-          component={SignIn}
+          name='BottomTab'
+          component={BottomTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen

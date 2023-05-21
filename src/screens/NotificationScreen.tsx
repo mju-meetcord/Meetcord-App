@@ -7,6 +7,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type NotificationScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Notification'>,
@@ -32,17 +33,31 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
   }, []);
 
   const getNotiData = () => {
-    fetch(`http://121.124.131.142:4000/notification?name=${'코사모'}`, {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(response => {
-        setData(response.data);
+    AsyncStorage.getItem('group_name', (err, result) => {
+      fetch(`http://121.124.131.142:4000/notification?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(error => console.error(error));
+        .then(response => response.json())
+        .then(response => {
+          if (response.data.length > 0) {
+            setData(response.data);
+          } else {
+            setData([]);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+
+    AsyncStorage.getItem('group_role', (err, result) => {
+      if (result == 'admin') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    });
   };
 
   return (
