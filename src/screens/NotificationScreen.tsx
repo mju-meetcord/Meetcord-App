@@ -44,6 +44,8 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
         .then(response => {
           if (response.data.length > 0) {
             setData(response.data);
+          } else {
+            setData([]);
           }
         })
         .catch(error => console.error(error));
