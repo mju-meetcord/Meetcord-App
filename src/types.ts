@@ -11,6 +11,7 @@ export type RootStackParamList = {
   NotiDetail: {
     title: string;
   };
+  ModifyMypage: undefined;
 };
 
 export type BottomTabParamList = {
