@@ -8,6 +8,8 @@ import BottomTabs from './components/BottomTabs';
 import CreateMeetScreen from './screens/CreateMeetScreen';
 import NotiDetail from './screens/NotiDetailScreen';
 import MeetScreen from './screens/MeetScreen';
+import CreateNotiScreen from './screens/CreateNotiScreen';
+import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
 
@@ -45,6 +47,16 @@ const App = () => {
         <Stack.Screen
           name='NotiDetail'
           component={NotiDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='CreateNoti'
+          component={CreateNotiScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='ModifyNoti'
+          component={ModifyNotiScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
