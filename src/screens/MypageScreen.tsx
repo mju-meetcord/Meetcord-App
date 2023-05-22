@@ -1,13 +1,22 @@
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Image,
+  ImageSourcePropType,
+} from 'react-native';
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { BottomTabParamList, RootStackParamList } from '../types';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import ProfileIcon from '../../assets/icon_profile.svg';
-import { CompositeScreenProps } from '@react-navigation/native';
+import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type MypageScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Mypage'>,
@@ -16,17 +25,61 @@ type MypageScreenProps = CompositeScreenProps<
 
 const MypageScreen = ({ navigation }: MypageScreenProps) => {
   const { top } = useSafeAreaInsets();
+  const [imageurl, setImageurl] = useState<ImageSourcePropType>({
+    uri: 'http://121.124.131.142:4000/images/default.jpg',
+  });
+  const [name, setName] = useState('');
+  const [nickName, setNickName] = useState('');
+  const [phoneNum, setPhoneNum] = useState('');
+  const [email, setEmail] = useState('');
+  const [birth, setBirth] = useState('');
+
+  const isFoused = useIsFocused();
+
+  useEffect(() => {
+    return () => {
+      getNotiData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
+    getNotiData();
+  }, []);
+
+  const getNotiData = () => {
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch(`http://121.124.131.142:4000/user?token=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          setBirth(response.data.birth);
+          setEmail(response.data.email);
+          setImageurl({
+            uri: 'http://121.124.131.142:4000/images/' + response.data.prolie,
+          });
+          setName(response.data.name);
+          setPhoneNum(response.data.phone);
+          setNickName(response.data.nickName);
+        })
+        .catch(error => console.error(error));
+    });
+  };
 
   const logout = () => {
-    Alert.alert('Alert', '로그아웃 하겠습니까?', [
+    Alert.alert('로그아웃 하겠습니까?', '', [
       {
-        text: 'YES',
-        onPress: () => console.log(),
+        text: '예',
+        onPress: () => {
+          navigation.navigate('SignIn');
+        },
         style: 'default',
       },
       {
-        text: 'NO',
-        onPress: () => console.log(),
+        text: '아니오',
         style: 'destructive',
       },
     ]);
@@ -45,7 +98,9 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
         <Text style={styles.MyPage}>마이 페이지</Text>
       </View>
       <View style={styles.container1}>
-        <ProfileIcon />
+        <View style={styles.imageBox}>
+          <Image source={imageurl} style={styles.img} />
+        </View>
       </View>
       <View style={styles.Container2}>
         <View style={styles.Container3}>
@@ -53,7 +108,7 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
             <Text style={styles.box}>이름</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>전소영</Text>
+            <Text style={styles.userBox}>{name}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -62,7 +117,7 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
             <Text style={styles.box}>닉네임</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>몽키매직</Text>
+            <Text style={styles.userBox}>{nickName}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -71,7 +126,7 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
             <Text style={styles.box}>전화번호</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>010-4864-8648</Text>
+            <Text style={styles.userBox}>{phoneNum}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -80,7 +135,7 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
             <Text style={styles.box}>이메일</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>mokey@naver.com</Text>
+            <Text style={styles.userBox}>{email}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -89,7 +144,7 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
             <Text style={styles.box}>생년월일</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>2001년 2월 31일</Text>
+            <Text style={styles.userBox}>{birth}</Text>
           </View>
         </View>
       </View>
@@ -130,11 +185,19 @@ const styles = StyleSheet.create({
 
   container1: {
     backgroundColor: '#FFFFFF',
-    marginTop: 55,
-    marginBottom: 45,
     alignItems: 'center',
+    height: '25%',
+    justifyContent: 'center',
   },
-
+  imageBox: {
+    width: 120,
+    height: 120,
+    borderWidth: 1,
+    borderRadius: 30,
+    backgroundColor: '#aaaaaa',
+    overflow: 'hidden',
+  },
+  img: { width: '100%', height: '100%', borderRadius: 30 },
   Container2: {
     height: '25%',
     backgroundColor: '#E9F1FF',
