@@ -33,6 +33,9 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
   const [phoneNum, setPhoneNum] = useState('');
   const [email, setEmail] = useState('');
   const [birth, setBirth] = useState('');
+  const [imageStr, setImageStr] = useState(
+    'http://121.124.131.142:4000/images/default.jpg'
+  );
 
   const isFoused = useIsFocused();
 
@@ -59,11 +62,15 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
           setBirth(response.data.birth);
           setEmail(response.data.email);
           setImageurl({
-            uri: 'http://121.124.131.142:4000/images/' + response.data.prolie,
+            uri:
+              'http://121.124.131.142:4000/images/user/' + response.data.prolie,
           });
           setName(response.data.name);
           setPhoneNum(response.data.phone);
           setNickName(response.data.nickName);
+          setImageStr(
+            'http://121.124.131.142:4000/images/user/' + response.data.prolie
+          );
         })
         .catch(error => console.error(error));
     });
@@ -150,7 +157,16 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
       </View>
       <TouchableOpacity
         style={styles.fixProfile}
-        onPress={() => navigation.navigate('ModifyMypage')}
+        onPress={() =>
+          navigation.navigate('ModifyMypage', {
+            name: name,
+            nickName: nickName,
+            phoneNum: phoneNum,
+            email: email,
+            birth: birth,
+            imageurl: imageStr,
+          })
+        }
       >
         <Text style={styles.fixBox}>프로필 수정하기</Text>
       </TouchableOpacity>

@@ -14,7 +14,14 @@ export type RootStackParamList = {
   CreateNoti: {
     meetname: string;
   };
-  ModifyMypage: undefined;
+  ModifyMypage: {
+    name: string;
+    nickName: string;
+    phoneNum: string;
+    email: string;
+    birth: string;
+    imageurl: string;
+  };
   NotiDetail: {
     id: string;
     isAdmin: boolean;

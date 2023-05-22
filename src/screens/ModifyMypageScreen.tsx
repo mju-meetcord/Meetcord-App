@@ -11,21 +11,21 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../types';
-import ProfileIcon from '../../assets/icon_profile.svg';
 import { StackScreenProps } from '@react-navigation/stack';
 import BackBtn from '../../assets/back_btn.svg';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ModifyMypageScreenProps = StackScreenProps<
   RootStackParamList,
   'ModifyMypage'
 >;
 
-const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
+const MypageScreen = ({ route, navigation }: ModifyMypageScreenProps) => {
   const { top } = useSafeAreaInsets();
-  const [image, setImage] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [image, setImage] = useState(route.params.imageurl);
+  const [nickname, setNickname] = useState(route.params.nickName);
 
   const selectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -44,6 +44,49 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+  };
+
+  const submitUserData = () => {
+    if (route.params.imageurl == image && route.params.nickName == nickname) {
+      navigation.pop();
+      return;
+    }
+
+    const formData = new FormData();
+
+    if (image) {
+      const imageData = {
+        uri: image,
+        name: route.params.name + route.params.phoneNum + '.jpg',
+        type: 'image/jpg',
+      };
+
+      formData.append(
+        'image',
+        imageData,
+        route.params.name + route.params.phoneNum + '.jpg'
+      );
+    }
+    formData.append('nickname', nickname);
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      if (result) {
+        formData.append('token', result);
+      }
+      fetch(`http://121.124.131.142:4000/user`, {
+        method: 'post',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.result == 200) {
+            navigation.pop();
+          }
+        })
+        .catch(error => console.error(error));
+    });
   };
 
   return (
@@ -68,15 +111,11 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
             selectImage();
           }}
         >
-          {image ? (
-            <Image
-              source={{ uri: image }}
-              style={styles.image}
-              resizeMode='cover'
-            />
-          ) : (
-            <ProfileIcon />
-          )}
+          <Image
+            source={{ uri: image }}
+            style={styles.image}
+            resizeMode='cover'
+          />
         </TouchableOpacity>
       </View>
 
@@ -86,7 +125,7 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
             <Text style={styles.box}>이름</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>전소영</Text>
+            <Text style={styles.userBox}>{route.params.name}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -94,18 +133,14 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
           <View style={styles.modifySection}>
             <Text style={styles.modifyBox}>닉네임</Text>
           </View>
-          <TouchableOpacity>
-            <View style={styles.modifyUserSection}>
-              <TextInput
-                style={styles.modifyNickname}
-                maxLength={15}
-                onChangeText={setNickname}
-                value={nickname}
-              >
-                <Text style={styles.modifyUserBox}>몽키매직</Text>
-              </TextInput>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.modifyUserSection}>
+            <TextInput
+              style={styles.modifyNickname}
+              maxLength={15}
+              onChangeText={setNickname}
+              value={nickname}
+            />
+          </View>
         </View>
         <View style={styles.border} />
         <View style={styles.Container3}>
@@ -113,7 +148,7 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
             <Text style={styles.box}>전화번호</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>010-4864-8648</Text>
+            <Text style={styles.userBox}>{route.params.phoneNum}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -122,7 +157,7 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
             <Text style={styles.box}>이메일</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>mokey@naver.com</Text>
+            <Text style={styles.userBox}>{route.params.email}</Text>
           </View>
         </View>
         <View style={styles.border} />
@@ -131,17 +166,12 @@ const MypageScreen = ({ navigation }: ModifyMypageScreenProps) => {
             <Text style={styles.box}>생년월일</Text>
           </View>
           <View style={styles.userSection}>
-            <Text style={styles.userBox}>2001년 2월 31일</Text>
+            <Text style={styles.userBox}>{route.params.birth}</Text>
           </View>
         </View>
       </View>
       <TouchableOpacity style={styles.modifyMypage}>
-        <Text
-          style={styles.modifyMypageBox}
-          onPress={() => {
-            navigation.pop();
-          }}
-        >
+        <Text style={styles.modifyMypageBox} onPress={() => submitUserData()}>
           프로필 저장하기
         </Text>
       </TouchableOpacity>
@@ -199,17 +229,19 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 104,
-    height: 104,
+    width: 120,
+    height: 120,
   },
 
   proImg: {
     marginTop: 26,
-    width: 104,
-    height: 104,
-    borderRadius: 52,
+    width: 120,
+    height: 120,
     overflow: 'hidden',
     alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: '#aaaaaa',
+    borderWidth: 1,
   },
   section: {
     width: '25%',
@@ -295,7 +327,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   modifyUserSection: {
-    width: '84%',
+    width: '75%',
     height: '100%',
     backgroundColor: '#E9F1FF',
     flexDirection: 'row',
@@ -309,12 +341,18 @@ const styles = StyleSheet.create({
   },
 
   modifyNickname: {
+    width: '100%',
     height: '100%',
     backgroundColor: '#E9F1FF',
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
     borderRadius: 10,
+    textAlign: 'right',
+    paddingRight: 15,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#676767',
   },
 });
 export default MypageScreen;
