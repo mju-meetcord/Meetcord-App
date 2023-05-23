@@ -1,6 +1,7 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Member } from './screens/MemberScreen';
 
 export type RootStackParamList = {
   ModifyNoti: {
@@ -46,6 +47,12 @@ export type NavigationProp = CompositeNavigationProp<
 >;
 
 export type MemberModalProps = {
+  data: Member;
   isVisible: boolean;
   onBackdropPress: () => void;
+};
+
+export type MemberItemProps = {
+  data: Member;
+  onpress: () => void;
 };

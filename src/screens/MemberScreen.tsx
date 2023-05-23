@@ -4,31 +4,117 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  ImageSourcePropType,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MeberItem from '../components/MeberItem';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { useIsFocused } from '@react-navigation/native';
 import { BottomTabParamList } from '../types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MemberModal from '../components/MemberModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type MemberScreenProps = BottomTabScreenProps<BottomTabParamList, 'Member'>;
+
+export interface Member {
+  id: number;
+  profile: ImageSourcePropType;
+  name: string;
+  introduction: string;
+  role: string;
+  nickname: string;
+  birthday: string;
+  email: string;
+  phone: string;
+}
 
 const MemberScreen = () => {
   const [btnCheck, setBtnCheck] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const groupName = '명지바람';
+  const isFoused = useIsFocused();
 
-  const dummyData = [
-    { name: '전소영', role: 'Admin' },
-    { name: '전준오', role: 'Admin' },
-    { name: '전준삼', role: '일반 회원' },
-    { name: '조민지', role: '일반 회원' },
-    { name: '박민지', role: '일반 회원' },
-    { name: '서민서', role: '일반 회원' },
-    { name: '홍길동', role: '일반 회원' },
-  ];
+  const [userData, setUserData] = useState<Member[]>([]);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [groupname, setGroupname] = useState('');
+  const [modalData, setModalData] = useState<Member>({
+    id: -1,
+    profile: { uri: 'http://121.124.131.142:4000/images/user/default.jpg' },
+    name: 'xxx',
+    introduction: '',
+    role: 'temp',
+    nickname: '',
+    birthday: '',
+    email: 'xxx@xxxx.com',
+    phone: '010xxxxxxxx',
+  });
+
+  useEffect(() => {
+    return () => {
+      getNotiData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
+    getNotiData();
+  }, []);
+
+  const getNotiData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/member?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.data.length > 0) {
+            const meetData = response.data.map(
+              (item: {
+                user_id: number;
+                profile_photo: ImageSourcePropType;
+                name: string;
+                introduction: string;
+                role: string;
+                email: string;
+                nickname: string;
+                birthday: string;
+                phone: string;
+              }) => {
+                return {
+                  id: item.user_id,
+                  profile: item.profile_photo,
+                  name: item.name,
+                  introduction: item.introduction,
+                  role: item.role,
+                  nickname: item.nickname,
+                  birthday: item.birthday,
+                  email: item.email,
+                  phone: item.phone,
+                };
+              }
+            );
+            setUserData(meetData);
+          } else {
+            setUserData([]);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+
+    AsyncStorage.getItem('group_role', (err, result) => {
+      if (result == 'admin') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    });
+  };
 
   return (
     <SafeAreaView
@@ -40,7 +126,7 @@ const MemberScreen = () => {
     >
       <View style={styles.container}>
         <View style={styles.topBar}>
-          <Text style={styles.title}>{groupName}의 구성원</Text>
+          <Text style={styles.title}>{groupname}의 구성원</Text>
         </View>
         <View style={styles.btnContainer}>
           <TouchableOpacity
@@ -63,30 +149,34 @@ const MemberScreen = () => {
         <ScrollView>
           {btnCheck ? (
             <View style={{ minHeight: 200 }}>
-              {dummyData
-                .filter(data => data.role != 'Admin')
+              {userData
+                .filter(data => data.role != 'admin')
                 .map((data, i) => {
                   return (
                     <MeberItem
-                      name={data.name}
-                      role={data.role}
+                      data={data}
                       key={i}
-                      onpress={() => setModalVisible(true)}
+                      onpress={() => {
+                        setModalData(data);
+                        setModalVisible(true);
+                      }}
                     />
                   );
                 })}
             </View>
           ) : (
             <View style={styles.listBox}>
-              {dummyData
-                .filter(data => data.role == 'Admin')
+              {userData
+                .filter(data => data.role == 'admin')
                 .map((data, i) => {
                   return (
                     <MeberItem
-                      name={data.name}
-                      role={data.role}
+                      data={data}
                       key={i}
-                      onpress={() => setModalVisible(true)}
+                      onpress={() => {
+                        setModalData(data);
+                        setModalVisible(true);
+                      }}
                     />
                   );
                 })}
@@ -95,6 +185,7 @@ const MemberScreen = () => {
         </ScrollView>
       </View>
       <MemberModal
+        data={modalData}
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(false)}
       />

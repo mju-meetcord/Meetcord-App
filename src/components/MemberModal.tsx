@@ -1,8 +1,17 @@
 import Modal from 'react-native-modal';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { MemberModalProps } from '../types';
+import { useEffect } from 'react';
 
-const MemberModal = ({ isVisible, onBackdropPress }: MemberModalProps) => {
+const MemberModal = ({
+  data,
+  isVisible,
+  onBackdropPress,
+}: MemberModalProps) => {
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <Modal
       isVisible={isVisible}
@@ -14,13 +23,20 @@ const MemberModal = ({ isVisible, onBackdropPress }: MemberModalProps) => {
     >
       <View style={styles.modal}>
         <View style={styles.modalTop}>
-          <View style={styles.imageBox}></View>
+          <View style={styles.imageBox}>
+            <Image
+              source={{
+                uri: 'http://121.124.131.142:4000/images/user/' + data.profile,
+              }}
+              style={styles.img}
+            />
+          </View>
         </View>
         <View style={styles.modalBottom}>
-          <Text style={styles.modalTitle}>전소영</Text>
-          <Text style={styles.modalText}>Mobile. 010-xxxx-xxxx</Text>
-          <Text style={styles.modalText}>E-mail. test@naver.com</Text>
-          <Text style={styles.modalText}>Birth. 2001년 06월 12일</Text>
+          <Text style={styles.modalTitle}>{data.name}</Text>
+          <Text style={styles.modalText}>Mobile. {data.phone}</Text>
+          <Text style={styles.modalText}>E-mail. {data.email}</Text>
+          <Text style={styles.modalText}>Birth. {data.birthday}</Text>
         </View>
       </View>
     </Modal>
@@ -61,6 +77,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 30,
     backgroundColor: '#D9D9D9',
+  },
+  img: {
+    height: 100,
+    width: 100,
+    borderRadius: 30,
   },
   modalBottom: {
     width: '100%',
