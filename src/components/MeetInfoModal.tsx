@@ -37,6 +37,32 @@ const MeetInfoModal = ({
 }: MeetInfoModalProps) => {
   const navigation = useNavigation<NavigationProp>();
 
+  const registerMeet = () => {
+    let status = 0;
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch('http://121.124.131.142:4000/mymeet', {
+        method: 'PUT',
+        body: JSON.stringify({ token: result, group_id: meetInfo.id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          status = response.status;
+          return response.json();
+        })
+        .then(response => {
+          if (status == 200) {
+            handleBackButtonPress();
+            navigation.pop();
+          } else if (status == 401) {
+            console.log(response.message);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
   return (
     <Modal
       isVisible={isModalVisible}
@@ -88,7 +114,10 @@ const MeetInfoModal = ({
               }}
             />
           ) : (
-            <TouchableOpacity style={styles.joinMeetButton}>
+            <TouchableOpacity
+              style={styles.joinMeetButton}
+              onPress={() => registerMeet()}
+            >
               <Text style={styles.joinButtonText}>가입 신청</Text>
             </TouchableOpacity>
           )}
