@@ -120,6 +120,7 @@ const MeetScreen = () => {
   const handleSubmit = () => {
     navigation.navigate('MeetSearch', {
       meetSearchText: inputText,
+      data: joinMeetList,
     });
   };
 

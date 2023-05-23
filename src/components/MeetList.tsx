@@ -15,12 +15,8 @@ const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
         <View style={styles.viewTopBox}>
           <ScrollView keyboardDismissMode='on-drag'>
             {hasMeet ? (
-              resultList.map(item => (
-                <MeetListItem
-                  meetInfo={item}
-                  userJoinInfo={item}
-                  key={item.id}
-                />
+              resultList.map((item, index) => (
+                <MeetListItem meetInfo={item} userJoinInfo={item} key={index} />
               ))
             ) : (
               <View style={styles.emptyListBox}>

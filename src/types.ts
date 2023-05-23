@@ -2,6 +2,7 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Member } from './screens/MemberScreen';
+import { Meet } from './screens/MeetScreen';
 
 export type RootStackParamList = {
   ModifyNoti: {
@@ -29,6 +30,7 @@ export type RootStackParamList = {
   };
   MeetSearch: {
     meetSearchText: string;
+    data: Meet[];
   };
   Splash: undefined;
 };
