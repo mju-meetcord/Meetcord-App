@@ -1,7 +1,8 @@
 import Modal from 'react-native-modal';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { MemberModalProps } from '../types';
 import { useEffect } from 'react';
+import { Image } from 'expo-image';
 
 const MemberModal = ({
   data,
@@ -9,7 +10,7 @@ const MemberModal = ({
   onBackdropPress,
 }: MemberModalProps) => {
   useEffect(() => {
-    console.log(data);
+    console.log();
   }, [data]);
 
   return (

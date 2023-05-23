@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ImageSourcePropType,
 } from 'react-native';
@@ -12,6 +11,7 @@ import MeetInfoModalButton from './MeetInfoModalButton';
 import { NavigationProp } from '../types';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'expo-image';
 
 type MeetInfoModalProps = {
   isModalVisible: boolean;

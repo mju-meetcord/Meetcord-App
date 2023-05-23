@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MemberItemProps } from '../types';
+import { Image } from 'expo-image';
 
 const MeberItem = ({ data, onpress }: MemberItemProps) => {
   return (
