@@ -3,6 +3,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Member } from './screens/MemberScreen';
 import { Meet } from './screens/MeetScreen';
+import React from 'react';
 
 export type RootStackParamList = {
   ModifyNoti: {
@@ -33,6 +34,7 @@ export type RootStackParamList = {
     data: Meet[];
   };
   Splash: undefined;
+  EditMember: undefined;
 };
 
 export type BottomTabParamList = {
@@ -57,4 +59,10 @@ export type MemberModalProps = {
 export type MemberItemProps = {
   data: Member;
   onpress: () => void;
+};
+
+export type EditMemberItemProps = {
+  data: Member;
+  option: boolean;
+  setReload: React.Dispatch<React.SetStateAction<string>>;
 };
