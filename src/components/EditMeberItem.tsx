@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EditMemberItemProps } from '../types';
 import { Image } from 'expo-image';
@@ -15,10 +15,39 @@ const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
       },
     })
       .then(response => response.json())
-      .then(response => {
+      .then(() => {
         setReload(data.mem_id.toString());
       })
       .catch(error => console.error(error));
+  };
+
+  const submitDelte = () => {
+    Alert.alert(`${data.name}를(을) 삭제하겠습니까?`, '', [
+      {
+        text: 'YES',
+        onPress: () => {
+          fetch(`http://121.124.131.142:4000/member`, {
+            method: 'delete',
+            body: JSON.stringify({
+              mem_id: data.mem_id,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => response.json())
+            .then(() => {
+              setReload(data.mem_id.toString());
+            })
+            .catch(error => console.error(error));
+        },
+        style: 'default',
+      },
+      {
+        text: 'NO',
+        style: 'destructive',
+      },
+    ]);
   };
 
   return (
@@ -56,7 +85,7 @@ const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
             승인
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnTouch}>
+        <TouchableOpacity style={styles.btnTouch} onPress={() => submitDelte()}>
           <Text style={{ fontSize: 16, color: '#FA1F11' }}>삭제</Text>
         </TouchableOpacity>
       </View>
