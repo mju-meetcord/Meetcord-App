@@ -127,7 +127,7 @@ const AddSchduleScreen = () => {
             <Text style={styles.mainScheduleInfoText}>종료 시간</Text>
             {Platform.OS === 'ios' && (
               <DateTimePicker
-                value={startTime}
+                value={finishTime}
                 mode='time'
                 minuteInterval={10}
               />
