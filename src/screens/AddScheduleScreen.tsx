@@ -12,11 +12,12 @@ import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 const AddSchduleScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const [startTime, setStartTime] = useState(new Date());
-  const [finishTime, setFinishTime] = useState(new Date());
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [finishTime, setFinishTime] = useState<Date>(new Date());
   const [startTimeOpen, setStartTimeOpen] = useState(false);
   const [finishTimeOpen, setFinishTimeOpen] = useState(false);
   const [selected, setSelected] = useState(undefined);
@@ -30,17 +31,39 @@ const AddSchduleScreen = () => {
   ];
 
   const onPressStartTime = () => {
+    setStartTimeOpen(!startTimeOpen);
     if (finishTimeOpen) {
       setFinishTimeOpen(!finishTimeOpen);
     }
-    setStartTimeOpen(!startTimeOpen);
   };
 
   const onPressFinishTime = () => {
+    setFinishTimeOpen(!finishTimeOpen);
     if (startTimeOpen) {
       setStartTimeOpen(!startTimeOpen);
     }
-    setFinishTimeOpen(!finishTimeOpen);
+  };
+
+  const handleStartChange = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
+    setStartTimeOpen(!setStartTimeOpen);
+    if (!date) {
+      return;
+    }
+    setStartTime(date);
+  };
+
+  const handleFinishChange = (
+    event: DateTimePickerEvent,
+    date: Date | undefined
+  ) => {
+    setFinishTimeOpen(!setFinishTimeOpen);
+    if (!date) {
+      return;
+    }
+    setFinishTime(date);
   };
 
   return (
@@ -116,6 +139,7 @@ const AddSchduleScreen = () => {
                     mode='time'
                     minuteInterval={10}
                     display='spinner'
+                    onChange={(event, date) => handleStartChange(event, date)}
                   />
                 )}
               </>
@@ -151,6 +175,7 @@ const AddSchduleScreen = () => {
                     mode='time'
                     minuteInterval={10}
                     display='spinner'
+                    onChange={(event, date) => handleFinishChange(event, date)}
                   />
                 )}
               </>
@@ -199,7 +224,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   topBarText: {
-    color: '#ffffff',
+    color: '#FFFFFF',
     fontSize: 20,
     lineHeight: 30,
     fontWeight: '500',
@@ -212,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   mainScheduleInfoBox: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     width: '85%',
     alignSelf: 'center',
@@ -221,7 +246,7 @@ const styles = StyleSheet.create({
   },
   innerScheduleBox: {
     borderBottomWidth: 1,
-    borderColor: '#c6c6c6',
+    borderColor: '#C6C6C6',
     height: 40,
     justifyContent: 'center',
   },
@@ -261,7 +286,7 @@ const styles = StyleSheet.create({
   notiSettingBox: {
     width: '85%',
     height: 40,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     alignSelf: 'center',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -271,7 +296,7 @@ const styles = StyleSheet.create({
   },
   notiSettingText: { fontSize: 16 },
   notiSelectBox: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     height: 30,
   },
   notiDropDownBox: {
@@ -283,7 +308,7 @@ const styles = StyleSheet.create({
     color: '#878787',
   },
   descriptionBox: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 15,
     paddingVertical: 10,
     width: '85%',
