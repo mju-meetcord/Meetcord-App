@@ -6,13 +6,21 @@ import {
   ScrollView,
   TextInput,
   Switch,
+  Button,
 } from 'react-native';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DateTimePicker, {
+  DateTimePickerAndroid,
+} from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 
 const AddSchduleScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
+  const [startTime, setStartTime] = useState(new Date());
+  const [finishTime, setFinishTime] = useState(new Date());
+  //   DateTimePickerAndroid.open(params: AndroidNativeProps);
+  // DateTimePickerAndroid.dismiss(mode: AndroidNativeProps['mode']);
   const [selected, setSelected] = useState(undefined);
   const toggleSwitch = () => setIsEnabled(!isEnabled);
   const notiType = [
@@ -67,11 +75,19 @@ const AddSchduleScreen = () => {
               value={isEnabled}
             />
           </View>
-          <View style={styles.innerScheduleBox}>
+          <View style={[styles.innerScheduleBox, styles.timeBox]}>
             <Text style={styles.mainScheduleInfoText}>시작 시간</Text>
+            <DateTimePicker value={startTime} mode='time' minuteInterval={10} />
           </View>
-          <View style={[styles.innerScheduleBox, styles.noneBorder]}>
+          <View
+            style={[styles.innerScheduleBox, styles.noneBorder, styles.timeBox]}
+          >
             <Text style={styles.mainScheduleInfoText}>종료 시간</Text>
+            <DateTimePicker
+              value={finishTime}
+              mode='time'
+              minuteInterval={10}
+            />
           </View>
         </View>
         <View style={[styles.notiSettingBox, styles.innerMaginTop]}>
@@ -132,7 +148,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 10,
     width: '85%',
-    height: 120,
     alignSelf: 'center',
     paddingHorizontal: 10,
     marginTop: 30,
@@ -157,6 +172,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  timeBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   notiSettingBox: {
     width: '85%',
