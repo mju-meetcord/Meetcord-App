@@ -6,29 +6,42 @@ import {
   ScrollView,
   TextInput,
   Switch,
-  Button,
+  Platform,
 } from 'react-native';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import DateTimePicker, {
-  DateTimePickerAndroid,
-} from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 
 const AddSchduleScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [finishTime, setFinishTime] = useState(new Date());
-  //   DateTimePickerAndroid.open(params: AndroidNativeProps);
-  // DateTimePickerAndroid.dismiss(mode: AndroidNativeProps['mode']);
+  const [startTimeOpen, setStartTimeOpen] = useState(false);
+  const [finishTimeOpen, setFinishTimeOpen] = useState(false);
   const [selected, setSelected] = useState(undefined);
   const toggleSwitch = () => setIsEnabled(!isEnabled);
+
   const notiType = [
     '2일 전(오전 9시)',
     '1일 전(오전 9시)',
     '당일날(오전 9시)',
     '없음',
   ];
+
+  const onPressStartTime = () => {
+    if (finishTimeOpen) {
+      setFinishTimeOpen(!finishTimeOpen);
+    }
+    setStartTimeOpen(!startTimeOpen);
+  };
+
+  const onPressFinishTime = () => {
+    if (startTimeOpen) {
+      setStartTimeOpen(!startTimeOpen);
+    }
+    setFinishTimeOpen(!finishTimeOpen);
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer} edges={['top']}>
@@ -77,17 +90,71 @@ const AddSchduleScreen = () => {
           </View>
           <View style={[styles.innerScheduleBox, styles.timeBox]}>
             <Text style={styles.mainScheduleInfoText}>시작 시간</Text>
-            <DateTimePicker value={startTime} mode='time' minuteInterval={10} />
+            {Platform.OS === 'ios' && (
+              <DateTimePicker
+                value={startTime}
+                mode='time'
+                minuteInterval={10}
+              />
+            )}
+            {Platform.OS === 'android' && (
+              <>
+                <TouchableOpacity
+                  style={styles.androidTimePicker}
+                  onPress={onPressStartTime}
+                >
+                  <Text style={styles.androidTimePickerText}>
+                    {startTime.toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Text>
+                </TouchableOpacity>
+                {startTimeOpen && (
+                  <DateTimePicker
+                    value={startTime}
+                    mode='time'
+                    minuteInterval={10}
+                    display='spinner'
+                  />
+                )}
+              </>
+            )}
           </View>
           <View
             style={[styles.innerScheduleBox, styles.noneBorder, styles.timeBox]}
           >
             <Text style={styles.mainScheduleInfoText}>종료 시간</Text>
-            <DateTimePicker
-              value={finishTime}
-              mode='time'
-              minuteInterval={10}
-            />
+            {Platform.OS === 'ios' && (
+              <DateTimePicker
+                value={startTime}
+                mode='time'
+                minuteInterval={10}
+              />
+            )}
+            {Platform.OS === 'android' && (
+              <>
+                <TouchableOpacity
+                  style={styles.androidTimePicker}
+                  onPress={onPressFinishTime}
+                >
+                  <Text style={styles.androidTimePickerText}>
+                    {finishTime.toLocaleTimeString('ko-KR', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Text>
+                </TouchableOpacity>
+                {finishTimeOpen && (
+                  <DateTimePicker
+                    value={finishTime}
+                    mode='time'
+                    minuteInterval={10}
+                    display='spinner'
+                  />
+                )}
+              </>
+            )}
           </View>
         </View>
         <View style={[styles.notiSettingBox, styles.innerMaginTop]}>
@@ -177,6 +244,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  androidTimePicker: {
+    width: 90,
+    height: 30,
+    backgroundColor: '#EBEBF0',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  androidTimePickerText: {
+    fontSize: 16,
+    color: '#000000',
+    lineHeight: 19,
   },
   notiSettingBox: {
     width: '85%',
