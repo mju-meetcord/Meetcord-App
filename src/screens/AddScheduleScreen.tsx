@@ -9,10 +9,18 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import SelectDropdown from 'react-native-select-dropdown';
 
 const AddSchduleScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
+  const [selected, setSelected] = useState(undefined);
   const toggleSwitch = () => setIsEnabled(!isEnabled);
+  const notiType = [
+    '2일 전(오전 9시)',
+    '1일 전(오전 9시)',
+    '당일날(오전 9시)',
+    '없음',
+  ];
 
   return (
     <SafeAreaView style={styles.mainContainer} edges={['top']}>
@@ -68,6 +76,17 @@ const AddSchduleScreen = () => {
         </View>
         <View style={[styles.notiSettingBox, styles.innerMaginTop]}>
           <Text style={styles.notiSettingText}>알림</Text>
+          <SelectDropdown
+            data={notiType}
+            onSelect={setSelected}
+            defaultButtonText='없음'
+            defaultValueByIndex={3}
+            statusBarTranslucent={true}
+            buttonStyle={styles.notiSelectBox}
+            buttonTextStyle={styles.notiSelectText}
+            dropdownStyle={styles.notiDropDownBox}
+            selectedRowTextStyle={{ fontWeight: '600', color: '#5496FF' }} //임시 스타일이라 인라인 처리 합니다.
+          />
         </View>
         <View style={[styles.descriptionBox, styles.innerMaginTop]}>
           <TextInput
@@ -144,11 +163,25 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#ffffff',
     alignSelf: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 15,
     borderRadius: 10,
+    flexDirection: 'row',
   },
   notiSettingText: { fontSize: 16 },
+  notiSelectBox: {
+    backgroundColor: '#ffffff',
+    height: 30,
+  },
+  notiDropDownBox: {
+    borderRadius: 10,
+    width: 200,
+  },
+  notiSelectText: {
+    fontSize: 16,
+    color: '#878787',
+  },
   descriptionBox: {
     backgroundColor: '#ffffff',
     paddingHorizontal: 15,
