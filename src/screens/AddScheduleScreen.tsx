@@ -12,7 +12,6 @@ import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
-import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 const AddSchduleScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -44,10 +43,7 @@ const AddSchduleScreen = () => {
     }
   };
 
-  const handleStartChange = (
-    event: DateTimePickerEvent,
-    date: Date | undefined
-  ) => {
+  const handleStartChange = (date: Date | undefined) => {
     setStartTimeOpen(!setStartTimeOpen);
     if (!date) {
       return;
@@ -55,10 +51,7 @@ const AddSchduleScreen = () => {
     setStartTime(date);
   };
 
-  const handleFinishChange = (
-    event: DateTimePickerEvent,
-    date: Date | undefined
-  ) => {
+  const handleFinishChange = (date: Date | undefined) => {
     setFinishTimeOpen(!setFinishTimeOpen);
     if (!date) {
       return;
@@ -139,7 +132,7 @@ const AddSchduleScreen = () => {
                     mode='time'
                     minuteInterval={10}
                     display='spinner'
-                    onChange={(event, date) => handleStartChange(event, date)}
+                    onChange={(event, date) => handleStartChange(date)}
                   />
                 )}
               </>
@@ -175,7 +168,7 @@ const AddSchduleScreen = () => {
                     mode='time'
                     minuteInterval={10}
                     display='spinner'
-                    onChange={(event, date) => handleFinishChange(event, date)}
+                    onChange={(event, date) => handleFinishChange(date)}
                   />
                 )}
               </>
