@@ -94,7 +94,15 @@ const MeetInfoModal = ({
               {meetInfo.meetIntroduce}
             </Text>
           </View>
-          {userJoinInfo.hasJoined ? (
+          {userJoinInfo.isWaiting ? (
+            <MeetInfoModalButton
+              firstText='승인 대기'
+              secondText='취소'
+              onpress={() => {
+                handleBackButtonPress();
+              }}
+            />
+          ) : userJoinInfo.hasJoined ? (
             <MeetInfoModalButton
               firstText='나의 Meet'
               secondText='탈퇴'
@@ -108,14 +116,6 @@ const MeetInfoModal = ({
                   meetInfo.creator_id.toString()
                 );
                 navigation.navigate('BottomTab');
-              }}
-            />
-          ) : userJoinInfo.isWaiting ? (
-            <MeetInfoModalButton
-              firstText='승인 대기'
-              secondText='취소'
-              onpress={() => {
-                handleBackButtonPress();
               }}
             />
           ) : (
