@@ -108,9 +108,9 @@ const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
             <Text style={{ fontSize: 16, color: '#5496FF' }}>등록</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.btnTouch}>
+          <View style={styles.btnTouch}>
             <Text style={{ fontSize: 16, color: '#74f21b' }}>그룹장</Text>
-          </TouchableOpacity>
+          </View>
         )}
       </View>
     </View>

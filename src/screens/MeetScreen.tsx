@@ -92,7 +92,7 @@ const MeetScreen = () => {
                   meetName: item.name,
                   meetIntroduce: item.description,
                   role: item.role,
-                  hasJoined: item.role !== 'waiting',
+                  hasJoined: true,
                   isWaiting: item.role === 'waiting',
                   creator_id: item.creator_id,
                 };
