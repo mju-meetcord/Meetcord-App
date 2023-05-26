@@ -113,39 +113,51 @@ const AddSchduleScreen = () => {
           <View style={[styles.innerScheduleBox, styles.timeBox]}>
             <Text style={styles.mainScheduleInfoText}>시작 시간</Text>
             {Platform.OS === 'ios' && (
-              <DateTimePicker
-                value={startTime}
-                mode='time'
-                minuteInterval={10}
-                accentColor='#FA1F11'
-              />
-            )}
-            {Platform.OS === 'android' && (
               <>
-                <TouchableOpacity
-                  style={styles.androidTimePicker}
-                  onPress={onPressStartTime}
-                >
-                  <Text
-                    style={[
-                      styles.androidTimePickerText,
-                      isStartTimeTouched && styles.androidAccentColor,
-                    ]}
-                  >
-                    {startTime.toLocaleTimeString('ko-KR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </Text>
-                </TouchableOpacity>
-                {startTimeOpen && (
+                {isEnabled ? (
+                  <View style={styles.iOSTimeBlock} />
+                ) : (
                   <DateTimePicker
                     value={startTime}
                     mode='time'
                     minuteInterval={10}
-                    display='spinner'
-                    onChange={(event, date) => handleStartChange(date)}
+                    accentColor='#FA1F11'
                   />
+                )}
+              </>
+            )}
+            {Platform.OS === 'android' && (
+              <>
+                {isEnabled ? (
+                  <View style={styles.androidTimeBlock} />
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      style={styles.androidTimePicker}
+                      onPress={onPressStartTime}
+                    >
+                      <Text
+                        style={[
+                          styles.androidTimePickerText,
+                          isStartTimeTouched && styles.androidAccentColor,
+                        ]}
+                      >
+                        {startTime.toLocaleTimeString('ko-KR', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </Text>
+                    </TouchableOpacity>
+                    {startTimeOpen && (
+                      <DateTimePicker
+                        value={startTime}
+                        mode='time'
+                        minuteInterval={10}
+                        display='spinner'
+                        onChange={(event, date) => handleStartChange(date)}
+                      />
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -155,39 +167,51 @@ const AddSchduleScreen = () => {
           >
             <Text style={styles.mainScheduleInfoText}>종료 시간</Text>
             {Platform.OS === 'ios' && (
-              <DateTimePicker
-                value={finishTime}
-                mode='time'
-                minuteInterval={10}
-                accentColor='#FA1F11'
-              />
-            )}
-            {Platform.OS === 'android' && (
               <>
-                <TouchableOpacity
-                  style={styles.androidTimePicker}
-                  onPress={onPressFinishTime}
-                >
-                  <Text
-                    style={[
-                      styles.androidTimePickerText,
-                      isFinishTimeTouched && styles.androidAccentColor,
-                    ]}
-                  >
-                    {finishTime.toLocaleTimeString('ko-KR', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </Text>
-                </TouchableOpacity>
-                {finishTimeOpen && (
+                {isEnabled ? (
+                  <View style={styles.iOSTimeBlock} />
+                ) : (
                   <DateTimePicker
                     value={finishTime}
                     mode='time'
                     minuteInterval={10}
-                    display='spinner'
-                    onChange={(event, date) => handleFinishChange(date)}
+                    accentColor='#FA1F11'
                   />
+                )}
+              </>
+            )}
+            {Platform.OS === 'android' && (
+              <>
+                {isEnabled ? (
+                  <View style={styles.androidTimeBlock} />
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      style={styles.androidTimePicker}
+                      onPress={onPressFinishTime}
+                    >
+                      <Text
+                        style={[
+                          styles.androidTimePickerText,
+                          isFinishTimeTouched && styles.androidAccentColor,
+                        ]}
+                      >
+                        {finishTime.toLocaleTimeString('ko-KR', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </Text>
+                    </TouchableOpacity>
+                    {finishTimeOpen && (
+                      <DateTimePicker
+                        value={finishTime}
+                        mode='time'
+                        minuteInterval={10}
+                        display='spinner'
+                        onChange={(event, date) => handleFinishChange(date)}
+                      />
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -282,6 +306,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  iOSTimeBlock: {
+    width: 93,
+    height: 35,
+    borderRadius: 5,
+    backgroundColor: '#EBEBF0',
+  },
+  androidTimeBlock: {
+    width: 90,
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: '#EBEBF0',
   },
   androidTimePicker: {
     width: 90,
