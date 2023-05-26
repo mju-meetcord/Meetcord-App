@@ -25,6 +25,7 @@ export interface Meet {
   role: string;
   hasJoined: boolean;
   isWaiting: boolean;
+  creator_id: number;
 }
 
 const MeetScreen = () => {
@@ -81,6 +82,7 @@ const MeetScreen = () => {
                 name: string;
                 description: string;
                 role: string;
+                creator_id: number;
               }) => {
                 return {
                   id: item.group_id,
@@ -92,6 +94,7 @@ const MeetScreen = () => {
                   role: item.role,
                   hasJoined: item.role !== 'waiting',
                   isWaiting: item.role === 'waiting',
+                  creator_id: item.creator_id,
                 };
               }
             );

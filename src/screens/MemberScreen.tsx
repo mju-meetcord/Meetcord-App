@@ -15,6 +15,7 @@ import { BottomTabParamList, RootStackParamList } from '../types';
 import { useEffect, useState } from 'react';
 import MemberModal from '../components/MemberModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 type MemberScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Member'>,
@@ -139,9 +140,10 @@ const MemberScreen = ({ navigation }: MemberScreenProps) => {
             disabled={!isAdmin}
             onPress={() => navigation.navigate('EditMember')}
           >
-            <Text style={isAdmin ? styles.editBtn : styles.editBtnDisalbe}>
-              편집
-            </Text>
+            <Icon
+              name={'settings-outline'}
+              style={isAdmin ? styles.editBtn : styles.editBtnDisalbe}
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.btnContainer}>
@@ -228,13 +230,13 @@ const styles = StyleSheet.create({
     left: 25,
   },
   editBtn: {
-    fontSize: 24,
-    color: '#5496FF',
+    fontSize: 28,
+    color: '#676767',
     fontWeight: 'bold',
     right: 25,
   },
   editBtnDisalbe: {
-    fontSize: 24,
+    fontSize: 28,
     color: '#E9F1FF',
     fontWeight: 'bold',
     right: 25,

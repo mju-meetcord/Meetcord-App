@@ -63,6 +63,6 @@ export type MemberItemProps = {
 
 export type EditMemberItemProps = {
   data: Member;
-  option: boolean;
+  option: number;
   setReload: React.Dispatch<React.SetStateAction<string>>;
 };

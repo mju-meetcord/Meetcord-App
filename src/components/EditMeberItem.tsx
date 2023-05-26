@@ -4,23 +4,6 @@ import { EditMemberItemProps } from '../types';
 import { Image } from 'expo-image';
 
 const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
-  const submintAdmission = () => {
-    fetch(`http://121.124.131.142:4000/member`, {
-      method: 'post',
-      body: JSON.stringify({
-        mem_id: data.mem_id,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(() => {
-        setReload(data.mem_id.toString());
-      })
-      .catch(error => console.error(error));
-  };
-
   const submitDelte = () => {
     Alert.alert(`${data.name}를(을) 삭제하겠습니까?`, '', [
       {
@@ -50,6 +33,24 @@ const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
     ]);
   };
 
+  const updateAdmin = (role: string) => {
+    fetch(`http://121.124.131.142:4000/member`, {
+      method: 'post',
+      body: JSON.stringify({
+        mem_id: data.mem_id,
+        role: role,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(() => {
+        setReload(data.mem_id.toString() + new Date().getTime());
+      })
+      .catch(error => console.error(error));
+  };
+
   return (
     <View style={styles.itemBox}>
       <View style={styles.imageContainer}>
@@ -71,13 +72,13 @@ const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
       </View>
       <View style={styles.btnBox}>
         <TouchableOpacity
-          disabled={!option}
-          onPress={() => submintAdmission()}
+          disabled={option != 0}
+          onPress={() => updateAdmin('member')}
           style={styles.btnTouch}
         >
           <Text
             style={
-              option
+              option == 0
                 ? { fontSize: 16, color: '#5496FF' }
                 : { fontSize: 16, color: '#FFFFFF' }
             }
@@ -85,9 +86,32 @@ const EditMeberItem = ({ data, option, setReload }: EditMemberItemProps) => {
             승인
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnTouch} onPress={() => submitDelte()}>
-          <Text style={{ fontSize: 16, color: '#FA1F11' }}>삭제</Text>
-        </TouchableOpacity>
+        {option == 1 || option == 0 ? (
+          <TouchableOpacity
+            style={styles.btnTouch}
+            onPress={() => submitDelte()}
+          >
+            <Text style={{ fontSize: 16, color: '#FA1F11' }}>삭제</Text>
+          </TouchableOpacity>
+        ) : option == 2 ? (
+          <TouchableOpacity
+            style={styles.btnTouch}
+            onPress={() => updateAdmin('member')}
+          >
+            <Text style={{ fontSize: 16, color: '#676767' }}>해제</Text>
+          </TouchableOpacity>
+        ) : option == 3 ? (
+          <TouchableOpacity
+            style={styles.btnTouch}
+            onPress={() => updateAdmin('admin')}
+          >
+            <Text style={{ fontSize: 16, color: '#5496FF' }}>등록</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.btnTouch}>
+            <Text style={{ fontSize: 16, color: '#74f21b' }}>그룹장</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

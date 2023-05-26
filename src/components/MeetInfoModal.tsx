@@ -21,6 +21,7 @@ type MeetInfoModalProps = {
     meetName: string;
     meetIntroduce: string;
     role: string;
+    creator_id: number;
   };
   userJoinInfo: {
     hasJoined: boolean;
@@ -102,6 +103,10 @@ const MeetInfoModal = ({
                 AsyncStorage.setItem('group_id', meetInfo.id.toString());
                 AsyncStorage.setItem('group_name', meetInfo.meetName);
                 AsyncStorage.setItem('group_role', meetInfo.role);
+                AsyncStorage.setItem(
+                  'creator_id',
+                  meetInfo.creator_id.toString()
+                );
                 navigation.navigate('BottomTab');
               }}
             />

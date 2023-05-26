@@ -25,6 +25,8 @@ const EditMemberScreen = () => {
 
   const [reload, setReload] = useState<string>('');
 
+  const [creator_id, setCreator_id] = useState<string>('');
+
   useEffect(() => {
     return () => {
       getNotiData();
@@ -88,6 +90,12 @@ const EditMemberScreen = () => {
         })
         .catch(error => console.error(error));
     });
+
+    AsyncStorage.getItem('creator_id', (err, result) => {
+      if (result) {
+        setCreator_id(result);
+      }
+    });
   };
 
   return (
@@ -126,17 +134,7 @@ const EditMemberScreen = () => {
         <ScrollView>
           {btnCheck ? (
             <View style={{ minHeight: 200 }}>
-              <Text
-                style={{
-                  height: 20,
-                  fontWeight: 'bold',
-                  fontSize: 18,
-                  marginLeft: 20,
-                  marginTop: 20,
-                }}
-              >
-                승인 대기 예비 회원
-              </Text>
+              <Text style={styles.lineText}>승인 대기 예비 회원</Text>
               {userData
                 .filter(data => data.role == 'waiting')
                 .map((data, i) => {
@@ -144,22 +142,12 @@ const EditMemberScreen = () => {
                     <EditMeberItem
                       data={data}
                       key={i}
-                      option={true}
+                      option={0}
                       setReload={setReload}
                     />
                   );
                 })}
-              <Text
-                style={{
-                  height: 20,
-                  fontWeight: 'bold',
-                  fontSize: 18,
-                  marginLeft: 20,
-                  marginTop: 20,
-                }}
-              >
-                회원
-              </Text>
+              <Text style={styles.lineText}>회원</Text>
               {userData
                 .filter(data => data.role == 'member')
                 .map((data, i) => {
@@ -167,7 +155,7 @@ const EditMemberScreen = () => {
                     <EditMeberItem
                       data={data}
                       key={i}
-                      option={false}
+                      option={1}
                       setReload={setReload}
                     />
                   );
@@ -175,14 +163,39 @@ const EditMemberScreen = () => {
             </View>
           ) : (
             <View style={styles.listBox}>
+              <Text style={styles.lineText}>운영자</Text>
               {userData
                 .filter(data => data.role == 'admin')
+                .map((data, i) => {
+                  if (data.id.toString() == creator_id) {
+                    return (
+                      <EditMeberItem
+                        data={data}
+                        key={i}
+                        option={4}
+                        setReload={setReload}
+                      />
+                    );
+                  }
+
+                  return (
+                    <EditMeberItem
+                      data={data}
+                      key={i}
+                      option={2}
+                      setReload={setReload}
+                    />
+                  );
+                })}
+              <Text style={styles.lineText}>회원</Text>
+              {userData
+                .filter(data => data.role == 'member')
                 .map((data, i) => {
                   return (
                     <EditMeberItem
                       data={data}
                       key={i}
-                      option={false}
+                      option={3}
                       setReload={setReload}
                     />
                   );
@@ -264,6 +277,14 @@ const styles = StyleSheet.create({
   },
   bottomDommy: {
     height: 30,
+  },
+  lineText: {
+    height: 40,
+    fontWeight: 'bold',
+    fontSize: 18,
+    paddingLeft: 20,
+    backgroundColor: '#E9F1FF',
+    lineHeight: 40,
   },
 });
 export default EditMemberScreen;
