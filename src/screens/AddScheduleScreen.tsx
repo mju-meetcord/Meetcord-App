@@ -23,10 +23,10 @@ const AddSchduleScreen = () => {
   const toggleSwitch = () => setIsEnabled(!isEnabled);
 
   const notiType = [
-    '2일 전(오전 9시)',
-    '1일 전(오전 9시)',
-    '당일날(오전 9시)',
     '없음',
+    '당일날(오전 9시)',
+    '1일 전(오전 9시)',
+    '2일 전(오전 9시)',
   ];
 
   const onPressStartTime = () => {
@@ -111,6 +111,7 @@ const AddSchduleScreen = () => {
                 value={startTime}
                 mode='time'
                 minuteInterval={10}
+                accentColor='#FA1F11'
               />
             )}
             {Platform.OS === 'android' && (
@@ -147,6 +148,7 @@ const AddSchduleScreen = () => {
                 value={finishTime}
                 mode='time'
                 minuteInterval={10}
+                accentColor='#FA1F11'
               />
             )}
             {Platform.OS === 'android' && (
@@ -180,13 +182,15 @@ const AddSchduleScreen = () => {
           <SelectDropdown
             data={notiType}
             onSelect={setSelected}
-            defaultButtonText='없음'
-            defaultValueByIndex={3}
+            defaultButtonText={notiType[0]}
+            defaultValueByIndex={0}
             statusBarTranslucent={true}
             buttonStyle={styles.notiSelectBox}
             buttonTextStyle={styles.notiSelectText}
             dropdownStyle={styles.notiDropDownBox}
-            selectedRowTextStyle={{ fontWeight: '600', color: '#5496FF' }} //임시 스타일이라 인라인 처리 합니다.
+            rowStyle={styles.notiDropDownItemBox}
+            rowTextStyle={styles.notiDropDownItemText}
+            selectedRowTextStyle={styles.notiSelectedText}
           />
         </View>
         <View style={[styles.descriptionBox, styles.innerMaginTop]}>
@@ -294,11 +298,22 @@ const styles = StyleSheet.create({
   },
   notiDropDownBox: {
     borderRadius: 10,
-    width: 200,
+    width: 220,
   },
   notiSelectText: {
     fontSize: 16,
     color: '#878787',
+    textAlign: 'right',
+  },
+  notiSelectedText: {
+    color: '#5496FF',
+  },
+  notiDropDownItemBox: {
+    height: 45,
+  },
+  notiDropDownItemText: {
+    textAlign: 'left',
+    marginLeft: 35,
   },
   descriptionBox: {
     backgroundColor: '#FFFFFF',
