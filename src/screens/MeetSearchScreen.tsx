@@ -57,6 +57,9 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
             name: string;
             description: string;
           }) => {
+            const index = route.params.data
+              .map(i => i.id)
+              .indexOf(item.group_id);
             return {
               id: item.group_id,
               meetImg: {
@@ -65,8 +68,14 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
               meetName: item.name,
               meetIntroduce: item.description,
               role: 'none',
-              hasJoined: false,
-              isWaiting: false,
+              hasJoined:
+                index != -1
+                  ? route.params.data[index].role != 'waiting'
+                  : false,
+              isWaiting:
+                index != -1
+                  ? route.params.data[index].role == 'waiting'
+                  : false,
             };
           }
         );

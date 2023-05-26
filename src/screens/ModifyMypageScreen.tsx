@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   TextInput,
 } from 'react-native';
 import {
@@ -16,6 +15,7 @@ import BackBtn from '../../assets/back_btn.svg';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'expo-image';
 
 type ModifyMypageScreenProps = StackScreenProps<
   RootStackParamList,
@@ -81,9 +81,10 @@ const MypageScreen = ({ route, navigation }: ModifyMypageScreenProps) => {
       })
         .then(response => response.json())
         .then(response => {
-          if (response.result == 200) {
-            navigation.pop();
-          }
+          Image.clearMemoryCache();
+          Image.clearDiskCache();
+
+          navigation.pop();
         })
         .catch(error => console.error(error));
     });

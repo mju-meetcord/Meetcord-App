@@ -14,6 +14,7 @@ import CreateNotiScreen from './screens/CreateNotiScreen';
 import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
+import EditMemberScreen from './screens/EditMemberScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -74,6 +75,11 @@ const App = () => {
         <Stack.Screen
           name='MeetSearch'
           component={MeetSearchSreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='EditMember'
+          component={EditMemberScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

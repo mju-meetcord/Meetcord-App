@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Image,
   ImageSourcePropType,
 } from 'react-native';
 import {
@@ -17,6 +16,7 @@ import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'expo-image';
 
 type MypageScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Mypage'>,
