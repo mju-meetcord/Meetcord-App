@@ -19,6 +19,8 @@ const AddSchduleScreen = () => {
   const [finishTime, setFinishTime] = useState<Date>(new Date());
   const [startTimeOpen, setStartTimeOpen] = useState(false);
   const [finishTimeOpen, setFinishTimeOpen] = useState(false);
+  const [isStartTimeTouched, setIsStartTimeTouched] = useState(false);
+  const [isFinishTimeTouched, setIsFinishTimeTouched] = useState(false);
   const [selected, setSelected] = useState(undefined);
   const toggleSwitch = () => setIsEnabled(!isEnabled);
 
@@ -30,6 +32,7 @@ const AddSchduleScreen = () => {
   ];
 
   const onPressStartTime = () => {
+    Platform.OS === 'android' && setIsStartTimeTouched(!isStartTimeTouched);
     setStartTimeOpen(!startTimeOpen);
     if (finishTimeOpen) {
       setFinishTimeOpen(!finishTimeOpen);
@@ -37,6 +40,7 @@ const AddSchduleScreen = () => {
   };
 
   const onPressFinishTime = () => {
+    Platform.OS === 'android' && setIsFinishTimeTouched(!isFinishTimeTouched);
     setFinishTimeOpen(!finishTimeOpen);
     if (startTimeOpen) {
       setStartTimeOpen(!startTimeOpen);
@@ -49,6 +53,7 @@ const AddSchduleScreen = () => {
       return;
     }
     setStartTime(date);
+    Platform.OS === 'android' && setIsStartTimeTouched(!isStartTimeTouched);
   };
 
   const handleFinishChange = (date: Date | undefined) => {
@@ -57,6 +62,7 @@ const AddSchduleScreen = () => {
       return;
     }
     setFinishTime(date);
+    Platform.OS === 'android' && setIsFinishTimeTouched(!isFinishTimeTouched);
   };
 
   return (
@@ -120,7 +126,12 @@ const AddSchduleScreen = () => {
                   style={styles.androidTimePicker}
                   onPress={onPressStartTime}
                 >
-                  <Text style={styles.androidTimePickerText}>
+                  <Text
+                    style={[
+                      styles.androidTimePickerText,
+                      isStartTimeTouched && styles.androidAccentColor,
+                    ]}
+                  >
                     {startTime.toLocaleTimeString('ko-KR', {
                       hour: '2-digit',
                       minute: '2-digit',
@@ -157,7 +168,12 @@ const AddSchduleScreen = () => {
                   style={styles.androidTimePicker}
                   onPress={onPressFinishTime}
                 >
-                  <Text style={styles.androidTimePickerText}>
+                  <Text
+                    style={[
+                      styles.androidTimePickerText,
+                      isFinishTimeTouched && styles.androidAccentColor,
+                    ]}
+                  >
                     {finishTime.toLocaleTimeString('ko-KR', {
                       hour: '2-digit',
                       minute: '2-digit',
@@ -279,6 +295,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000',
     lineHeight: 19,
+  },
+  androidAccentColor: {
+    color: '#FA1F11',
   },
   notiSettingBox: {
     width: '85%',
