@@ -30,6 +30,7 @@ export type RootStackParamList = {
     meetSearchText: string;
   };
   Splash: undefined;
+  ScheduleDetail: undefined;
 };
 
 export type BottomTabParamList = {
