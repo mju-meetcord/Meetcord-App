@@ -47,7 +47,8 @@ const NotificationScreen = ({ navigation }: NotificationScreenProps) => {
         .then(response => response.json())
         .then(response => {
           if (response.data.length > 0) {
-            setData(response.data);
+            response.data.sort;
+            setData(response.data.sort().reverse());
           } else {
             setData([]);
           }

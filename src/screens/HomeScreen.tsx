@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useState } from 'react';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, DateData } from 'react-native-calendars';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from '../types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import EventItem from '../components/EventItem';
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
 
@@ -11,18 +14,33 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [currentMonth, setCurrentMonth] = useState('');
   const [schedule, setSchedule] = useState(false);
 
-  const handleDateSelect = (date: any) => {
+  const handleDateSelect = (date: DateData) => {
     setSelectedDate(date.dateString);
     setSchedule(true);
   };
 
-  const handleMonthChange = (month: any) => {
+  const handleMonthChange = (month: DateData) => {
     setCurrentMonth(month.dateString);
   };
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.topContainer}>
+      <Text
+        style={{
+          height: 120,
+          lineHeight: 180,
+          left: 30,
+          fontSize: 20,
+          fontWeight: 'bold',
+        }}
+      >
+        공지 안내
+      </Text>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.topContainer}
+      >
         <View style={styles.notiBox}>
           <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
           <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
@@ -35,11 +53,25 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
           <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
         </View>
-      </View>
+      </ScrollView>
       <View style={styles.mainContainer}>
+        <Text
+          style={{
+            width: '100%',
+            left: 30,
+            fontSize: 20,
+            fontWeight: 'bold',
+            top: -15,
+          }}
+        >
+          일정 캘린더
+        </Text>
         <Calendar
           onDayPress={handleDateSelect}
-          markedDates={{ [selectedDate]: { selected: true } }}
+          markedDates={{
+            [selectedDate]: { selected: true },
+            '2023-05-15': { marked: true, dotColor: '#50cebb' },
+          }}
           theme={{
             calendarBackground: '#fff',
             textSectionTitleColor: '#b6c1cd',
@@ -60,10 +92,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           style={{
             borderWidth: 1,
             borderColor: '#d6d7da',
-            borderRadius: 5,
+            borderRadius: 20,
             overflow: 'hidden',
-            height: 400,
-            width: 360,
+            height: 350,
+            width: 380,
           }}
           onMonthChange={handleMonthChange}
           monthFormat={'yyyy MM'}
@@ -76,18 +108,43 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       {schedule && (
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleBox}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', lineHeight: 40 }}>
-              컴퓨터 아키텍처 중간고사
-            </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22 }}>
-              2023년 5월 3일 수요일
-            </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22 }}>
-              시간: 15:00 ~ 16:00
-            </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22 }}>
-              장소: 5공학관 Y5407 강의실
-            </Text>
+            <View
+              style={{
+                width: '100%',
+                height: 60,
+                borderBottomWidth: 2,
+                borderColor: '#5496FF',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{ fontSize: 22, color: '#5496FF', fontWeight: 'bold' }}
+              >
+                {`${selectedDate.split('-')[0]}년 ${
+                  selectedDate.split('-')[1]
+                }월 ${selectedDate.split('-')[2]}일 ${
+                  new Date(selectedDate).toDateString().split(' ')[0]
+                }`}
+              </Text>
+              <TouchableOpacity>
+                <Icon
+                  name={'add-circle'}
+                  style={{
+                    width: 30,
+                    textAlign: 'center',
+                    fontSize: 30,
+                    marginLeft: 20,
+                    color: '#5496FF',
+                    fontWeight: 'bold',
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            {[1, 2].map(i => {
+              return <EventItem key={i} />;
+            })}
           </View>
         </View>
       )}
@@ -101,23 +158,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9F1FF',
   },
   topContainer: {
-    height: 160,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'flex-end',
+    height: 100,
+    backgroundColor: '#E9F1FF',
     flexDirection: 'row',
-    gap: 15,
   },
   mainContainer: {
     width: '100%',
-    height: 500,
+    height: 400,
     justifyContent: 'center',
     alignItems: 'center',
   },
   notiBox: {
     borderWidth: 1,
     borderColor: '#C6C6C6',
-    width: '80%',
-    height: '50%',
+    width: 320,
+    height: 70,
     borderRadius: 20,
     paddingTop: 10,
     backgroundColor: '#FFFFFF',
@@ -127,13 +182,16 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     marginBottom: 20,
-  },
-  notiHead: {
-    fontSize: 25,
+    marginRight: 10,
     marginLeft: 20,
   },
+  notiHead: {
+    fontSize: 23,
+    marginLeft: 20,
+    fontWeight: 'bold',
+  },
   notiText: {
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 20,
   },
   arrow: {
@@ -142,23 +200,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   scheduleContainer: {
-    height: 200,
+    minHeight: 200,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
   scheduleBox: {
     borderWidth: 1,
     borderColor: '#C6C6C6',
-    borderRadius: 10,
+    borderRadius: 25,
     backgroundColor: '#FFFFFF',
-    width: 360,
-    height: 160,
+    width: 380,
+    minHeight: 160,
     shadowColor: '#C6C6C6',
     shadowOffset: { width: 3, height: 5 },
     shadowOpacity: 0.6,
     shadowRadius: 2,
     elevation: 5,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
   },
 });
 
