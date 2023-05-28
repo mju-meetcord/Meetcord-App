@@ -8,10 +8,13 @@ import {
   Switch,
   Platform,
   StatusBar,
+  Alert,
 } from 'react-native';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../types';
 
 const AddSchduleScreen = () => {
   const [title, setTitle] = useState('');
@@ -30,7 +33,10 @@ const AddSchduleScreen = () => {
 
   const [selected, setSelected] = useState(undefined);
 
+  const [isEditing, setIsEditing] = useState(false);
+
   const toggleSwitch = () => setIsEnabled(!isEnabled);
+  const navigation = useNavigation<NavigationProp>();
 
   const notiType = [
     '없음',
@@ -73,21 +79,33 @@ const AddSchduleScreen = () => {
     Platform.OS === 'android' && setIsFinishTimeTouched(!isFinishTimeTouched);
   };
 
+  const deleteButtonPress = () => {
+    Alert.alert('', title + '일정을 삭제하겠습니까?', [
+      { text: '취소', style: 'cancel' },
+      {
+        text: '삭제',
+        style: 'destructive',
+      },
+    ]);
+  };
+
   return (
     <View style={styles.mainContainer}>
       {Platform.OS === 'android' && (
         <StatusBar backgroundColor='black' barStyle={'default'} />
       )}
       <View style={styles.topBar}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.pop()}>
           <Text style={styles.topBarText}>취소</Text>
         </TouchableOpacity>
-        <Text style={[styles.topBarText, styles.topBarTitle]}>새로운 일정</Text>
+        <Text style={[styles.topBarText, styles.topBarTitle]}>
+          {isEditing ? '일정 편집' : '새로운 일정'}
+        </Text>
         <TouchableOpacity disabled={isDisabled}>
           <Text
             style={[styles.topBarText, !title ? styles.disabledAddText : null]}
           >
-            추가
+            {isEditing ? '완료' : '추가'}
           </Text>
         </TouchableOpacity>
       </View>
@@ -263,6 +281,14 @@ const AddSchduleScreen = () => {
             multiline={true}
           />
         </View>
+        {isEditing && (
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={deleteButtonPress}
+          >
+            <Text style={styles.deleteButtonText}>일정 삭제</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </View>
   );
@@ -406,6 +432,21 @@ const styles = StyleSheet.create({
   descriptionInput: {
     fontSize: 16,
     lineHeight: 20,
+  },
+  deleteButton: {
+    width: '90%',
+    alignSelf: 'center',
+    height: 56,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 14,
+    marginTop: 124,
+  },
+  deleteButtonText: {
+    color: '#FA1F11',
+    fontSize: 17,
+    lineHeight: 22,
   },
 });
 
