@@ -14,14 +14,22 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 
 const AddSchduleScreen = () => {
+  const [title, setTitle] = useState('');
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const [isEnabled, setIsEnabled] = useState(false);
+
   const [startTime, setStartTime] = useState<Date>(new Date());
   const [finishTime, setFinishTime] = useState<Date>(new Date());
+
+  // 안드로이드 커스텀용
   const [startTimeOpen, setStartTimeOpen] = useState(false);
   const [finishTimeOpen, setFinishTimeOpen] = useState(false);
   const [isStartTimeTouched, setIsStartTimeTouched] = useState(false);
   const [isFinishTimeTouched, setIsFinishTimeTouched] = useState(false);
+
   const [selected, setSelected] = useState(undefined);
+
   const toggleSwitch = () => setIsEnabled(!isEnabled);
 
   const notiType = [
@@ -72,8 +80,12 @@ const AddSchduleScreen = () => {
           <Text style={styles.topBarText}>취소</Text>
         </TouchableOpacity>
         <Text style={[styles.topBarText, styles.topBarTitle]}>새로운 일정</Text>
-        <TouchableOpacity>
-          <Text style={styles.topBarText}>추가</Text>
+        <TouchableOpacity disabled={isDisabled}>
+          <Text
+            style={[styles.topBarText, !title ? styles.disabledAddText : null]}
+          >
+            추가
+          </Text>
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.mainView}>
@@ -82,7 +94,13 @@ const AddSchduleScreen = () => {
             <TextInput
               style={styles.mainScheduleInfoText}
               placeholder='제목'
+              value={title}
+              onChangeText={text => {
+                text ? setIsDisabled(false) : setIsDisabled(true);
+                setTitle(text);
+              }}
               placeholderTextColor={'#878787'}
+              autoFocus // 제목 value가 null일 때만
             />
           </View>
           <View style={styles.innerScheduleBox}>
@@ -270,6 +288,9 @@ const styles = StyleSheet.create({
   topBarTitle: {
     fontWeight: '600',
   },
+  disabledAddText: {
+    color: 'rgba(255, 255, 255, 0.5)',
+  },
   mainView: {
     backgroundColor: '#F5F5F5',
   },
@@ -290,9 +311,7 @@ const styles = StyleSheet.create({
   noneBorder: {
     borderBottomWidth: 0,
   },
-  innerMaginTop: {
-    marginTop: 20,
-  },
+  innerMaginTop: { marginTop: 30 },
   mainScheduleInfoText: {
     color: '#000000',
     fontSize: 16,
