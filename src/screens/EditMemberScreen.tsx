@@ -7,55 +7,25 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MeberItem from '../components/MeberItem';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { BottomTabParamList, RootStackParamList } from '../types';
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import MemberModal from '../components/MemberModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/Ionicons';
+import EditMeberItem from '../components/EditMeberItem';
+import { Member } from './MemberScreen';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../types';
 
-type MemberScreenProps = CompositeScreenProps<
-  BottomTabScreenProps<BottomTabParamList, 'Member'>,
-  StackScreenProps<RootStackParamList>
->;
-
-export interface Member {
-  id: number;
-  profile: ImageSourcePropType;
-  name: string;
-  introduction: string;
-  role: string;
-  nickname: string;
-  birthday: string;
-  email: string;
-  phone: string;
-  mem_id: number;
-}
-
-const MemberScreen = ({ navigation }: MemberScreenProps) => {
+const EditMemberScreen = () => {
+  const navigation = useNavigation<NavigationProp>();
   const [btnCheck, setBtnCheck] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
 
   const isFoused = useIsFocused();
 
   const [userData, setUserData] = useState<Member[]>([]);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [groupname, setGroupname] = useState('');
-  const [modalData, setModalData] = useState<Member>({
-    id: -1,
-    profile: { uri: 'http://121.124.131.142:4000/images/user/default.jpg' },
-    name: 'xxx',
-    introduction: '',
-    role: 'temp',
-    nickname: '',
-    birthday: '',
-    email: 'xxx@xxxx.com',
-    phone: '010xxxxxxxx',
-    mem_id: -1,
-  });
+
+  const [reload, setReload] = useState<string>('');
+
+  const [creator_id, setCreator_id] = useState<string>('');
 
   useEffect(() => {
     return () => {
@@ -65,13 +35,18 @@ const MemberScreen = ({ navigation }: MemberScreenProps) => {
 
   useEffect(() => {
     getNotiData();
+  }, [reload]);
+
+  useEffect(() => {
+    return;
+  }, [userData]);
+
+  useEffect(() => {
+    getNotiData();
   }, []);
 
   const getNotiData = () => {
     AsyncStorage.getItem('group_name', (err, result) => {
-      if (result) {
-        setGroupname(result);
-      }
       fetch(`http://121.124.131.142:4000/member?name=${result}`, {
         method: 'get',
         headers: {
@@ -116,11 +91,9 @@ const MemberScreen = ({ navigation }: MemberScreenProps) => {
         .catch(error => console.error(error));
     });
 
-    AsyncStorage.getItem('group_role', (err, result) => {
-      if (result == 'admin') {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
+    AsyncStorage.getItem('creator_id', (err, result) => {
+      if (result) {
+        setCreator_id(result);
       }
     });
   };
@@ -135,15 +108,9 @@ const MemberScreen = ({ navigation }: MemberScreenProps) => {
     >
       <View style={styles.container}>
         <View style={styles.topBar}>
-          <Text style={styles.title}>{groupname}의 구성원</Text>
-          <TouchableOpacity
-            disabled={!isAdmin}
-            onPress={() => navigation.navigate('EditMember')}
-          >
-            <Icon
-              name={'settings-outline'}
-              style={isAdmin ? styles.editBtn : styles.editBtnDisalbe}
-            />
+          <Text style={styles.title}>구성원 편집</Text>
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <Text style={styles.editBtn}>완료</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.btnContainer}>
@@ -167,34 +134,69 @@ const MemberScreen = ({ navigation }: MemberScreenProps) => {
         <ScrollView>
           {btnCheck ? (
             <View style={{ minHeight: 200 }}>
+              <Text style={styles.lineText}>승인 대기 예비 회원</Text>
+              {userData
+                .filter(data => data.role == 'waiting')
+                .map((data, i) => {
+                  return (
+                    <EditMeberItem
+                      data={data}
+                      key={i}
+                      option={0}
+                      setReload={setReload}
+                    />
+                  );
+                })}
+              <Text style={styles.lineText}>회원</Text>
               {userData
                 .filter(data => data.role == 'member')
                 .map((data, i) => {
                   return (
-                    <MeberItem
+                    <EditMeberItem
                       data={data}
                       key={i}
-                      onpress={() => {
-                        setModalData(data);
-                        setModalVisible(true);
-                      }}
+                      option={1}
+                      setReload={setReload}
                     />
                   );
                 })}
             </View>
           ) : (
             <View style={styles.listBox}>
+              <Text style={styles.lineText}>운영자</Text>
               {userData
                 .filter(data => data.role == 'admin')
                 .map((data, i) => {
+                  if (data.id.toString() == creator_id) {
+                    return (
+                      <EditMeberItem
+                        data={data}
+                        key={i}
+                        option={4}
+                        setReload={setReload}
+                      />
+                    );
+                  }
+
                   return (
-                    <MeberItem
+                    <EditMeberItem
                       data={data}
                       key={i}
-                      onpress={() => {
-                        setModalData(data);
-                        setModalVisible(true);
-                      }}
+                      option={2}
+                      setReload={setReload}
+                    />
+                  );
+                })}
+              <Text style={styles.lineText}>회원</Text>
+              {userData
+                .filter(data => data.role == 'member')
+                .map((data, i) => {
+                  return (
+                    <EditMeberItem
+                      data={data}
+                      key={i}
+                      option={3}
+                      setReload={setReload}
                     />
                   );
                 })}
@@ -202,11 +204,6 @@ const MemberScreen = ({ navigation }: MemberScreenProps) => {
           )}
         </ScrollView>
       </View>
-      <MemberModal
-        data={modalData}
-        isVisible={modalVisible}
-        onBackdropPress={() => setModalVisible(false)}
-      />
     </SafeAreaView>
   );
 };
@@ -227,20 +224,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#5496FF',
     left: 25,
   },
   editBtn: {
-    fontSize: 28,
-    color: '#676767',
+    fontSize: 24,
+    color: '#000000',
     fontWeight: 'bold',
     right: 25,
   },
-  editBtnDisalbe: {
-    fontSize: 28,
-    color: '#E9F1FF',
-    fontWeight: 'bold',
-    right: 25,
-  },
+
   btnContainer: {
     height: 60,
     borderBottomWidth: 1,
@@ -285,5 +278,13 @@ const styles = StyleSheet.create({
   bottomDommy: {
     height: 30,
   },
+  lineText: {
+    height: 40,
+    fontWeight: 'bold',
+    fontSize: 18,
+    paddingLeft: 20,
+    backgroundColor: '#E9F1FF',
+    lineHeight: 40,
+  },
 });
-export default MemberScreen;
+export default EditMemberScreen;

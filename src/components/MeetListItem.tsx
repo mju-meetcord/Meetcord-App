@@ -3,11 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  ImageSourcePropType,
   TouchableOpacity,
+  ImageSourcePropType,
 } from 'react-native';
 import MeetInfoModal from './MeetInfoModal';
+import { Image } from 'expo-image';
+
 interface ListItemProps {
   meetInfo: {
     id: number;
@@ -15,6 +16,7 @@ interface ListItemProps {
     meetName: string;
     meetIntroduce: string;
     role: string;
+    creator_id: number;
   };
   userJoinInfo: {
     hasJoined: boolean;
