@@ -15,6 +15,7 @@ import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
 import AddSchduleScreen from './screens/AddScheduleScreen';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -27,10 +28,19 @@ const App = () => {
           component={SplashScreen}
           options={{ headerShown: false }}
         /> */}
+        {/* <Stack.Screen
+          name='TempHome'
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        /> */}
         <Stack.Screen
           name='AddSchedule'
           component={AddSchduleScreen}
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            presentation: 'modal',
+            gestureDirection: 'vertical',
+          }}
         />
         {/* <Stack.Screen
           name='SignIn'

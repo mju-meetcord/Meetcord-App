@@ -7,9 +7,9 @@ import {
   TextInput,
   Switch,
   Platform,
+  StatusBar,
 } from 'react-native';
 import { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -74,7 +74,10 @@ const AddSchduleScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.mainContainer} edges={['top']}>
+    <View style={styles.mainContainer}>
+      {Platform.OS === 'android' && (
+        <StatusBar backgroundColor='black' barStyle={'default'} />
+      )}
       <View style={styles.topBar}>
         <TouchableOpacity>
           <Text style={styles.topBarText}>취소</Text>
@@ -261,15 +264,15 @@ const AddSchduleScreen = () => {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    height: '100%',
-    backgroundColor: '#5496FF',
+    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+    backgroundColor: Platform.OS === 'android' ? 'black' : '#F5F5F5',
   },
   topBar: {
     backgroundColor: '#5496FF',
@@ -277,6 +280,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 50,
     alignItems: 'center',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
   topBarText: {
     color: '#FFFFFF',
