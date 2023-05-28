@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -210,6 +211,11 @@ const styles = StyleSheet.create({
 
   Container2: {
     height: '25%',
+    ...Platform.select({
+      android: {
+        height: 200,
+      },
+    }),
     backgroundColor: '#E9F1FF',
     borderRadius: 10,
     marginHorizontal: 25,
@@ -306,6 +312,11 @@ const styles = StyleSheet.create({
   bottomBox: {
     marginTop: 126,
     height: 100,
+    ...Platform.select({
+      android: {
+        marginTop: 40,
+      },
+    }),
   },
   bottomText: {
     fontSize: 96,
@@ -313,6 +324,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#5496FF',
     opacity: 0.3,
+    ...Platform.select({
+      android: {
+        fontSize: 89,
+      },
+    }),
   },
   modifySection: {
     width: '25%',

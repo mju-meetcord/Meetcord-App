@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -197,7 +198,6 @@ const styles = StyleSheet.create({
   NotiDetail: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginLeft: 12,
   },
 
   date: {
@@ -215,6 +215,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 530,
     borderColor: '#5496FF',
+    ...Platform.select({
+      android: {
+        textAlignVertical: 'top',
+        height: 450,
+      },
+    }),
   },
   bottomBox: {
     height: 100,
@@ -225,6 +231,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#5496FF33',
     marginTop: -14,
+    ...Platform.select({
+      android: {
+        fontSize: 90,
+      },
+    }),
   },
 });
 

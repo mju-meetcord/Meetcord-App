@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -109,7 +110,16 @@ const CreateNotiScreen = ({ route, navigation }: CreateNotiScreenProps) => {
           <Text style={styles.date}>{new Date().toISOString()}</Text>
           <View style={styles.border} />
         </View>
-        <ScrollView style={{ minHeight: 530 }}>
+        <ScrollView
+          style={{
+            minHeight: 530,
+            ...Platform.select({
+              android: {
+                // minheight: '63%',
+              },
+            }),
+          }}
+        >
           <TextInput
             placeholder='내용을 입력해주세요.'
             style={styles.messageInput}
@@ -167,7 +177,13 @@ const styles = StyleSheet.create({
     borderColor: '#5496FF',
   },
 
-  backBtn: {},
+  backBtn: {
+    ...Platform.select({
+      android: {
+        paddingTop: 7,
+      },
+    }),
+  },
 
   NotiDetail: {
     fontSize: 20,
@@ -190,6 +206,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 530,
     borderColor: '#5496FF',
+    ...Platform.select({
+      android: {
+        textAlignVertical: 'top',
+        height: 450,
+      },
+    }),
   },
   bottomBox: {
     height: 100,
@@ -200,6 +222,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#5496FF33',
     marginTop: -14,
+    ...Platform.select({
+      android: {
+        marginTop: -86,
+        fontSize: 90,
+      },
+    }),
   },
 });
 

@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from 'react-native';
 
 type MeetModalButtonProps = {
   firstText: string;
@@ -38,6 +44,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    ...Platform.select({
+      android: {
+        paddingBottom: 5,
+      },
+    }),
   },
   hasJoinedButtonText: {
     color: '#5496FF',
@@ -55,6 +66,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 10,
+    ...Platform.select({
+      android: {
+        paddingTop: 3,
+      },
+    }),
   },
   cancelButtonText: {
     color: '#676767',

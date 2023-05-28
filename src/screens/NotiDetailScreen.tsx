@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -120,7 +121,11 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
         <Text style={styles.date}>{data.created_at}</Text>
         <View style={styles.border} />
       </View>
-      <ScrollView style={{ minHeight: 530 }}>
+      <ScrollView
+        style={{
+          minHeight: 530,
+        }}
+      >
         <Text style={styles.message}>{data.message}</Text>
       </ScrollView>
       <View style={styles.bottomBox}>
@@ -162,6 +167,11 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     marginLeft: 12,
+    ...Platform.select({
+      android: {
+        paddingTop: 7,
+      },
+    }),
   },
   btn: {
     fontSize: 24,
@@ -213,6 +223,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#5496FF33',
     marginTop: -14,
+    ...Platform.select({
+      android: {
+        marginTop: -86,
+        fontSize: 90,
+      },
+    }),
   },
 });
 

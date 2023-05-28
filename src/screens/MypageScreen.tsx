@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Alert,
   ImageSourcePropType,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -289,14 +290,28 @@ const styles = StyleSheet.create({
 
   bottomBox: {
     height: 100,
-    marginTop: 58,
     alignItems: 'center',
+    ...Platform.select({
+      android: {
+        marginTop: -1,
+      },
+      ios: {
+        marginTop: 58,
+      },
+    }),
   },
   bottomText: {
-    fontSize: 96,
     fontWeight: 'bold',
     color: '#5496FF',
     opacity: 0.3,
+    ...Platform.select({
+      android: {
+        fontSize: 89,
+      },
+      ios: {
+        fontSize: 96,
+      },
+    }),
   },
 });
 export default MypageScreen;

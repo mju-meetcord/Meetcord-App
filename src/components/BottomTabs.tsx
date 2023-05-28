@@ -4,7 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import MypageScreen from '../screens/MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import TapBarIcon from '../components/TapBarIcon';
 import { BottomTabParamList, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -92,6 +92,11 @@ const styles = StyleSheet.create({
     height: 100,
     paddingVertical: 5,
     paddingHorizontal: 10,
+    ...Platform.select({
+      android: {
+        height: 85,
+      },
+    }),
   },
 });
 
