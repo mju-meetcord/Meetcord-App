@@ -15,7 +15,6 @@ import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
 import AddSchduleScreen from './screens/AddScheduleScreen';
-import HomeScreen from './screens/HomeScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
