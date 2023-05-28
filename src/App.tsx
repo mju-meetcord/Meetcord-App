@@ -23,26 +23,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name='Splash'
           component={SplashScreen}
           options={{ headerShown: false }}
-        /> */}
-        {/* <Stack.Screen
-          name='TempHome'
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        /> */}
-        <Stack.Screen
-          name='AddSchedule'
-          component={AddSchduleScreen}
-          options={{
-            headerShown: false,
-            presentation: 'modal',
-            gestureDirection: 'vertical',
-          }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name='SignIn'
           component={SignIn}
           options={{ headerShown: false }}
@@ -91,7 +77,16 @@ const App = () => {
           name='MeetSearch'
           component={MeetSearchSreen}
           options={{ headerShown: false }}
-        /> */}
+        />
+        <Stack.Screen
+          name='AddSchedule'
+          component={AddSchduleScreen}
+          options={{
+            headerShown: false,
+            presentation: 'modal',
+            gestureDirection: 'vertical',
+          }}
+        />
       </Stack.Navigator>
       <StatusBar style='auto' />
     </NavigationContainer>

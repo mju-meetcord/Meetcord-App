@@ -9,12 +9,14 @@ import {
   Platform,
   StatusBar,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProp } from '../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AddSchduleScreen = () => {
   const [title, setTitle] = useState('');
@@ -33,7 +35,7 @@ const AddSchduleScreen = () => {
 
   const [selected, setSelected] = useState(undefined);
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
 
   const toggleSwitch = () => setIsEnabled(!isEnabled);
   const navigation = useNavigation<NavigationProp>();
@@ -90,7 +92,7 @@ const AddSchduleScreen = () => {
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <SafeAreaView style={styles.mainContainer} edges={['bottom']}>
       {Platform.OS === 'android' && (
         <StatusBar backgroundColor='black' barStyle={'default'} />
       )}
@@ -272,15 +274,22 @@ const AddSchduleScreen = () => {
             selectedRowTextStyle={styles.notiSelectedText}
           />
         </View>
-        <View style={[styles.descriptionBox, styles.innerMaginTop]}>
-          <TextInput
-            style={styles.descriptionInput}
-            placeholder='설명'
-            placeholderTextColor={'#878787'}
-            maxLength={150}
-            multiline={true}
-          />
-        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.select({ ios: 'padding' })}
+          keyboardVerticalOffset={Platform.select({ ios: 100 })}
+          style={{ flex: 1 }}
+        >
+          <View style={[styles.descriptionBox, styles.innerMaginTop]}>
+            <TextInput
+              style={styles.descriptionInput}
+              placeholder='설명'
+              placeholderTextColor={'#878787'}
+              maxLength={150}
+              multiline={true}
+              numberOfLines={6}
+            />
+          </View>
+        </KeyboardAvoidingView>
         {isEditing && (
           <TouchableOpacity
             style={styles.deleteButton}
@@ -290,7 +299,7 @@ const AddSchduleScreen = () => {
           </TouchableOpacity>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -358,7 +367,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iOSTimeBlock: {
-    width: 93,
+    width: 70,
     height: 35,
     borderRadius: 5,
     backgroundColor: '#EBEBF0',
@@ -432,6 +441,7 @@ const styles = StyleSheet.create({
   descriptionInput: {
     fontSize: 16,
     lineHeight: 20,
+    textAlignVertical: 'top',
   },
   deleteButton: {
     width: '90%',
