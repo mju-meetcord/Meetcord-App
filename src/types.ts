@@ -31,6 +31,7 @@ export type RootStackParamList = {
   };
   Splash: undefined;
   AddSchedule: undefined;
+  TempHome: undefined;
 };
 
 export type BottomTabParamList = {

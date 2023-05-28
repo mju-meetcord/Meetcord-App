@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from '../types';
+import { Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProp } from '../types';
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
 
@@ -10,6 +13,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
   const [schedule, setSchedule] = useState(false);
+  const tempNav = useNavigation<NavigationProp>();
 
   const handleDateSelect = (date: any) => {
     setSelectedDate(date.dateString);
@@ -73,6 +77,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           )}
         />
       </View>
+      <Button
+        title='바로가기'
+        onPress={() => tempNav.navigate('AddSchedule')}
+      />
       {schedule && (
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleBox}>
