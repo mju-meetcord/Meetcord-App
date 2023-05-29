@@ -36,7 +36,10 @@ export type RootStackParamList = {
   };
   Splash: undefined;
   EditMember: undefined;
-  AddSchedule: undefined;
+  AddSchedule: {
+    date: Date;
+    groupname: string;
+  };
 };
 
 export type BottomTabParamList = {
@@ -71,4 +74,5 @@ export type EditMemberItemProps = {
 
 export type EventItemProps = {
   data: MeetEvent;
+  onpress: () => void;
 };

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import { EventItemProps } from '../types';
 
-const EventItem = ({ data }: EventItemProps) => {
+const EventItem = ({ data, onpress }: EventItemProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.leftBox}>
@@ -23,7 +23,7 @@ const EventItem = ({ data }: EventItemProps) => {
         <Text style={{ fontSize: 16 }}>장소 : {data.place}</Text>
       </View>
       <View style={styles.right}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onpress()}>
           <Icon2 name={'navigate-next'} style={styles.nextIcon} />
         </TouchableOpacity>
       </View>
