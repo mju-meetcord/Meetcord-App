@@ -5,6 +5,7 @@ import { Member } from './screens/MemberScreen';
 import { Meet } from './screens/MeetScreen';
 import React from 'react';
 import { MeetEvent } from './screens/HomeScreen';
+import { ImageSourcePropType } from 'react-native';
 
 export type RootStackParamList = {
   ModifyNoti: {
@@ -37,6 +38,10 @@ export type RootStackParamList = {
   Splash: undefined;
   EditMember: undefined;
   AddSchedule: undefined;
+  ScheduleDetail: undefined;
+  AddActivityRecord: {
+    data?: ActivityDataType;
+  };
 };
 
 export type BottomTabParamList = {
@@ -71,4 +76,10 @@ export type EditMemberItemProps = {
 
 export type EventItemProps = {
   data: MeetEvent;
+};
+
+export type ActivityDataType = {
+  image?: ImageSourcePropType;
+  hashTag?: string;
+  detail?: string;
 };
