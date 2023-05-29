@@ -24,16 +24,6 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='ScheduleDetail'
-          component={ScheduleDetailScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='AddActivityRecord'
-          component={AddActivityRecordScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name='Splash'
           component={SplashScreen}
           options={{ headerShown: false }}
@@ -86,6 +76,16 @@ const App = () => {
         <Stack.Screen
           name='MeetSearch'
           component={MeetSearchSreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='ScheduleDetail'
+          component={ScheduleDetailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='AddActivityRecord'
+          component={AddActivityRecordScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
