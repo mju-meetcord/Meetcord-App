@@ -2,15 +2,19 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Calendar, DateData } from 'react-native-calendars';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { BottomTabParamList } from '../types';
+import { BottomTabParamList, RootStackParamList } from '../types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EventItem from '../components/EventItem';
 import { Direction } from 'react-native-modal';
-import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
+type HomeScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList, 'Home'>,
+  StackScreenProps<RootStackParamList>
+>;
 
 export interface MeetEvent {
   id: number;
@@ -174,6 +178,13 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     setCurrentMonth(month.dateString);
   };
 
+  const handleNoti = (i: number) => {
+    navigation.navigate('NotiDetail', {
+      id: data[i].notification_id,
+      isAdmin: false,
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.notiLineText}>공지 안내</Text>
@@ -182,18 +193,14 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         showsHorizontalScrollIndicator={false}
         style={styles.topContainer}
       >
-        <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>{data[0].title}</Text>
-          <Text style={styles.notiText}>{data[0].created_at}</Text>
-        </View>
-        <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>{data[1].title}</Text>
-          <Text style={styles.notiText}>{data[1].created_at}</Text>
-        </View>
-        <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>{data[2].title}</Text>
-          <Text style={styles.notiText}>{data[2].created_at}</Text>
-        </View>
+        {[0, 1, 2].map(i => (
+          <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
+            <View style={styles.notiBox}>
+              <Text style={styles.notiHead}>{data[i].title}</Text>
+              <Text style={styles.notiText}>{data[i].created_at}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
       <View style={styles.mainContainer}>
         <Text style={styles.calenderText}>일정 캘린더</Text>
