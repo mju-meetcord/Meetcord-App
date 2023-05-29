@@ -24,13 +24,13 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='AddActivityRecord'
-          component={AddActivityRecordScreen}
+          name='ScheduleDetail'
+          component={ScheduleDetailScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='ScheduleDetail'
-          component={ScheduleDetailScreen}
+          name='AddActivityRecord'
+          component={AddActivityRecordScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

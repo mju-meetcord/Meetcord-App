@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -6,11 +7,34 @@ import {
   StatusBar,
   ScrollView,
   TextInput,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CameraIcon from 'assets/camera_icon.svg';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../types';
 
-const AddActivityRecordScreen = () => {
+type AddActivityRecordScreenProps = StackScreenProps<
+  RootStackParamList,
+  'AddActivityRecord'
+>;
+
+const AddActivityRecordScreen = ({ route }: AddActivityRecordScreenProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [hashTagText, setHashTagText] = useState(route.params.data?.hashTag);
+  const [detailText, setDetailText] = useState(route.params.data?.detail);
+
+  useEffect(() => {
+    if (!route.params.data) {
+      return;
+    }
+    if (Object.keys(route.params.data).length) {
+      setIsEditing(true);
+    } else {
+      setIsEditing(false);
+    }
+  });
+
   return (
     <SafeAreaView style={styles.topWrapper} edges={['top']}>
       <StatusBar barStyle={'light-content'} />
@@ -19,7 +43,7 @@ const AddActivityRecordScreen = () => {
           <Text style={styles.topBarText}>취소</Text>
         </TouchableOpacity>
         <Text style={[styles.topBarText, styles.topBarTitle]}>
-          활동 기록 추가
+          {isEditing ? '활동 기록 편집' : '활동 기록 추가'}
         </Text>
         <TouchableOpacity>
           <Text style={styles.topBarText}>완료</Text>
@@ -31,6 +55,12 @@ const AddActivityRecordScreen = () => {
             <Text style={styles.subTitle}>활동 기록</Text>
           </View>
           <TouchableOpacity style={styles.activityPhotoBox}>
+            {isEditing && route.params.data?.image ? (
+              <Image
+                source={route.params.data?.image}
+                style={styles.activityImage}
+              />
+            ) : null}
             <CameraIcon style={styles.cameraIcon} />
           </TouchableOpacity>
           <View style={[styles.innerBox, styles.hashTagBox]}>
@@ -40,6 +70,8 @@ const AddActivityRecordScreen = () => {
               placeholderTextColor={'#5496FF'}
               style={[styles.hashTagText, styles.hashTagInput]}
               maxLength={20}
+              value={hashTagText}
+              onChangeText={text => setHashTagText(text)}
             />
           </View>
         </View>
@@ -51,6 +83,8 @@ const AddActivityRecordScreen = () => {
             multiline={true}
             maxLength={320}
             numberOfLines={10}
+            value={detailText}
+            onChangeText={text => setDetailText(text)}
           />
         </View>
       </ScrollView>

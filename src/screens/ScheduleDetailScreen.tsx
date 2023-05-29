@@ -6,23 +6,20 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  ImageSourcePropType,
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../../assets/back_btn_white.svg';
 import { TempAcitivityData } from '../data/TempAcitivityRecord';
-
-export type ActivityDataType = {
-  image?: ImageSourcePropType;
-  hashTag?: string;
-  detail?: string;
-};
+import { useNavigation } from '@react-navigation/native';
+import { ActivityDataType, NavigationProp } from '../types';
 
 const ScheduleDetailScreen = () => {
   const [hasPlace, setHasPlace] = useState(false);
   const [hasDescription, setHasDescription] = useState(false);
   const [activityData, setAcitivityData] = useState<ActivityDataType>({});
+
+  const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
     getActivityData();
@@ -49,7 +46,12 @@ const ScheduleDetailScreen = () => {
             <Text style={styles.topBarText}>뒤로</Text>
           </TouchableOpacity>
           <Text style={[styles.topBarText, styles.topBarTitle]}>일정 세부</Text>
-          <TouchableOpacity style={styles.topBarRightBox}>
+          <TouchableOpacity
+            style={styles.topBarRightBox}
+            onPress={() =>
+              navigation.navigate('AddActivityRecord', { data: activityData })
+            }
+          >
             <Text style={styles.topBarText}>편집</Text>
           </TouchableOpacity>
         </View>
