@@ -135,6 +135,7 @@ const Register = ({ navigation }: RegisterScreenProps) => {
       .then(response => response.json())
       .then(response => {
         alert(response.message);
+        navigation.navigate('SignIn');
       })
       .catch(error => console.error(error));
   };

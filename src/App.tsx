@@ -14,6 +14,8 @@ import CreateNotiScreen from './screens/CreateNotiScreen';
 import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
+import EditMemberScreen from './screens/EditMemberScreen';
+import AddSchduleScreen from './screens/AddScheduleScreen';
 import ScheduleDetailScreen from './screens/ScheduleDetailScreen';
 import AddActivityRecordScreen from './screens/AddActivityRecordScreen';
 
@@ -77,6 +79,20 @@ const App = () => {
           name='MeetSearch'
           component={MeetSearchSreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='EditMember'
+          component={EditMemberScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='AddSchedule'
+          component={AddSchduleScreen}
+          options={{
+            headerShown: false,
+            presentation: 'modal',
+            gestureDirection: 'vertical',
+          }}
         />
         <Stack.Screen
           name='ScheduleDetail'

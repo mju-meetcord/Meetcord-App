@@ -1,56 +1,226 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useState } from 'react';
-import { Calendar } from 'react-native-calendars';
+import { useEffect, useState } from 'react';
+import { Calendar, DateData } from 'react-native-calendars';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { BottomTabParamList } from '../types';
+import { BottomTabParamList, RootStackParamList } from '../types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import EventItem from '../components/EventItem';
+import { Direction } from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
+type HomeScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<BottomTabParamList, 'Home'>,
+  StackScreenProps<RootStackParamList>
+>;
+
+export interface MeetEvent {
+  id: number;
+  title: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  place: string;
+}
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
   const [schedule, setSchedule] = useState(false);
 
-  const handleDateSelect = (date: any) => {
-    setSelectedDate(date.dateString);
-    setSchedule(true);
+  const [eventData, setEventData] = useState<{
+    [key: string]: { marked: boolean; dotColor: string };
+  }>({
+    '2023-05-15': { marked: true, dotColor: '#50cebb' },
+    '2023-05-16': { marked: true, dotColor: '#50cebb' },
+  });
+
+  const isFoused = useIsFocused();
+
+  const [data, setData] = useState([
+    { title: '', created_at: '', notification_id: '' },
+    { title: '', created_at: '', notification_id: '' },
+    { title: '', created_at: '', notification_id: '' },
+  ]);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [groupname, setGroupname] = useState('');
+
+  const [eventDetailData, setEventDetailData] = useState<MeetEvent[]>([]);
+
+  useEffect(() => {
+    return () => {
+      getNotiData();
+      getEventData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
+    getNotiData();
+    getEventData();
+  }, []);
+
+  const getNotiData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/notification?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.data.length > 0) {
+            response.data.sort;
+            setData(response.data.sort().reverse());
+          } else {
+            setData([]);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+
+    AsyncStorage.getItem('group_role', (err, result) => {
+      if (result == 'admin') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    });
   };
 
-  const handleMonthChange = (month: any) => {
+  const getEventData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/meetEvent?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          const temp: { [key: string]: { marked: boolean; dotColor: string } } =
+            {};
+          if (response.data.length > 0) {
+            response.data.forEach((i: { start_time: string }) => {
+              temp[i.start_time.split('T')[0]] = {
+                marked: true,
+                dotColor: '#50cebb',
+              };
+            });
+
+            setEventData(temp);
+          } else {
+            //setData([]);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
+  const handleDateSelect = (date: DateData) => {
+    setSelectedDate(date.dateString);
+    setSchedule(true);
+
+    if (eventData[date.dateString] != undefined) {
+      AsyncStorage.getItem('group_name', (err, result) => {
+        if (result) {
+          setGroupname(result);
+        }
+        fetch(
+          `http://121.124.131.142:4000/meetEvent?name=${result}&&date=${date.dateString}`,
+          {
+            method: 'get',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+          .then(response => response.json())
+          .then(response => {
+            const eventData = response.data.map(
+              (item: {
+                title: string;
+                start_time: string;
+                end_time: string;
+                description: string;
+                event_id: number;
+                place: string;
+              }) => {
+                return {
+                  id: item.event_id,
+                  title: item.title,
+                  description: item.description,
+                  start_time: item.start_time,
+                  end_time: item.end_time,
+                  place: item.place,
+                };
+              }
+            );
+
+            setEventDetailData(eventData);
+          })
+          .catch(error => console.error(error));
+      });
+    } else {
+      setEventDetailData([]);
+    }
+  };
+
+  const handleMonthChange = (month: DateData) => {
     setCurrentMonth(month.dateString);
+  };
+
+  const handleNoti = (i: number) => {
+    navigation.navigate('NotiDetail', {
+      id: data[i].notification_id,
+      isAdmin: false,
+    });
   };
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.topContainer}>
-        <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
-          <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
-        </View>
-        <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
-          <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
-        </View>
-        <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
-          <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
-        </View>
-      </View>
+      <Text style={styles.notiLineText}>공지 안내</Text>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.topContainer}
+      >
+        {[0, 1, 2].map(i => (
+          <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
+            <View style={styles.notiBox}>
+              <Text style={styles.notiHead}>{data[i].title}</Text>
+              <Text style={styles.notiText}>{data[i].created_at}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
       <View style={styles.mainContainer}>
+        <Text style={styles.calenderText}>일정 캘린더</Text>
         <Calendar
           onDayPress={handleDateSelect}
-          markedDates={{ [selectedDate]: { selected: true } }}
+          markedDates={{
+            ...eventData,
+            [selectedDate]: { selected: true },
+          }}
           theme={{
-            calendarBackground: '#fff',
-            textSectionTitleColor: '#b6c1cd',
-            selectedDayBackgroundColor: '#00adf5',
+            calendarBackground: '#ffffff',
+            textSectionTitleColor: '#5496FF',
+            selectedDayBackgroundColor: '#5496FF',
             selectedDayTextColor: '#ffffff',
-            todayTextColor: '#00adf5',
+            todayTextColor: '#5496FF',
             dayTextColor: '#2d4150',
             textDisabledColor: '#d9e1e8',
             monthTextColor: '#2d4150',
-            arrowColor: '#00adf5',
-            indicatorColor: '#00adf5',
+            arrowColor: '#5496FF',
+            indicatorColor: '#5496FF',
             textDayFontWeight: 'bold',
             textMonthFontWeight: 'bold',
             textDayHeaderFontWeight: 'bold',
@@ -60,15 +230,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           style={{
             borderWidth: 1,
             borderColor: '#d6d7da',
-            borderRadius: 5,
+            borderRadius: 20,
             overflow: 'hidden',
-            height: 400,
-            width: 360,
+            height: 350,
+            width: 380,
           }}
           onMonthChange={handleMonthChange}
           monthFormat={'yyyy MM'}
           hideExtraDays={true}
-          renderArrow={(direction: any) => (
+          renderArrow={(direction: Direction) => (
             <Text style={styles.arrow}>{direction === 'left' ? '<' : '>'}</Text>
           )}
         />
@@ -76,18 +246,23 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       {schedule && (
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleBox}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', lineHeight: 40 }}>
-              컴퓨터 아키텍처 중간고사
-            </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22 }}>
-              2023년 5월 3일 수요일
-            </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22 }}>
-              시간: 15:00 ~ 16:00
-            </Text>
-            <Text style={{ fontSize: 15, lineHeight: 22 }}>
-              장소: 5공학관 Y5407 강의실
-            </Text>
+            <View style={styles.scheduleTop}>
+              <Text
+                style={{ fontSize: 22, color: '#5496FF', fontWeight: 'bold' }}
+              >
+                {`${selectedDate.split('-')[0]}년 ${
+                  selectedDate.split('-')[1]
+                }월 ${selectedDate.split('-')[2]}일 ${
+                  new Date(selectedDate).toDateString().split(' ')[0]
+                }`}
+              </Text>
+              <TouchableOpacity>
+                <Icon name={'add-circle'} style={styles.eventAdd} />
+              </TouchableOpacity>
+            </View>
+            {eventDetailData.map(i => {
+              return <EventItem key={i.id} data={i} />;
+            })}
           </View>
         </View>
       )}
@@ -101,23 +276,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9F1FF',
   },
   topContainer: {
-    height: 160,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'flex-end',
+    height: 100,
+    backgroundColor: '#E9F1FF',
     flexDirection: 'row',
-    gap: 15,
   },
   mainContainer: {
     width: '100%',
-    height: 500,
+    height: 400,
     justifyContent: 'center',
     alignItems: 'center',
   },
   notiBox: {
     borderWidth: 1,
     borderColor: '#C6C6C6',
-    width: '80%',
-    height: '50%',
+    width: 320,
+    height: 70,
     borderRadius: 20,
     paddingTop: 10,
     backgroundColor: '#FFFFFF',
@@ -127,38 +300,74 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     marginBottom: 20,
-  },
-  notiHead: {
-    fontSize: 25,
+    marginRight: 10,
     marginLeft: 20,
   },
+  notiHead: {
+    fontSize: 23,
+    marginLeft: 20,
+    fontWeight: 'bold',
+  },
   notiText: {
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 20,
   },
   arrow: {
-    color: '#00adf5',
+    color: '#5496FF',
     fontSize: 20,
     fontWeight: 'bold',
   },
   scheduleContainer: {
-    height: 200,
+    minHeight: 200,
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
   scheduleBox: {
     borderWidth: 1,
     borderColor: '#C6C6C6',
-    borderRadius: 10,
+    borderRadius: 25,
     backgroundColor: '#FFFFFF',
-    width: 360,
-    height: 160,
+    width: 380,
+    minHeight: 160,
     shadowColor: '#C6C6C6',
     shadowOffset: { width: 3, height: 5 },
     shadowOpacity: 0.6,
     shadowRadius: 2,
     elevation: 5,
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 20,
+  },
+  eventAdd: {
+    width: 30,
+    textAlign: 'center',
+    fontSize: 30,
+    marginLeft: 20,
+    color: '#5496FF',
+    fontWeight: 'bold',
+  },
+  scheduleTop: {
+    width: '100%',
+    height: 60,
+    borderBottomWidth: 2,
+    borderColor: '#5496FF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  calenderText: {
+    width: '100%',
+    left: 30,
+    fontSize: 20,
+    fontWeight: 'bold',
+    top: -15,
+  },
+  notiLineText: {
+    height: 120,
+    lineHeight: 180,
+    left: 30,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 

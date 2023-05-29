@@ -25,6 +25,7 @@ export interface Meet {
   role: string;
   hasJoined: boolean;
   isWaiting: boolean;
+  creator_id: number;
 }
 
 const MeetScreen = () => {
@@ -81,6 +82,7 @@ const MeetScreen = () => {
                 name: string;
                 description: string;
                 role: string;
+                creator_id: number;
               }) => {
                 return {
                   id: item.group_id,
@@ -90,8 +92,9 @@ const MeetScreen = () => {
                   meetName: item.name,
                   meetIntroduce: item.description,
                   role: item.role,
-                  hasJoined: item.role !== 'waiting',
+                  hasJoined: true,
                   isWaiting: item.role === 'waiting',
+                  creator_id: item.creator_id,
                 };
               }
             );
@@ -120,6 +123,7 @@ const MeetScreen = () => {
   const handleSubmit = () => {
     navigation.navigate('MeetSearch', {
       meetSearchText: inputText,
+      data: joinMeetList,
     });
   };
 

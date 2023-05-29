@@ -47,8 +47,7 @@ const CreateNotiScreen = ({ route, navigation }: CreateNotiScreenProps) => {
       fetch('http://121.124.131.142:4000/notification', {
         method: 'PUT',
         body: JSON.stringify({
-          token:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwiaWF0IjoxNjg0NDE1MjA1LCJleHAiOjE2ODUwMjAwMDV9.I8yYp8xYh5KpMsx0jTNF8Js2USEjAjaP3cdsWFfJ5nk',
+          token: result,
           title: title,
           message: message,
           group: route.params.meetname,

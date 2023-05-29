@@ -1,6 +1,10 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Member } from './screens/MemberScreen';
+import { Meet } from './screens/MeetScreen';
+import React from 'react';
+import { MeetEvent } from './screens/HomeScreen';
 import { ImageSourcePropType } from 'react-native';
 
 export type RootStackParamList = {
@@ -29,8 +33,11 @@ export type RootStackParamList = {
   };
   MeetSearch: {
     meetSearchText: string;
+    data: Meet[];
   };
   Splash: undefined;
+  EditMember: undefined;
+  AddSchedule: undefined;
   ScheduleDetail: undefined;
   AddActivityRecord: {
     data?: ActivityDataType;
@@ -51,8 +58,24 @@ export type NavigationProp = CompositeNavigationProp<
 >;
 
 export type MemberModalProps = {
+  data: Member;
   isVisible: boolean;
   onBackdropPress: () => void;
+};
+
+export type MemberItemProps = {
+  data: Member;
+  onpress: () => void;
+};
+
+export type EditMemberItemProps = {
+  data: Member;
+  option: number;
+  setReload: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export type EventItemProps = {
+  data: MeetEvent;
 };
 
 export type ActivityDataType = {

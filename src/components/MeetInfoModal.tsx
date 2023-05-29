@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ImageSourcePropType,
 } from 'react-native';
@@ -12,6 +11,7 @@ import MeetInfoModalButton from './MeetInfoModalButton';
 import { NavigationProp } from '../types';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Image } from 'expo-image';
 
 type MeetInfoModalProps = {
   isModalVisible: boolean;
@@ -21,6 +21,7 @@ type MeetInfoModalProps = {
     meetName: string;
     meetIntroduce: string;
     role: string;
+    creator_id: number;
   };
   userJoinInfo: {
     hasJoined: boolean;
@@ -36,6 +37,32 @@ const MeetInfoModal = ({
   handleBackButtonPress,
 }: MeetInfoModalProps) => {
   const navigation = useNavigation<NavigationProp>();
+
+  const registerMeet = () => {
+    let status = 0;
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch('http://121.124.131.142:4000/mymeet', {
+        method: 'PUT',
+        body: JSON.stringify({ token: result, group_id: meetInfo.id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          status = response.status;
+          return response.json();
+        })
+        .then(response => {
+          if (status == 200) {
+            handleBackButtonPress();
+            navigation.pop();
+          } else if (status == 401) {
+            console.log(response.message);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+  };
 
   return (
     <Modal
@@ -67,7 +94,15 @@ const MeetInfoModal = ({
               {meetInfo.meetIntroduce}
             </Text>
           </View>
-          {userJoinInfo.hasJoined ? (
+          {userJoinInfo.isWaiting ? (
+            <MeetInfoModalButton
+              firstText='승인 대기'
+              secondText='취소'
+              onpress={() => {
+                handleBackButtonPress();
+              }}
+            />
+          ) : userJoinInfo.hasJoined ? (
             <MeetInfoModalButton
               firstText='나의 Meet'
               secondText='탈퇴'
@@ -76,19 +111,18 @@ const MeetInfoModal = ({
                 AsyncStorage.setItem('group_id', meetInfo.id.toString());
                 AsyncStorage.setItem('group_name', meetInfo.meetName);
                 AsyncStorage.setItem('group_role', meetInfo.role);
+                AsyncStorage.setItem(
+                  'creator_id',
+                  meetInfo.creator_id.toString()
+                );
                 navigation.navigate('BottomTab');
               }}
             />
-          ) : userJoinInfo.isWaiting ? (
-            <MeetInfoModalButton
-              firstText='승인 대기'
-              secondText='취소'
-              onpress={() => {
-                handleBackButtonPress();
-              }}
-            />
           ) : (
-            <TouchableOpacity style={styles.joinMeetButton}>
+            <TouchableOpacity
+              style={styles.joinMeetButton}
+              onPress={() => registerMeet()}
+            >
               <Text style={styles.joinButtonText}>가입 신청</Text>
             </TouchableOpacity>
           )}
