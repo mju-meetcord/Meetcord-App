@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   StatusBar,
   View,
@@ -5,14 +6,38 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ImageSourcePropType,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../../assets/back_btn_white.svg';
-import { useState } from 'react';
+import { TempAcitivityData } from '../data/TempAcitivityRecord';
+
+export type ActivityDataType = {
+  image?: ImageSourcePropType;
+  hashTag?: string;
+  detail?: string;
+};
 
 const ScheduleDetailScreen = () => {
   const [hasPlace, setHasPlace] = useState(false);
   const [hasDescription, setHasDescription] = useState(false);
+  const [activityData, setAcitivityData] = useState<ActivityDataType>({});
+
+  useEffect(() => {
+    getActivityData();
+  }, [TempAcitivityData]);
+
+  const getActivityData = () => {
+    if (TempAcitivityData) {
+      const resultValues = Object.values(TempAcitivityData);
+      setAcitivityData({
+        image: resultValues[0],
+        hashTag: resultValues[1],
+        detail: resultValues[2],
+      });
+    }
+  };
 
   return (
     <>
@@ -53,19 +78,32 @@ const ScheduleDetailScreen = () => {
             <View style={styles.innerBox}>
               <Text style={styles.subTitle}>활동 기록</Text>
             </View>
-            <View style={styles.activityPhotoBox}>
-              <Text style={styles.activityTopText}>
-                활동 사진이 없습니다 :)
-              </Text>
-            </View>
+            {activityData.image ? (
+              <Image source={activityData.image} style={styles.activityImage} />
+            ) : (
+              <View style={styles.activityPhotoBox}>
+                <Text style={styles.activityBlueText}>
+                  활동 사진이 없습니다 :)
+                </Text>
+              </View>
+            )}
             <View style={[styles.innerBox, styles.hashTagBox]}>
-              <Text style={styles.activityTopText}>#</Text>
+              <Text style={styles.activityBlueText}>#</Text>
+              <Text style={styles.activityBlueText}>
+                {activityData.hashTag ? activityData.hashTag : ''}
+              </Text>
             </View>
           </View>
           <View style={[styles.innerBox, styles.activityRecordBox]}>
-            <Text style={styles.initAcitivityRecordText}>
-              아직 활동 기록이 없습니다.
-            </Text>
+            {activityData.detail ? (
+              <Text style={styles.activityRecordText}>
+                {activityData.detail}
+              </Text>
+            ) : (
+              <Text style={styles.initAcitivityRecordText}>
+                아직 활동 기록이 없습니다.
+              </Text>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -161,22 +199,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  activityTopText: {
+  activityImage: {
+    marginTop: 10,
+    height: 216,
+    width: '90%',
+    alignSelf: 'center',
+  },
+  activityBlueText: {
     fontSize: 16,
     lineHeight: 30,
     color: '#5496FF',
   },
   hashTagBox: {
     height: 30,
-    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   activityRecordBox: {
     marginTop: 10,
+    maxHeight: 310,
   },
   initAcitivityRecordText: {
     fontSize: 16,
     lineHeight: 30,
     color: '#878787',
+  },
+  activityRecordText: {
+    fontSize: 16,
+    lineHeight: 30,
+    color: '#000000',
   },
 });
 
