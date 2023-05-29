@@ -15,6 +15,7 @@ import ModifyNotiScreen from './screens/ModifyNotiScreen';
 import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
 import ScheduleDetailScreen from './screens/ScheduleDetailScreen';
+import AddActivityRecordScreen from './screens/AddActivityRecordScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -22,6 +23,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name='AddActivityRecord'
+          component={AddActivityRecordScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name='ScheduleDetail'
           component={ScheduleDetailScreen}
