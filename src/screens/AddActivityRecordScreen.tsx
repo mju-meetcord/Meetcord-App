@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Image,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CameraIcon from 'assets/camera_icon.svg';
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     color: '#5496FF',
   },
   hashTagInput: {
-    lineHeight: 0,
+    lineHeight: Platform.OS === 'ios' ? 0 : 30,
     height: 30,
   },
   innerBox: {
