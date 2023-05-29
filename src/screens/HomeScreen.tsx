@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Calendar, DateData } from 'react-native-calendars';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from '../types';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import EventItem from '../components/EventItem';
+import { Direction } from 'react-native-modal';
+import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
 
@@ -13,6 +16,99 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
   const [schedule, setSchedule] = useState(false);
+
+  const [eventData, setEventData] = useState<{
+    [key: string]: { marked: boolean; dotColor: string };
+  }>({
+    '2023-05-15': { marked: true, dotColor: '#50cebb' },
+    '2023-05-16': { marked: true, dotColor: '#50cebb' },
+  });
+
+  const isFoused = useIsFocused();
+
+  const [data, setData] = useState([
+    { title: '', created_at: '', notification_id: '' },
+    { title: '', created_at: '', notification_id: '' },
+    { title: '', created_at: '', notification_id: '' },
+  ]);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [groupname, setGroupname] = useState('');
+
+  useEffect(() => {
+    return () => {
+      getNotiData();
+      getEventData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
+    getNotiData();
+    getEventData();
+  }, []);
+
+  const getNotiData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/notification?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          if (response.data.length > 0) {
+            response.data.sort;
+            setData(response.data.sort().reverse());
+          } else {
+            setData([]);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+
+    AsyncStorage.getItem('group_role', (err, result) => {
+      if (result == 'admin') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    });
+  };
+
+  const getEventData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/meetEvent?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          const temp: { [key: string]: { marked: boolean; dotColor: string } } =
+            {};
+          if (response.data.length > 0) {
+            response.data.forEach((i: { start_time: string }) => {
+              temp[i.start_time.split('T')[0]] = {
+                marked: true,
+                dotColor: '#50cebb',
+              };
+            });
+
+            setEventData(temp);
+          } else {
+            //setData([]);
+          }
+        })
+        .catch(error => console.error(error));
+    });
+  };
 
   const handleDateSelect = (date: DateData) => {
     setSelectedDate(date.dateString);
@@ -42,16 +138,16 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         style={styles.topContainer}
       >
         <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
-          <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
+          <Text style={styles.notiHead}>{data[0].title}</Text>
+          <Text style={styles.notiText}>{data[0].created_at}</Text>
         </View>
         <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
-          <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
+          <Text style={styles.notiHead}>{data[1].title}</Text>
+          <Text style={styles.notiText}>{data[1].created_at}</Text>
         </View>
         <View style={styles.notiBox}>
-          <Text style={styles.notiHead}>Map 종강 파티 안내</Text>
-          <Text style={styles.notiText}>시간: 6월16일 금요일 오후 7시</Text>
+          <Text style={styles.notiHead}>{data[2].title}</Text>
+          <Text style={styles.notiText}>{data[2].created_at}</Text>
         </View>
       </ScrollView>
       <View style={styles.mainContainer}>
@@ -69,20 +165,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         <Calendar
           onDayPress={handleDateSelect}
           markedDates={{
+            ...eventData,
             [selectedDate]: { selected: true },
-            '2023-05-15': { marked: true, dotColor: '#50cebb' },
           }}
           theme={{
-            calendarBackground: '#fff',
-            textSectionTitleColor: '#b6c1cd',
-            selectedDayBackgroundColor: '#00adf5',
+            calendarBackground: '#ffffff',
+            textSectionTitleColor: '#5496FF',
+            selectedDayBackgroundColor: '#5496FF',
             selectedDayTextColor: '#ffffff',
-            todayTextColor: '#00adf5',
+            todayTextColor: '#5496FF',
             dayTextColor: '#2d4150',
             textDisabledColor: '#d9e1e8',
             monthTextColor: '#2d4150',
-            arrowColor: '#00adf5',
-            indicatorColor: '#00adf5',
+            arrowColor: '#5496FF',
+            indicatorColor: '#5496FF',
             textDayFontWeight: 'bold',
             textMonthFontWeight: 'bold',
             textDayHeaderFontWeight: 'bold',
@@ -100,7 +196,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           onMonthChange={handleMonthChange}
           monthFormat={'yyyy MM'}
           hideExtraDays={true}
-          renderArrow={(direction: any) => (
+          renderArrow={(direction: Direction) => (
             <Text style={styles.arrow}>{direction === 'left' ? '<' : '>'}</Text>
           )}
         />
@@ -195,7 +291,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   arrow: {
-    color: '#00adf5',
+    color: '#5496FF',
     fontSize: 20,
     fontWeight: 'bold',
   },
