@@ -1,6 +1,7 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ImageSourcePropType } from 'react-native';
 
 export type RootStackParamList = {
   ModifyNoti: {
@@ -31,7 +32,9 @@ export type RootStackParamList = {
   };
   Splash: undefined;
   ScheduleDetail: undefined;
-  AddActivityRecord: undefined;
+  AddActivityRecord: {
+    data?: ActivityDataType;
+  };
 };
 
 export type BottomTabParamList = {
@@ -50,4 +53,10 @@ export type NavigationProp = CompositeNavigationProp<
 export type MemberModalProps = {
   isVisible: boolean;
   onBackdropPress: () => void;
+};
+
+export type ActivityDataType = {
+  image?: ImageSourcePropType;
+  hashTag?: string;
+  detail?: string;
 };
