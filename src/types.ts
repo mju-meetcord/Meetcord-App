@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Member } from './screens/MemberScreen';
 import { Meet } from './screens/MeetScreen';
 import React from 'react';
+import { MeetEvent } from './screens/HomeScreen';
 
 export type RootStackParamList = {
   ModifyNoti: {
@@ -65,4 +66,8 @@ export type EditMemberItemProps = {
   data: Member;
   option: number;
   setReload: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export type EventItemProps = {
+  data: MeetEvent;
 };

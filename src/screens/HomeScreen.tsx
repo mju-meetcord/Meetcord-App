@@ -12,6 +12,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type HomeScreenProps = BottomTabScreenProps<BottomTabParamList, 'Home'>;
 
+export interface MeetEvent {
+  id: number;
+  title: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  place: string;
+}
+
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [selectedDate, setSelectedDate] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
@@ -33,6 +42,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   ]);
   const [isAdmin, setIsAdmin] = useState(true);
   const [groupname, setGroupname] = useState('');
+
+  const [eventDetailData, setEventDetailData] = useState<MeetEvent[]>([]);
 
   useEffect(() => {
     return () => {
@@ -113,6 +124,50 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const handleDateSelect = (date: DateData) => {
     setSelectedDate(date.dateString);
     setSchedule(true);
+
+    if (eventData[date.dateString] != undefined) {
+      AsyncStorage.getItem('group_name', (err, result) => {
+        if (result) {
+          setGroupname(result);
+        }
+        fetch(
+          `http://121.124.131.142:4000/meetEvent?name=${result}&&date=${date.dateString}`,
+          {
+            method: 'get',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+          .then(response => response.json())
+          .then(response => {
+            const eventData = response.data.map(
+              (item: {
+                title: string;
+                start_time: string;
+                end_time: string;
+                description: string;
+                event_id: number;
+                place: string;
+              }) => {
+                return {
+                  id: item.event_id,
+                  title: item.title,
+                  description: item.description,
+                  start_time: item.start_time,
+                  end_time: item.end_time,
+                  place: item.place,
+                };
+              }
+            );
+
+            setEventDetailData(eventData);
+          })
+          .catch(error => console.error(error));
+      });
+    } else {
+      setEventDetailData([]);
+    }
   };
 
   const handleMonthChange = (month: DateData) => {
@@ -121,17 +176,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text
-        style={{
-          height: 120,
-          lineHeight: 180,
-          left: 30,
-          fontSize: 20,
-          fontWeight: 'bold',
-        }}
-      >
-        공지 안내
-      </Text>
+      <Text style={styles.notiLineText}>공지 안내</Text>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -151,17 +196,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         </View>
       </ScrollView>
       <View style={styles.mainContainer}>
-        <Text
-          style={{
-            width: '100%',
-            left: 30,
-            fontSize: 20,
-            fontWeight: 'bold',
-            top: -15,
-          }}
-        >
-          일정 캘린더
-        </Text>
+        <Text style={styles.calenderText}>일정 캘린더</Text>
         <Calendar
           onDayPress={handleDateSelect}
           markedDates={{
@@ -204,17 +239,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
       {schedule && (
         <View style={styles.scheduleContainer}>
           <View style={styles.scheduleBox}>
-            <View
-              style={{
-                width: '100%',
-                height: 60,
-                borderBottomWidth: 2,
-                borderColor: '#5496FF',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <View style={styles.scheduleTop}>
               <Text
                 style={{ fontSize: 22, color: '#5496FF', fontWeight: 'bold' }}
               >
@@ -225,21 +250,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 }`}
               </Text>
               <TouchableOpacity>
-                <Icon
-                  name={'add-circle'}
-                  style={{
-                    width: 30,
-                    textAlign: 'center',
-                    fontSize: 30,
-                    marginLeft: 20,
-                    color: '#5496FF',
-                    fontWeight: 'bold',
-                  }}
-                />
+                <Icon name={'add-circle'} style={styles.eventAdd} />
               </TouchableOpacity>
             </View>
-            {[1, 2].map(i => {
-              return <EventItem key={i} />;
+            {eventDetailData.map(i => {
+              return <EventItem key={i.id} data={i} />;
             })}
           </View>
         </View>
@@ -315,6 +330,37 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 20,
+  },
+  eventAdd: {
+    width: 30,
+    textAlign: 'center',
+    fontSize: 30,
+    marginLeft: 20,
+    color: '#5496FF',
+    fontWeight: 'bold',
+  },
+  scheduleTop: {
+    width: '100%',
+    height: 60,
+    borderBottomWidth: 2,
+    borderColor: '#5496FF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  calenderText: {
+    width: '100%',
+    left: 30,
+    fontSize: 20,
+    fontWeight: 'bold',
+    top: -15,
+  },
+  notiLineText: {
+    height: 120,
+    lineHeight: 180,
+    left: 30,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
