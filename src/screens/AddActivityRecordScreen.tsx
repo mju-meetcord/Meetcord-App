@@ -20,7 +20,10 @@ type AddActivityRecordScreenProps = StackScreenProps<
   'AddActivityRecord'
 >;
 
-const AddActivityRecordScreen = ({ route }: AddActivityRecordScreenProps) => {
+const AddActivityRecordScreen = ({
+  navigation,
+  route,
+}: AddActivityRecordScreenProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [hashTagText, setHashTagText] = useState(route.params.data?.hashTag);
   const [detailText, setDetailText] = useState(route.params.data?.detail);
@@ -40,13 +43,13 @@ const AddActivityRecordScreen = ({ route }: AddActivityRecordScreenProps) => {
     <SafeAreaView style={styles.topWrapper} edges={['top']}>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.topBar}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.pop()}>
           <Text style={styles.topBarText}>취소</Text>
         </TouchableOpacity>
         <Text style={[styles.topBarText, styles.topBarTitle]}>
           {isEditing ? '활동 기록 편집' : '활동 기록 추가'}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('ScheduleDetail')}>
           <Text style={styles.topBarText}>완료</Text>
         </TouchableOpacity>
       </View>

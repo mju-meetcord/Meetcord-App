@@ -41,7 +41,10 @@ const ScheduleDetailScreen = () => {
       <StatusBar barStyle={'light-content'} />
       <SafeAreaView style={styles.topWrapper} edges={['top']}>
         <View style={styles.topBar}>
-          <TouchableOpacity style={styles.backButtonBox}>
+          <TouchableOpacity
+            style={styles.backButtonBox}
+            onPress={() => navigation.pop()}
+          >
             <BackButton style={styles.backButton} />
             <Text style={styles.topBarText}>뒤로</Text>
           </TouchableOpacity>
