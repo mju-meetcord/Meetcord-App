@@ -22,8 +22,8 @@ const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
               <View style={styles.emptyListBox}>
                 <Text style={styles.emptyListText}>
                   현재 가입된 Meet이 없습니다.{'\n'}
-                  Meet이름 또는 초대받은 코드로 {'\n'}
-                  Meet을 검색해보세요!
+                  Meet이름을 검색하여 원하는 {'\n'}
+                  Meet을 찾아보세요 :)
                 </Text>
               </View>
             )}

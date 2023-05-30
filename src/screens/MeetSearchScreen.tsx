@@ -113,8 +113,8 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
             <>
               <View style={styles.emptyResultBox}>
                 <Text style={styles.emptyResultText}>
-                  검색 결과가 없습니다. Meet이름과 {'\n'}초대코드를 다시
-                  확인해주세요.
+                  검색 결과가 없습니다. {'\n'}
+                  Meet이름을 다시 확인해주세요.
                 </Text>
               </View>
               <View style={styles.buttonBox}>
