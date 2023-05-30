@@ -22,6 +22,7 @@ type MeetInfoModalProps = {
     meetIntroduce: string;
     role: string;
     creator_id: number;
+    user_num: number;
   };
   userJoinInfo: {
     hasJoined: boolean;
@@ -81,12 +82,8 @@ const MeetInfoModal = ({
           <View style={styles.meetInfoBox}>
             <Image source={meetInfo.meetImg} style={styles.meetImage} />
             <View style={styles.meetDetailInfoBox}>
-              <Text style={styles.meetDetailText}>6명</Text>
               <Text style={styles.meetDetailTextLabel}>구성원</Text>
-            </View>
-            <View style={styles.meetDetailInfoBox}>
-              <Text style={styles.meetDetailText}>19개</Text>
-              <Text style={styles.meetDetailTextLabel}>활동</Text>
+              <Text style={styles.meetDetailText}>{meetInfo.user_num}명</Text>
             </View>
           </View>
           <View style={styles.meetIntroBox}>
@@ -172,18 +169,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     justifyContent: 'space-around',
-    marginRight: 50,
   },
   meetDetailInfoBox: {
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   meetDetailText: {
-    fontWeight: '600',
-    fontSize: 18,
-    marginBottom: 20,
+    fontWeight: 'bold',
+    fontSize: 24,
   },
   meetDetailTextLabel: {
-    fontSize: 18,
+    fontSize: 24,
   },
   meetIntroBox: {
     width: 330,

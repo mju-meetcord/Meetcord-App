@@ -17,6 +17,7 @@ interface ListItemProps {
     meetIntroduce: string;
     role: string;
     creator_id: number;
+    user_num: number;
   };
   userJoinInfo: {
     hasJoined: boolean;
