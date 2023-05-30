@@ -10,6 +10,9 @@ import { Direction } from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import HelpButton from '../components/HelpButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ImageView from 'react-native-image-viewing';
 
 type HomeScreenProps = CompositeScreenProps<
   BottomTabScreenProps<BottomTabParamList, 'Home'>,
@@ -45,6 +48,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [groupname, setGroupname] = useState('');
 
   const [eventDetailData, setEventDetailData] = useState<MeetEvent[]>([]);
+
+  const [showHelp, setShowHelp] = useState(false);
+
+  const helpImages = [
+    require('assets/HomeHelper01.png'),
+    require('assets/HomeHelper02.png'),
+    require('assets/HomeHelper03.png'),
+    require('assets/HomeHelper04.png'),
+    require('assets/HomeHelper05.png'),
+  ];
+
+  const helpButtonPress = () => {
+    setShowHelp(!showHelp);
+  };
 
   useEffect(() => {
     return () => {
@@ -187,120 +204,135 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.notiLineText}>공지 안내</Text>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.topContainer}
-      >
-        {[0, 1, 2].map(i => (
-          <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
-            <View style={styles.notiBox}>
-              <Text style={styles.notiHead}>{data[i].title}</Text>
-              <Text style={styles.notiText}>
-                {new Date(data[i].created_at).getFullYear() +
-                  '년 ' +
-                  new Date(data[i].created_at).getMonth() +
-                  '월 ' +
-                  new Date(data[i].created_at).getDate() +
-                  '일 ' +
-                  new Date(data[i].created_at).getHours() +
-                  '시 ' +
-                  new Date(data[i].created_at).getMinutes() +
-                  '분 '}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <View style={styles.mainContainer}>
-        <Text style={styles.calenderText}>일정 캘린더</Text>
-        <Calendar
-          onDayPress={handleDateSelect}
-          markedDates={{
-            ...eventData,
-            [selectedDate]: { selected: true },
-          }}
-          theme={{
-            calendarBackground: '#ffffff',
-            textSectionTitleColor: '#5496FF',
-            selectedDayBackgroundColor: '#5496FF',
-            selectedDayTextColor: '#ffffff',
-            todayTextColor: '#5496FF',
-            dayTextColor: '#2d4150',
-            textDisabledColor: '#d9e1e8',
-            monthTextColor: '#2d4150',
-            arrowColor: '#5496FF',
-            indicatorColor: '#5496FF',
-            textDayFontWeight: 'bold',
-            textMonthFontWeight: 'bold',
-            textDayHeaderFontWeight: 'bold',
-            textMonthFontSize: 20,
-            textDayFontSize: 16,
-          }}
-          style={{
-            borderWidth: 1,
-            borderColor: '#d6d7da',
-            borderRadius: 20,
-            overflow: 'hidden',
-            height: 350,
-            width: 380,
-          }}
-          onMonthChange={handleMonthChange}
-          monthFormat={'yyyy MM'}
-          hideExtraDays={true}
-          renderArrow={(direction: Direction) => (
-            <Text style={styles.arrow}>{direction === 'left' ? '<' : '>'}</Text>
-          )}
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView>
+        <HelpButton handlePress={helpButtonPress} />
+        <ImageView
+          images={helpImages}
+          imageIndex={0}
+          visible={showHelp}
+          onRequestClose={() => setShowHelp(false)}
         />
-      </View>
-      {schedule && (
-        <View style={styles.scheduleContainer}>
-          <View style={styles.scheduleBox}>
-            <View style={styles.scheduleTop}>
-              <Text
-                style={{ fontSize: 22, color: '#5496FF', fontWeight: 'bold' }}
-              >
-                {`${selectedDate.split('-')[0]}년 ${
-                  selectedDate.split('-')[1]
-                }월 ${selectedDate.split('-')[2]}일 ${
-                  new Date(selectedDate).toDateString().split(' ')[0]
-                }`}
+        <Text style={styles.notiLineText}>공지 안내</Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.topContainer}
+        >
+          {[0, 1, 2].map(i => (
+            <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
+              <View style={styles.notiBox}>
+                <Text style={styles.notiHead}>{data[i].title}</Text>
+                <Text style={styles.notiText}>
+                  {new Date(data[i].created_at).getFullYear() +
+                    '년 ' +
+                    new Date(data[i].created_at).getMonth() +
+                    '월 ' +
+                    new Date(data[i].created_at).getDate() +
+                    '일 ' +
+                    new Date(data[i].created_at).getHours() +
+                    '시 ' +
+                    new Date(data[i].created_at).getMinutes() +
+                    '분 '}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        <View style={styles.mainContainer}>
+          <Text style={styles.calenderText}>일정 캘린더</Text>
+          <Calendar
+            onDayPress={handleDateSelect}
+            markedDates={{
+              ...eventData,
+              [selectedDate]: { selected: true },
+            }}
+            theme={{
+              calendarBackground: '#ffffff',
+              textSectionTitleColor: '#5496FF',
+              selectedDayBackgroundColor: '#5496FF',
+              selectedDayTextColor: '#ffffff',
+              todayTextColor: '#5496FF',
+              dayTextColor: '#2d4150',
+              textDisabledColor: '#d9e1e8',
+              monthTextColor: '#2d4150',
+              arrowColor: '#5496FF',
+              indicatorColor: '#5496FF',
+              textDayFontWeight: 'bold',
+              textMonthFontWeight: 'bold',
+              textDayHeaderFontWeight: 'bold',
+              textMonthFontSize: 20,
+              textDayFontSize: 16,
+            }}
+            style={{
+              borderWidth: 1,
+              borderColor: '#d6d7da',
+              borderRadius: 20,
+              overflow: 'hidden',
+              height: 350,
+              width: 380,
+            }}
+            onMonthChange={handleMonthChange}
+            monthFormat={'yyyy MM'}
+            hideExtraDays={true}
+            renderArrow={(direction: Direction) => (
+              <Text style={styles.arrow}>
+                {direction === 'left' ? '<' : '>'}
               </Text>
-              {isAdmin && (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('AddSchedule', {
-                      date: selectedDate,
-                      groupname: groupname,
-                    });
+            )}
+          />
+        </View>
+        {schedule && (
+          <View style={styles.scheduleContainer}>
+            <View style={styles.scheduleBox}>
+              <View style={styles.scheduleTop}>
+                <Text
+                  style={{
+                    fontSize: 22,
+                    color: '#5496FF',
+                    fontWeight: 'bold',
                   }}
                 >
-                  <Icon name={'add-circle'} style={styles.eventAdd} />
-                </TouchableOpacity>
-              )}
+                  {`${selectedDate.split('-')[0]}년 ${
+                    selectedDate.split('-')[1]
+                  }월 ${selectedDate.split('-')[2]}일 ${
+                    new Date(selectedDate).toDateString().split(' ')[0]
+                  }`}
+                </Text>
+                {isAdmin && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('AddSchedule', {
+                        date: selectedDate,
+                        groupname: groupname,
+                      });
+                    }}
+                  >
+                    <Icon name={'add-circle'} style={styles.eventAdd} />
+                  </TouchableOpacity>
+                )}
+              </View>
+              {eventDetailData.map(i => {
+                return (
+                  <EventItem
+                    key={i.id}
+                    data={i}
+                    isAdmin={isAdmin}
+                    onpress={() => {
+                      navigation.navigate('AddSchedule', {
+                        date: selectedDate,
+                        groupname: groupname,
+                        eventData: i,
+                      });
+                    }}
+                  />
+                );
+              })}
             </View>
-            {eventDetailData.map(i => {
-              return (
-                <EventItem
-                  key={i.id}
-                  data={i}
-                  isAdmin={isAdmin}
-                  onpress={() => {
-                    navigation.navigate('AddSchedule', {
-                      date: selectedDate,
-                      groupname: groupname,
-                      eventData: i,
-                    });
-                  }}
-                />
-              );
-            })}
           </View>
-        </View>
-      )}
-    </ScrollView>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -397,9 +429,9 @@ const styles = StyleSheet.create({
     top: -15,
   },
   notiLineText: {
-    height: 120,
-    lineHeight: 180,
+    lineHeight: 30,
     left: 30,
+    marginVertical: 10,
     fontSize: 20,
     fontWeight: 'bold',
   },
