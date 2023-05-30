@@ -50,6 +50,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     return () => {
       getNotiData();
       getEventData();
+      setEventDatailData(selectedDate);
     };
   }, [isFoused]);
 
@@ -122,16 +123,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   };
 
   const handleDateSelect = (date: DateData) => {
-    setSelectedDate(date.dateString);
+    setEventDatailData(date.dateString);
+  };
+
+  const setEventDatailData = (datestrign: string) => {
+    setSelectedDate(datestrign);
     setSchedule(true);
 
-    if (eventData[date.dateString] != undefined) {
+    if (eventData[datestrign] != undefined) {
       AsyncStorage.getItem('group_name', (err, result) => {
         if (result) {
           setGroupname(result);
         }
         fetch(
-          `http://121.124.131.142:4000/meetEvent?name=${result}&&date=${date.dateString}`,
+          `http://121.124.131.142:4000/meetEvent?name=${result}&&date=${datestrign}`,
           {
             method: 'get',
             headers: {
