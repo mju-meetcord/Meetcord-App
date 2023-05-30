@@ -37,7 +37,11 @@ export type RootStackParamList = {
   };
   Splash: undefined;
   EditMember: undefined;
-  AddSchedule: undefined;
+  AddSchedule: {
+    date: string;
+    groupname: string;
+    eventData?: MeetEvent;
+  };
   ScheduleDetail: undefined;
   AddActivityRecord: {
     data?: ActivityDataType;
@@ -76,6 +80,8 @@ export type EditMemberItemProps = {
 
 export type EventItemProps = {
   data: MeetEvent;
+  onpress: () => void;
+  isAdmin: boolean;
 };
 
 export type ActivityDataType = {

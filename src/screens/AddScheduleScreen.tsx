@@ -11,21 +11,33 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProp } from '../types';
+import { NavigationProp, RootStackParamList } from '../types';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StackScreenProps } from '@react-navigation/stack';
+import { text } from 'stream/consumers';
 
-const AddSchduleScreen = () => {
+export type AddScheduleProps = StackScreenProps<
+  RootStackParamList,
+  'AddSchedule'
+>;
+
+const AddSchduleScreen = ({ route }: AddScheduleProps) => {
   const [title, setTitle] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
 
+  const [palce, setPlace] = useState('');
+  const [description, setDescription] = useState('');
+
   const [isEnabled, setIsEnabled] = useState(false);
 
-  const [startTime, setStartTime] = useState<Date>(new Date());
-  const [finishTime, setFinishTime] = useState<Date>(new Date());
+  const [startTime, setStartTime] = useState<Date>(new Date(route.params.date));
+  const [finishTime, setFinishTime] = useState<Date>(
+    new Date(route.params.date)
+  );
 
   // 안드로이드 커스텀용
   const [startTimeOpen, setStartTimeOpen] = useState(false);
@@ -35,9 +47,33 @@ const AddSchduleScreen = () => {
 
   const [selected, setSelected] = useState(undefined);
 
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(route.params.eventData);
 
-  const toggleSwitch = () => setIsEnabled(!isEnabled);
+  useEffect(() => {
+    if (route.params.eventData) {
+      setTitle(route.params.eventData.title);
+      setDescription(route.params.eventData.description);
+      setPlace(route.params.eventData.place);
+      setStartTime(new Date(route.params.eventData.start_time));
+      setFinishTime(new Date(route.params.eventData.end_time));
+    }
+  }, []);
+
+  const toggleSwitch = () => {
+    setIsEnabled(!isEnabled);
+
+    if (!isEnabled) {
+      const temp = new Date(startTime);
+      temp.setHours(0);
+      temp.setMinutes(0);
+      setStartTime(temp);
+
+      const temp2 = new Date(finishTime);
+      temp2.setHours(23);
+      temp2.setMinutes(59);
+      setFinishTime(temp2);
+    }
+  };
   const navigation = useNavigation<NavigationProp>();
 
   const notiType = [
@@ -87,8 +123,76 @@ const AddSchduleScreen = () => {
       {
         text: '삭제',
         style: 'destructive',
+        onPress: () => {
+          fetch('http://121.124.131.142:4000/meetEvent', {
+            method: 'DELETE',
+            body: JSON.stringify({
+              id: route.params.eventData?.id,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => {
+              return response.json();
+            })
+            .then(response => {
+              console.log(response);
+              navigation.pop();
+            })
+            .catch(error => console.error(error));
+        },
       },
     ]);
+  };
+
+  const submitEvent = () => {
+    if (route.params.eventData) {
+      fetch('http://121.124.131.142:4000/meetEvent', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: route.params.eventData.id,
+          title: title,
+          start_time: startTime,
+          end_time: finishTime,
+          place: palce,
+          description: description,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          console.log(response);
+          navigation.pop();
+        })
+        .catch(error => console.error(error));
+    } else {
+      fetch('http://121.124.131.142:4000/meetEvent', {
+        method: 'PUT',
+        body: JSON.stringify({
+          group_id: route.params.groupname,
+          title: title,
+          start_time: startTime,
+          end_time: finishTime,
+          place: palce,
+          description: description,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          navigation.pop();
+        })
+        .catch(error => console.error(error));
+    }
   };
 
   return (
@@ -103,7 +207,7 @@ const AddSchduleScreen = () => {
         <Text style={[styles.topBarText, styles.topBarTitle]}>
           {isEditing ? '일정 편집' : '새로운 일정'}
         </Text>
-        <TouchableOpacity disabled={isDisabled}>
+        <TouchableOpacity onPress={() => submitEvent()}>
           <Text
             style={[styles.topBarText, !title ? styles.disabledAddText : null]}
           >
@@ -132,13 +236,19 @@ const AddSchduleScreen = () => {
               style={styles.mainScheduleInfoText}
               placeholder='날짜'
               placeholderTextColor={'#878787'}
+              value={new Date(route.params.date).toDateString()}
+              editable={false}
             />
           </View>
           <View style={[styles.innerScheduleBox, styles.noneBorder]}>
             <TextInput
               style={styles.mainScheduleInfoText}
               placeholder='장소'
+              value={palce}
               placeholderTextColor={'#878787'}
+              onChangeText={text => {
+                setPlace(text);
+              }}
             />
           </View>
         </View>
@@ -163,6 +273,18 @@ const AddSchduleScreen = () => {
                     mode='time'
                     minuteInterval={10}
                     accentColor='#FA1F11'
+                    onChange={(event, date) => {
+                      if (date) {
+                        const temp = new Date(date);
+                        temp.setMonth(new Date(route.params.date).getMonth());
+                        temp.setDate(new Date(route.params.date).getDate());
+                        temp.setUTCFullYear(
+                          new Date(route.params.date).getFullYear()
+                        );
+
+                        setStartTime(temp);
+                      }
+                    }}
                   />
                 )}
               </>
@@ -195,7 +317,9 @@ const AddSchduleScreen = () => {
                         mode='time'
                         minuteInterval={10}
                         display='spinner'
-                        onChange={(event, date) => handleStartChange(date)}
+                        onChange={(event, date) => {
+                          handleStartChange(date);
+                        }}
                       />
                     )}
                   </>
@@ -217,6 +341,18 @@ const AddSchduleScreen = () => {
                     mode='time'
                     minuteInterval={10}
                     accentColor='#FA1F11'
+                    onChange={(event, date) => {
+                      if (date) {
+                        const temp = new Date(date);
+                        temp.setMonth(new Date(route.params.date).getMonth());
+                        temp.setDate(new Date(route.params.date).getDate());
+                        temp.setUTCFullYear(
+                          new Date(route.params.date).getFullYear()
+                        );
+
+                        setFinishTime(temp);
+                      }
+                    }}
                   />
                 )}
               </>
@@ -287,6 +423,10 @@ const AddSchduleScreen = () => {
               maxLength={150}
               multiline={true}
               numberOfLines={6}
+              value={description}
+              onChangeText={text => {
+                setDescription(text);
+              }}
             />
           </View>
         </KeyboardAvoidingView>

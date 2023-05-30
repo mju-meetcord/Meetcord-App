@@ -4,13 +4,15 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import { EventItemProps } from '../types';
 
-const EventItem = ({ data }: EventItemProps) => {
+const EventItem = ({ data, onpress, isAdmin }: EventItemProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.leftBox}>
-        <TouchableOpacity>
-          <Icon name={'settings-outline'} style={styles.setIcon} />
-        </TouchableOpacity>
+        {isAdmin && (
+          <TouchableOpacity onPress={() => onpress()}>
+            <Icon name={'settings-outline'} style={styles.setIcon} />
+          </TouchableOpacity>
+        )}
       </View>
       <View style={styles.mainBox}>
         <Text style={styles.titleText}>{data.title}</Text>

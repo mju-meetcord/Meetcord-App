@@ -32,10 +32,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const [eventData, setEventData] = useState<{
     [key: string]: { marked: boolean; dotColor: string };
-  }>({
-    '2023-05-15': { marked: true, dotColor: '#50cebb' },
-    '2023-05-16': { marked: true, dotColor: '#50cebb' },
-  });
+  }>({});
 
   const isFoused = useIsFocused();
 
@@ -53,6 +50,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     return () => {
       getNotiData();
       getEventData();
+      setEventDatailData(selectedDate);
     };
   }, [isFoused]);
 
@@ -109,13 +107,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           const temp: { [key: string]: { marked: boolean; dotColor: string } } =
             {};
           if (response.data.length > 0) {
-            response.data.forEach((i: { start_time: string }) => {
-              temp[i.start_time.split('T')[0]] = {
+            response.data.forEach((i: { end_time: string }) => {
+              temp[i.end_time.split('T')[0]] = {
                 marked: true,
                 dotColor: '#50cebb',
               };
             });
-
             setEventData(temp);
           } else {
             //setData([]);
@@ -126,16 +123,20 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   };
 
   const handleDateSelect = (date: DateData) => {
-    setSelectedDate(date.dateString);
+    setEventDatailData(date.dateString);
+  };
+
+  const setEventDatailData = (datestrign: string) => {
+    setSelectedDate(datestrign);
     setSchedule(true);
 
-    if (eventData[date.dateString] != undefined) {
+    if (eventData[datestrign] != undefined) {
       AsyncStorage.getItem('group_name', (err, result) => {
         if (result) {
           setGroupname(result);
         }
         fetch(
-          `http://121.124.131.142:4000/meetEvent?name=${result}&&date=${date.dateString}`,
+          `http://121.124.131.142:4000/meetEvent?name=${result}&&date=${datestrign}`,
           {
             method: 'get',
             headers: {
@@ -197,7 +198,18 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
             <View style={styles.notiBox}>
               <Text style={styles.notiHead}>{data[i].title}</Text>
-              <Text style={styles.notiText}>{data[i].created_at}</Text>
+              <Text style={styles.notiText}>
+                {new Date(data[i].created_at).getFullYear() +
+                  '년 ' +
+                  new Date(data[i].created_at).getMonth() +
+                  '월 ' +
+                  new Date(data[i].created_at).getDate() +
+                  '일 ' +
+                  new Date(data[i].created_at).getHours() +
+                  '시 ' +
+                  new Date(data[i].created_at).getMinutes() +
+                  '분 '}
+              </Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -256,12 +268,34 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   new Date(selectedDate).toDateString().split(' ')[0]
                 }`}
               </Text>
-              <TouchableOpacity>
-                <Icon name={'add-circle'} style={styles.eventAdd} />
-              </TouchableOpacity>
+              {isAdmin && (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('AddSchedule', {
+                      date: selectedDate,
+                      groupname: groupname,
+                    });
+                  }}
+                >
+                  <Icon name={'add-circle'} style={styles.eventAdd} />
+                </TouchableOpacity>
+              )}
             </View>
             {eventDetailData.map(i => {
-              return <EventItem key={i.id} data={i} />;
+              return (
+                <EventItem
+                  key={i.id}
+                  data={i}
+                  isAdmin={isAdmin}
+                  onpress={() => {
+                    navigation.navigate('AddSchedule', {
+                      date: selectedDate,
+                      groupname: groupname,
+                      eventData: i,
+                    });
+                  }}
+                />
+              );
             })}
           </View>
         </View>

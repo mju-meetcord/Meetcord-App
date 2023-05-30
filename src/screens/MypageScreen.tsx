@@ -59,7 +59,15 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
       })
         .then(response => response.json())
         .then(response => {
-          setBirth(response.data.birth);
+          const temp = new Date(response.data.birth);
+          setBirth(
+            temp.getFullYear() +
+              '년' +
+              temp.getMonth() +
+              '월' +
+              temp.getDate() +
+              '일'
+          );
           setEmail(response.data.email);
           setImageurl({
             uri:
