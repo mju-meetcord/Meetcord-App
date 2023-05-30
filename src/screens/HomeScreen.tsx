@@ -204,7 +204,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView>
         <HelpButton handlePress={helpButtonPress} />
         <ImageView
@@ -287,7 +287,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
             <View style={styles.scheduleBox}>
               <View style={styles.scheduleTop}>
                 <Text
-                  style={{ fontSize: 22, color: '#5496FF', fontWeight: 'bold' }}
+                  style={{
+                    fontSize: 22,
+                    color: '#5496FF',
+                    fontWeight: 'bold',
+                  }}
                 >
                   {`${selectedDate.split('-')[0]}년 ${
                     selectedDate.split('-')[1]
