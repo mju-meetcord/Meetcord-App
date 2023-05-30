@@ -9,7 +9,7 @@ const EventItem = ({ data, onpress, isAdmin }: EventItemProps) => {
     <View style={styles.container}>
       <View style={styles.leftBox}>
         {isAdmin && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onpress()}>
             <Icon name={'settings-outline'} style={styles.setIcon} />
           </TouchableOpacity>
         )}
@@ -25,7 +25,7 @@ const EventItem = ({ data, onpress, isAdmin }: EventItemProps) => {
         <Text style={{ fontSize: 16 }}>장소 : {data.place}</Text>
       </View>
       <View style={styles.right}>
-        <TouchableOpacity onPress={() => onpress()}>
+        <TouchableOpacity>
           <Icon2 name={'navigate-next'} style={styles.nextIcon} />
         </TouchableOpacity>
       </View>

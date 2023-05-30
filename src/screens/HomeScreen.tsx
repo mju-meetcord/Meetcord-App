@@ -32,10 +32,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const [eventData, setEventData] = useState<{
     [key: string]: { marked: boolean; dotColor: string };
-  }>({
-    '2023-05-15': { marked: true, dotColor: '#50cebb' },
-    '2023-05-16': { marked: true, dotColor: '#50cebb' },
-  });
+  }>({});
 
   const isFoused = useIsFocused();
 
@@ -109,13 +106,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           const temp: { [key: string]: { marked: boolean; dotColor: string } } =
             {};
           if (response.data.length > 0) {
-            response.data.forEach((i: { start_time: string }) => {
-              temp[i.start_time.split('T')[0]] = {
+            response.data.forEach((i: { end_time: string }) => {
+              temp[i.end_time.split('T')[0]] = {
                 marked: true,
                 dotColor: '#50cebb',
               };
             });
-
             setEventData(temp);
           } else {
             //setData([]);
@@ -276,7 +272,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   data={i}
                   isAdmin={isAdmin}
                   onpress={() => {
-                    console.log(12);
+                    navigation.navigate('AddSchedule', {
+                      date: new Date(selectedDate),
+                      groupname: groupname,
+                      eventData: i,
+                    });
                   }}
                 />
               );

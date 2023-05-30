@@ -39,6 +39,7 @@ export type RootStackParamList = {
   AddSchedule: {
     date: Date;
     groupname: string;
+    eventData?: MeetEvent;
   };
 };
 

@@ -11,7 +11,7 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SelectDropdown from 'react-native-select-dropdown';
 import { useNavigation } from '@react-navigation/native';
@@ -29,7 +29,7 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
   const [title, setTitle] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const [palce, setPlace] = useState('미정');
+  const [palce, setPlace] = useState('');
   const [description, setDescription] = useState('');
 
   const [isEnabled, setIsEnabled] = useState(false);
@@ -45,7 +45,17 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
 
   const [selected, setSelected] = useState(undefined);
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(route.params.eventData);
+
+  useEffect(() => {
+    if (route.params.eventData) {
+      setTitle(route.params.eventData.title);
+      setDescription(route.params.eventData.description);
+      setPlace(route.params.eventData.place);
+      setStartTime(new Date(route.params.eventData.start_time));
+      setFinishTime(new Date(route.params.eventData.end_time));
+    }
+  }, []);
 
   const toggleSwitch = () => {
     setIsEnabled(!isEnabled);
@@ -116,28 +126,52 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
   };
 
   const submitEvent = () => {
-    fetch('http://121.124.131.142:4000/meetEvent', {
-      method: 'PUT',
-      body: JSON.stringify({
-        group_id: route.params.groupname,
-        title: title,
-        start_time: startTime,
-        end_time: finishTime,
-        place: palce,
-        description: description,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(response => {
-        return response.json();
+    if (route.params.eventData) {
+      fetch('http://121.124.131.142:4000/meetEvent', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: route.params.eventData.id,
+          title: title,
+          start_time: startTime,
+          end_time: finishTime,
+          place: palce,
+          description: description,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .then(response => {
-        console.log(response);
-        navigation.pop();
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          console.log(response);
+          navigation.pop();
+        })
+        .catch(error => console.error(error));
+    } else {
+      fetch('http://121.124.131.142:4000/meetEvent', {
+        method: 'PUT',
+        body: JSON.stringify({
+          group_id: route.params.groupname,
+          title: title,
+          start_time: startTime,
+          end_time: finishTime,
+          place: palce,
+          description: description,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
-      .catch(error => console.error(error));
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          navigation.pop();
+        })
+        .catch(error => console.error(error));
+    }
   };
 
   return (
@@ -189,6 +223,7 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
             <TextInput
               style={styles.mainScheduleInfoText}
               placeholder='장소'
+              value={palce}
               placeholderTextColor={'#878787'}
               onChangeText={text => {
                 setPlace(text);
@@ -363,6 +398,7 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
               maxLength={150}
               multiline={true}
               numberOfLines={6}
+              value={description}
               onChangeText={text => {
                 setDescription(text);
               }}
