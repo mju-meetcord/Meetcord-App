@@ -16,6 +16,8 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CreateMeetOfferText from '../components/CreateMeetOfferText';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import HelpButton from '../components/HelpButton';
+import ImageView from 'react-native-image-viewing';
 
 export interface Meet {
   id: number;
@@ -33,9 +35,24 @@ const MeetScreen = () => {
   const [joinMeetList, setJoinMeetList] = useState<Meet[]>([]);
   const [inputText, setInputText] = useState('');
   const [result, setResult] = useState([]);
+  const [showHelp, setShowHelp] = useState(false);
+
+  const helpImages = [
+    {
+      uri: 'https://i.ibb.co/9b70m9B/Meet-Help01.png',
+    },
+    {
+      uri: 'https://i.ibb.co/C5ZdBh8/Meet-Help02.png',
+    },
+  ];
+
   const navigation = useNavigation<NavigationProp>();
 
   const isFoused = useIsFocused();
+
+  const helpButtonPress = () => {
+    setShowHelp(!showHelp);
+  };
 
   useEffect(() => {
     return () => {
@@ -133,6 +150,13 @@ const MeetScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.mainContainer}>
+        <HelpButton handlePress={helpButtonPress} />
+        <ImageView
+          images={helpImages}
+          imageIndex={0}
+          visible={showHelp}
+          onRequestClose={() => setShowHelp(false)}
+        />
         <MeetLogo />
         <MeetSearchInput
           inputText={inputText}
