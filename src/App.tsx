@@ -16,6 +16,8 @@ import MeetSearchSreen from './screens/MeetSearchScreen';
 import { RootStackParamList } from './types';
 import EditMemberScreen from './screens/EditMemberScreen';
 import AddSchduleScreen from './screens/AddScheduleScreen';
+import ScheduleDetailScreen from './screens/ScheduleDetailScreen';
+import AddActivityRecordScreen from './screens/AddActivityRecordScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -91,6 +93,16 @@ const App = () => {
             presentation: 'modal',
             gestureDirection: 'vertical',
           }}
+        />
+        <Stack.Screen
+          name='ScheduleDetail'
+          component={ScheduleDetailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='AddActivityRecord'
+          component={AddActivityRecordScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
       <StatusBar style='auto' />
