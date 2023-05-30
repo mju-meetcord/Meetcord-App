@@ -123,6 +123,25 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
       {
         text: '삭제',
         style: 'destructive',
+        onPress: () => {
+          fetch('http://121.124.131.142:4000/meetEvent', {
+            method: 'DELETE',
+            body: JSON.stringify({
+              id: route.params.eventData?.id,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then(response => {
+              return response.json();
+            })
+            .then(response => {
+              console.log(response);
+              navigation.pop();
+            })
+            .catch(error => console.error(error));
+        },
       },
     ]);
   };
