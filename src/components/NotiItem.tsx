@@ -8,7 +8,18 @@ const NotiItem = ({ title, date, onpress }: any) => {
       <View style={styles.itemBox}>
         <View style={styles.textBox}>
           <Text style={styles.titleText}>{title}</Text>
-          <Text style={styles.dateText}>{date}</Text>
+          <Text style={styles.dateText}>
+            {new Date(date).getFullYear() +
+              '년 ' +
+              new Date(date).getMonth() +
+              '월 ' +
+              new Date(date).getDate() +
+              '일 ' +
+              new Date(date).getHours() +
+              '시 ' +
+              new Date(date).getMinutes() +
+              '분 '}
+          </Text>
         </View>
         <View style={styles.iconBox}>
           <Icon name={'navigate-next'} size={45} style={{ color: '#878787' }} />

@@ -117,7 +117,18 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
           </View>
         </View>
         <Text style={styles.title}>{data.title}</Text>
-        <Text style={styles.date}>{data.created_at}</Text>
+        <Text style={styles.date}>
+          {new Date(data.created_at).getFullYear() +
+            '년 ' +
+            new Date(data.created_at).getMonth() +
+            '월 ' +
+            new Date(data.created_at).getDate() +
+            '일 ' +
+            new Date(data.created_at).getHours() +
+            '시 ' +
+            new Date(data.created_at).getMinutes() +
+            '분 '}
+        </Text>
         <View style={styles.border} />
       </View>
       <ScrollView style={{ minHeight: 530 }}>
