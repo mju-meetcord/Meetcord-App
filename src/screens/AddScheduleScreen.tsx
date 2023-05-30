@@ -34,8 +34,10 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
 
   const [isEnabled, setIsEnabled] = useState(false);
 
-  const [startTime, setStartTime] = useState<Date>(route.params.date);
-  const [finishTime, setFinishTime] = useState<Date>(route.params.date);
+  const [startTime, setStartTime] = useState<Date>(new Date(route.params.date));
+  const [finishTime, setFinishTime] = useState<Date>(
+    new Date(route.params.date)
+  );
 
   // 안드로이드 커스텀용
   const [startTimeOpen, setStartTimeOpen] = useState(false);
@@ -186,7 +188,7 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
         <Text style={[styles.topBarText, styles.topBarTitle]}>
           {isEditing ? '일정 편집' : '새로운 일정'}
         </Text>
-        <TouchableOpacity disabled={isDisabled} onPress={() => submitEvent()}>
+        <TouchableOpacity onPress={() => submitEvent()}>
           <Text
             style={[styles.topBarText, !title ? styles.disabledAddText : null]}
           >
@@ -215,7 +217,7 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
               style={styles.mainScheduleInfoText}
               placeholder='날짜'
               placeholderTextColor={'#878787'}
-              value={route.params.date.toDateString()}
+              value={new Date(route.params.date).toDateString()}
               editable={false}
             />
           </View>
@@ -255,9 +257,11 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
                     onChange={(event, date) => {
                       if (date) {
                         const temp = new Date(date);
-                        temp.setMonth(route.params.date.getMonth());
-                        temp.setDate(route.params.date.getDate());
-                        temp.setUTCFullYear(route.params.date.getFullYear());
+                        temp.setMonth(new Date(route.params.date).getMonth());
+                        temp.setDate(new Date(route.params.date).getDate());
+                        temp.setUTCFullYear(
+                          new Date(route.params.date).getFullYear()
+                        );
 
                         setStartTime(temp);
                       }
@@ -321,9 +325,11 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
                     onChange={(event, date) => {
                       if (date) {
                         const temp = new Date(date);
-                        temp.setMonth(route.params.date.getMonth());
-                        temp.setDate(route.params.date.getDate());
-                        temp.setUTCFullYear(route.params.date.getFullYear());
+                        temp.setMonth(new Date(route.params.date).getMonth());
+                        temp.setDate(new Date(route.params.date).getDate());
+                        temp.setUTCFullYear(
+                          new Date(route.params.date).getFullYear()
+                        );
 
                         setFinishTime(temp);
                       }

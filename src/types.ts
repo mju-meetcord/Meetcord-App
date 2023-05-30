@@ -37,7 +37,7 @@ export type RootStackParamList = {
   Splash: undefined;
   EditMember: undefined;
   AddSchedule: {
-    date: Date;
+    date: string;
     groupname: string;
     eventData?: MeetEvent;
   };

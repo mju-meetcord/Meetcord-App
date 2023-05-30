@@ -256,7 +256,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('AddSchedule', {
-                      date: new Date(selectedDate),
+                      date: selectedDate,
                       groupname: groupname,
                     });
                   }}
@@ -273,7 +273,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   isAdmin={isAdmin}
                   onpress={() => {
                     navigation.navigate('AddSchedule', {
-                      date: new Date(selectedDate),
+                      date: selectedDate,
                       groupname: groupname,
                       eventData: i,
                     });
