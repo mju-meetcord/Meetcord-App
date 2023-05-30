@@ -75,4 +75,5 @@ export type EditMemberItemProps = {
 export type EventItemProps = {
   data: MeetEvent;
   onpress: () => void;
+  isAdmin: boolean;
 };

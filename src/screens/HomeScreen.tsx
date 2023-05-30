@@ -256,22 +256,25 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   new Date(selectedDate).toDateString().split(' ')[0]
                 }`}
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('AddSchedule', {
-                    date: new Date(selectedDate),
-                    groupname: groupname,
-                  });
-                }}
-              >
-                <Icon name={'add-circle'} style={styles.eventAdd} />
-              </TouchableOpacity>
+              {isAdmin && (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('AddSchedule', {
+                      date: new Date(selectedDate),
+                      groupname: groupname,
+                    });
+                  }}
+                >
+                  <Icon name={'add-circle'} style={styles.eventAdd} />
+                </TouchableOpacity>
+              )}
             </View>
             {eventDetailData.map(i => {
               return (
                 <EventItem
                   key={i.id}
                   data={i}
+                  isAdmin={isAdmin}
                   onpress={() => {
                     console.log(12);
                   }}
