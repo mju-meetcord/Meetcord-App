@@ -52,21 +52,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const [showHelp, setShowHelp] = useState(false);
 
   const helpImages = [
-    {
-      uri: 'https://i.ibb.co/Bc9gmVB/05-01.png',
-    },
-    {
-      uri: 'https://i.ibb.co/XDRbD6X/05-02.png',
-    },
-    {
-      uri: 'https://i.ibb.co/rpMLhDc/05-03.png',
-    },
-    {
-      uri: 'https://i.ibb.co/qr1k8VN/05-04.png',
-    },
-    {
-      uri: 'https://i.ibb.co/wr5VCKZ/05-05.png',
-    },
+    require('assets/HomeHelper01.png'),
+    require('assets/HomeHelper02.png'),
+    require('assets/HomeHelper03.png'),
+    require('assets/HomeHelper04.png'),
+    require('assets/HomeHelper05.png'),
   ];
 
   const helpButtonPress = () => {

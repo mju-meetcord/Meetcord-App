@@ -38,12 +38,8 @@ const MeetScreen = () => {
   const [showHelp, setShowHelp] = useState(false);
 
   const helpImages = [
-    {
-      uri: 'https://i.ibb.co/9b70m9B/Meet-Help01.png',
-    },
-    {
-      uri: 'https://i.ibb.co/C5ZdBh8/Meet-Help02.png',
-    },
+    require('assets/MeetHelper01.png'),
+    require('assets/MeetHelper02.png'),
   ];
 
   const navigation = useNavigation<NavigationProp>();
