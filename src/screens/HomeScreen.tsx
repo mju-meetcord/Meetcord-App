@@ -29,9 +29,11 @@ export interface MeetEvent {
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
   const [currentMonth, setCurrentMonth] = useState('');
-  const [schedule, setSchedule] = useState(false);
+  const [schedule, setSchedule] = useState(true);
 
   const [eventData, setEventData] = useState<{
     [key: string]: { marked: boolean; dotColor: string };
@@ -67,7 +69,6 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     return () => {
       getNotiData();
       getEventData();
-      setEventDatailData(selectedDate);
     };
   }, [isFoused]);
 
@@ -75,6 +76,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     getNotiData();
     getEventData();
   }, []);
+
+  useEffect(() => {
+    setEventDatailData(selectedDate);
+  }, [eventData]);
 
   const getNotiData = () => {
     AsyncStorage.getItem('group_name', (err, result) => {
