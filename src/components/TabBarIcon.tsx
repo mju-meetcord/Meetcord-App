@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const TapBarIcon = ({ Name, active }: any) => {
+const TabBarIcon = ({ Name, active }: any) => {
   return (
     <View
       style={{
@@ -39,4 +39,4 @@ const TapBarIcon = ({ Name, active }: any) => {
   );
 };
 
-export default TapBarIcon;
+export default TabBarIcon;
