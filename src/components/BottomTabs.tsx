@@ -5,7 +5,7 @@ import NotificationScreen from '../screens/NotificationScreen';
 import MypageScreen from '../screens/MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
-import TapBarIcon from '../components/TapBarIcon';
+import TabBarIcon from './TabBarIcon';
 import { BottomTabParamList, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -32,7 +32,7 @@ const BottomTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
-            <TapBarIcon Name={'v-card'} active={focused} />
+            <TabBarIcon Name={'list'} active={focused} />
           ),
         })}
       />
@@ -43,7 +43,7 @@ const BottomTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
-            <TapBarIcon Name={'users'} active={focused} />
+            <TabBarIcon Name={'users'} active={focused} />
           ),
         })}
       />
@@ -54,7 +54,7 @@ const BottomTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
-            <TapBarIcon Name={'home'} active={focused} />
+            <TabBarIcon Name={'home'} active={focused} />
           ),
         })}
       />
@@ -65,7 +65,7 @@ const BottomTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
-            <TapBarIcon Name={'notification'} active={focused} />
+            <TabBarIcon Name={'notification'} active={focused} />
           ),
         })}
       />
@@ -76,7 +76,7 @@ const BottomTabs = () => {
           headerShown: false,
           tabBarLabel: '',
           tabBarIcon: ({ focused }) => (
-            <TapBarIcon Name={'user'} active={focused} />
+            <TabBarIcon Name={'user'} active={focused} />
           ),
         })}
       />
