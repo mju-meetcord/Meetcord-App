@@ -1,17 +1,49 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import { EventItemProps } from '../types';
+import { CheckBox } from '@rneui/themed';
+import { useState } from 'react';
 
 const EventItem = ({ data, onpress, isAdmin }: EventItemProps) => {
+  const [check, setCheck] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.leftBox}>
-        {isAdmin && (
+        {isAdmin ? (
           <TouchableOpacity onPress={() => onpress()}>
             <Icon name={'settings-outline'} style={styles.setIcon} />
           </TouchableOpacity>
+        ) : (
+          <CheckBox
+            center
+            title='상기내용을 확인하였고, 개인정보 수집·이용에 동의합니다.'
+            checked={check}
+            onPress={() => {
+              if (check) {
+                setCheck(false);
+              } else {
+                return Alert.alert(
+                  '출석 체크',
+                  `${data.title}일정에 출석 체크 합니다.`,
+                  [
+                    {
+                      text: 'ok',
+                      onPress: () => {
+                        setCheck(true);
+                      },
+                    },
+                  ]
+                );
+              }
+            }}
+            containerStyle={{
+              backgroundColor: '(0, 0, 0, 0.5)',
+              left: 10,
+            }}
+          />
         )}
       </View>
       <View style={styles.mainBox}>
