@@ -26,6 +26,7 @@ export interface MeetEvent {
   start_time: string;
   end_time: string;
   place: string;
+  joinlist: string;
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
@@ -176,6 +177,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 description: string;
                 event_id: number;
                 place: string;
+                joinlist: string;
               }) => {
                 return {
                   id: item.event_id,
@@ -184,10 +186,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   start_time: item.start_time,
                   end_time: item.end_time,
                   place: item.place,
+                  joinlist: item.joinlist,
                 };
               }
             );
-
             setEventDetailData(eventData);
           })
           .catch(error => console.error(error));
@@ -329,6 +331,9 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         groupname: groupname,
                         eventData: i,
                       });
+                    }}
+                    onpress2={() => {
+                      navigation.navigate('ScheduleDetail', { data: i });
                     }}
                   />
                 );

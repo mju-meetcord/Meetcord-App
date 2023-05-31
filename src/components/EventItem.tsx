@@ -6,7 +6,7 @@ import { EventItemProps } from '../types';
 import { CheckBox } from '@rneui/themed';
 import { useState } from 'react';
 
-const EventItem = ({ data, onpress, isAdmin }: EventItemProps) => {
+const EventItem = ({ data, onpress, isAdmin, onpress2 }: EventItemProps) => {
   const [check, setCheck] = useState(false);
 
   return (
@@ -57,7 +57,7 @@ const EventItem = ({ data, onpress, isAdmin }: EventItemProps) => {
         <Text style={{ fontSize: 16 }}>장소 : {data.place}</Text>
       </View>
       <View style={styles.right}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onpress2}>
           <Icon2 name={'navigate-next'} style={styles.nextIcon} />
         </TouchableOpacity>
       </View>

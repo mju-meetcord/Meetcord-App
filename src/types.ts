@@ -42,7 +42,9 @@ export type RootStackParamList = {
     groupname: string;
     eventData?: MeetEvent;
   };
-  ScheduleDetail: undefined;
+  ScheduleDetail: {
+    data: MeetEvent;
+  };
   AddActivityRecord: {
     data?: ActivityDataType;
   };
@@ -82,6 +84,7 @@ export type EventItemProps = {
   data: MeetEvent;
   onpress: () => void;
   isAdmin: boolean;
+  onpress2: () => void;
 };
 
 export type ActivityDataType = {

@@ -49,7 +49,7 @@ const AddActivityRecordScreen = ({
         <Text style={[styles.topBarText, styles.topBarTitle]}>
           {isEditing ? '활동 기록 편집' : '활동 기록 추가'}
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('ScheduleDetail')}>
+        <TouchableOpacity onPress={() => navigation.pop()}>
           <Text style={styles.topBarText}>완료</Text>
         </TouchableOpacity>
       </View>
