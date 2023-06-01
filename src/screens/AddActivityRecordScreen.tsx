@@ -7,13 +7,14 @@ import {
   StatusBar,
   ScrollView,
   TextInput,
-  Image,
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CameraIcon from 'assets/camera_icon.svg';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
+import * as ImagePicker from 'expo-image-picker';
+import { Image } from 'expo-image';
 
 type AddActivityRecordScreenProps = StackScreenProps<
   RootStackParamList,
@@ -25,19 +26,107 @@ const AddActivityRecordScreen = ({
   route,
 }: AddActivityRecordScreenProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [hashTagText, setHashTagText] = useState(route.params.data?.hashTag);
+  const [hashTagText, setHashTagText] = useState(
+    route.params.data?.tag_message
+  );
   const [detailText, setDetailText] = useState(route.params.data?.detail);
+  const [image, setImage] = useState(route.params.data?.main_img);
 
   useEffect(() => {
-    if (!route.params.data) {
+    if (route.params.data.id == -1) {
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
+  }, []);
+
+  const selectImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      alert('Permission denied!');
       return;
     }
-    if (Object.keys(route.params.data).length) {
-      setIsEditing(true);
-    } else {
-      setIsEditing(false);
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     }
-  });
+  };
+
+  const submitRecordData = () => {
+    const formData = new FormData();
+
+    if (image) {
+      const imageData = {
+        uri: image,
+        name: 'record' + route.params.data.event_id + '.jpg',
+        type: 'image/jpg',
+      };
+
+      formData.append(
+        'image',
+        imageData,
+        'record' + route.params.data.event_id + '.jpg'
+      );
+    }
+    formData.append('tag_message', hashTagText);
+    formData.append('detail', detailText);
+    formData.append('id', route.params.data.id.toString());
+    formData.append('event_id', route.params.data.event_id.toString());
+
+    fetch(`http://121.124.131.142:4000/record`, {
+      method: 'post',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        navigation.navigate('BottomTab');
+      })
+      .catch(error => console.error(error));
+  };
+
+  const createRecordData = () => {
+    const formData = new FormData();
+
+    if (image) {
+      const imageData = {
+        uri: image,
+        name: 'record' + route.params.data.event_id + '.jpg',
+        type: 'image/jpg',
+      };
+
+      formData.append(
+        'image',
+        imageData,
+        'record' + route.params.data.event_id + '.jpg'
+      );
+    }
+    formData.append('tag_message', hashTagText);
+    formData.append('detail', detailText);
+    formData.append('event_id', route.params.data.event_id.toString());
+
+    fetch(`http://121.124.131.142:4000/record`, {
+      method: 'put',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        navigation.navigate('BottomTab');
+      })
+      .catch(error => console.error(error));
+  };
 
   return (
     <SafeAreaView style={styles.topWrapper} edges={['top']}>
@@ -49,7 +138,11 @@ const AddActivityRecordScreen = ({
         <Text style={[styles.topBarText, styles.topBarTitle]}>
           {isEditing ? '활동 기록 편집' : '활동 기록 추가'}
         </Text>
-        <TouchableOpacity onPress={() => navigation.pop()}>
+        <TouchableOpacity
+          onPress={() =>
+            route.params.data.id != -1 ? submitRecordData() : createRecordData()
+          }
+        >
           <Text style={styles.topBarText}>완료</Text>
         </TouchableOpacity>
       </View>
@@ -58,13 +151,15 @@ const AddActivityRecordScreen = ({
           <View style={styles.innerBox}>
             <Text style={styles.subTitle}>활동 기록</Text>
           </View>
-          <TouchableOpacity style={styles.activityPhotoBox}>
-            {isEditing && route.params.data?.image ? (
-              <Image
-                source={route.params.data?.image}
-                style={styles.activityImage}
-              />
-            ) : null}
+          <TouchableOpacity
+            style={styles.activityPhotoBox}
+            onPress={() => {
+              selectImage();
+            }}
+          >
+            {image && (
+              <Image source={{ uri: image }} style={styles.activityImage} />
+            )}
             <CameraIcon style={styles.cameraIcon} />
           </TouchableOpacity>
           <View style={[styles.innerBox, styles.hashTagBox]}>
