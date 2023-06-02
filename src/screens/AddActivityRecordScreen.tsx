@@ -231,11 +231,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9F1FF',
     alignItems: 'flex-start',
     justifyContent: 'flex-end',
+    borderRadius: 5,
   },
   activityImage: {
     height: 216,
     width: '100%',
     alignSelf: 'center',
+    borderRadius: 5,
   },
   cameraIcon: {
     position: 'absolute',

@@ -349,6 +349,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9F1FF',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 5,
   },
   activityImage: {
     marginTop: 10,
