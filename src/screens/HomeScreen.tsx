@@ -42,17 +42,23 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isFoused = useIsFocused();
 
-  const [data, setData] = useState([
-    { title: '', created_at: '', notification_id: '' },
-    { title: '', created_at: '', notification_id: '' },
-    { title: '', created_at: '', notification_id: '' },
-  ]);
+  const [data, setData] = useState<
+    {
+      title: string;
+      created_at: string;
+      notification_id: string;
+    }[]
+  >([]);
+
   const [isAdmin, setIsAdmin] = useState(true);
   const [groupname, setGroupname] = useState('');
 
   const [eventDetailData, setEventDetailData] = useState<MeetEvent[]>([]);
 
   const [showHelp, setShowHelp] = useState(false);
+
+  const [userId, setUserId] = useState(-1);
+  const [memId, setMemId] = useState(-1);
 
   const helpImages = [
     require('assets/HomeHelper01.png'),
@@ -76,7 +82,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   useEffect(() => {
     getNotiData();
     getEventData();
+    getUserId();
   }, []);
+
+  useEffect(() => {
+    getMemberData();
+  }, [userId]);
 
   useEffect(() => {
     setEventDatailData(selectedDate);
@@ -169,7 +180,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         )
           .then(response => response.json())
           .then(response => {
-            const eventData = response.data.map(
+            const temp = response.data.map(
               (item: {
                 title: string;
                 start_time: string;
@@ -190,7 +201,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 };
               }
             );
-            setEventDetailData(eventData);
+            setEventDetailData(temp);
           })
           .catch(error => console.error(error));
       });
@@ -210,6 +221,46 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     });
   };
 
+  const getUserId = () => {
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch(`http://121.124.131.142:4000/user?token=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          setUserId(response.data.user_id);
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
+  const getMemberData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/member?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          response.data.map((i: { user_id: number; member_id: number }) => {
+            if (i.user_id == userId) {
+              setMemId(i.member_id);
+            }
+            return 0;
+          });
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView>
@@ -226,25 +277,30 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           showsHorizontalScrollIndicator={false}
           style={styles.topContainer}
         >
-          {[0, 1, 2].map(i => (
-            <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
-              <View style={styles.notiBox}>
-                <Text style={styles.notiHead}>{data[i].title}</Text>
-                <Text style={styles.notiText}>
-                  {new Date(data[i].created_at).getFullYear() +
-                    '년 ' +
-                    new Date(data[i].created_at).getMonth() +
-                    '월 ' +
-                    new Date(data[i].created_at).getDate() +
-                    '일 ' +
-                    new Date(data[i].created_at).getHours() +
-                    '시 ' +
-                    new Date(data[i].created_at).getMinutes() +
-                    '분 '}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+          {[0, 1, 2].map(i => {
+            if (data.length < i + 1) {
+              return;
+            }
+            return (
+              <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
+                <View style={styles.notiBox}>
+                  <Text style={styles.notiHead}>{data[i].title}</Text>
+                  <Text style={styles.notiText}>
+                    {new Date(data[i].created_at).getFullYear() +
+                      '년 ' +
+                      new Date(data[i].created_at).getMonth() +
+                      '월 ' +
+                      new Date(data[i].created_at).getDate() +
+                      '일 ' +
+                      new Date(data[i].created_at).getHours() +
+                      '시 ' +
+                      new Date(data[i].created_at).getMinutes() +
+                      '분 '}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
         <View style={styles.mainContainer}>
           <Text style={styles.calenderText}>일정 캘린더</Text>
@@ -335,6 +391,8 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                     onpress2={() => {
                       navigation.navigate('ScheduleDetail', { data: i });
                     }}
+                    memId={memId}
+                    checking={() => getEventData()}
                   />
                 );
               })}

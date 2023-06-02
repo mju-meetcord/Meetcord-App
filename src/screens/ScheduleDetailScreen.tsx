@@ -14,6 +14,8 @@ import { useNavigation } from '@react-navigation/native';
 import { NavigationProp, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 export type ScheduleDetailProps = StackScreenProps<
   RootStackParamList,
@@ -40,11 +42,22 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
     detail: '',
     event_id: route.params.data.id,
   });
+  const [joinList, setJoinList] = useState(route.params.data.joinlist);
+
+  const isFoused = useIsFocused();
 
   const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
+    return () => {
+      getActivityData();
+      getEventData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
     getActivityData();
+    getEventData();
   }, []);
 
   useEffect(() => {
@@ -113,6 +126,25 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
       .catch(error => console.error(error));
   };
 
+  const getEventData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      fetch(`http://121.124.131.142:4000/meetEvent?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          const target_data = response.data.filter(
+            (i: { event_id: number }) => i.event_id == route.params.data.id
+          );
+          setJoinList(target_data[0].joinlist);
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
   return (
     <>
       <StatusBar barStyle={'light-content'} />
@@ -161,12 +193,15 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
             </View>
             <View style={styles.joinBox}>
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                {route.params.data.joinlist != ''
-                  ? route.params.data.joinlist.split(',').length
-                  : 0}
-                명
+                {joinList.split(',').filter(i => parseInt(i)).length}명
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Attendance', {
+                    eventData: route.params.data,
+                  })
+                }
+              >
                 <Icon
                   name={'navigate-next'}
                   style={{ fontSize: 30, color: '#676767' }}

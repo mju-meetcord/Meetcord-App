@@ -4,10 +4,60 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import { EventItemProps } from '../types';
 import { CheckBox } from '@rneui/themed';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const EventItem = ({ data, onpress, isAdmin, onpress2 }: EventItemProps) => {
+const EventItem = ({
+  data,
+  onpress,
+  isAdmin,
+  onpress2,
+  memId,
+  checking,
+}: EventItemProps) => {
   const [check, setCheck] = useState(false);
+
+  useEffect(() => {
+    if (memId) {
+      setCheck(data.joinlist.split(',').includes(memId.toString()));
+    }
+  }, []);
+
+  const checkAttendanceTrue = () => {
+    fetch('http://121.124.131.142:4000/meetEvent', {
+      method: 'patch',
+      body: JSON.stringify({
+        event_id: data.id,
+        member_id: memId,
+        option: 1,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => console.error(error));
+  };
+  const checkAttendanceFalse = () => {
+    fetch('http://121.124.131.142:4000/meetEvent', {
+      method: 'patch',
+      body: JSON.stringify({
+        event_id: data.id,
+        member_id: memId,
+        option: 2,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => console.error(error));
+  };
 
   return (
     <View style={styles.container}>
@@ -23,7 +73,9 @@ const EventItem = ({ data, onpress, isAdmin, onpress2 }: EventItemProps) => {
             checked={check}
             onPress={() => {
               if (check) {
+                checkAttendanceFalse();
                 setCheck(false);
+                checking();
               } else {
                 return Alert.alert(
                   '출석 체크',
@@ -33,6 +85,8 @@ const EventItem = ({ data, onpress, isAdmin, onpress2 }: EventItemProps) => {
                       text: 'ok',
                       onPress: () => {
                         setCheck(true);
+                        checkAttendanceTrue();
+                        checking();
                       },
                     },
                   ]

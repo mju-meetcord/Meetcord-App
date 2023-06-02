@@ -49,6 +49,9 @@ export type RootStackParamList = {
   AddActivityRecord: {
     data: EventRecord;
   };
+  Attendance: {
+    eventData: MeetEvent;
+  };
 };
 
 export type BottomTabParamList = {
@@ -86,4 +89,14 @@ export type EventItemProps = {
   onpress: () => void;
   isAdmin: boolean;
   onpress2: () => void;
+  memId: number;
+  checking: () => void;
+};
+
+export type AttendanceItemProps = {
+  data: Member;
+  checked: boolean;
+  isAdmin: boolean;
+  event_id: number;
+  checking: () => void;
 };
