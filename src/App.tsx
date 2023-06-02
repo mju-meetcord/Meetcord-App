@@ -26,6 +26,11 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
+          name='Register'
+          component={Register}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name='Splash'
           component={SplashScreen}
           options={{ headerShown: false }}
@@ -38,11 +43,6 @@ const App = () => {
         <Stack.Screen
           name='BottomTab'
           component={BottomTabs}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='Register'
-          component={Register}
           options={{ headerShown: false }}
         />
         <Stack.Screen
