@@ -64,11 +64,14 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
     const temp = new Date(route.params.data.start_time);
     setDateString(
       temp.getFullYear() +
-        '년' +
+        '년 ' +
         (temp.getMonth() + 1) +
-        '월' +
+        '월 ' +
         temp.getDate() +
-        '일'
+        '일 ' +
+        ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'][
+          temp.getDay()
+        ]
     );
 
     const temp2 = new Date(route.params.data.start_time);
