@@ -70,7 +70,42 @@ const MeetInfoModal = ({
   };
 
   const submitDelte = () => {
-    Alert.alert('요청를(을) 삭제하겠습니까?', '', [
+    Alert.alert('가입 신청을 취소하시겠습니까?', '', [
+      {
+        text: 'YES',
+        onPress: () => {
+          AsyncStorage.getItem('UserToken', (err, result) => {
+            fetch(`http://121.124.131.142:4000/member`, {
+              method: 'delete',
+              body: JSON.stringify({
+                mem_id: -1,
+                meet_id: meetInfo.id,
+                token: result,
+                creator_id: meetInfo.creator_id,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then(response => response.json())
+              .then(() => {
+                update();
+                handleBackButtonPress();
+              })
+              .catch(error => console.error(error));
+          });
+        },
+        style: 'default',
+      },
+      {
+        text: 'NO',
+        style: 'destructive',
+      },
+    ]);
+  };
+
+  const submitDelte2 = () => {
+    Alert.alert('그룹을 탈퇴하시겠습니까?', '', [
       {
         text: 'YES',
         onPress: () => {
@@ -157,7 +192,7 @@ const MeetInfoModal = ({
                 navigation.navigate('BottomTab');
               }}
               onpress2={() => {
-                submitDelte();
+                submitDelte2();
               }}
             />
           ) : (
