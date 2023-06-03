@@ -375,27 +375,48 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   </TouchableOpacity>
                 )}
               </View>
-              {eventDetailData.map(i => {
-                return (
-                  <EventItem
-                    key={i.id}
-                    data={i}
-                    isAdmin={isAdmin}
-                    onpress={() => {
-                      navigation.navigate('AddSchedule', {
-                        date: selectedDate,
-                        groupname: groupname,
-                        eventData: i,
-                      });
+              {eventDetailData.length == 0 ? (
+                <View
+                  style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: 80,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#5496FF',
+                      fontSize: 22,
+                      fontWeight: 'bold',
                     }}
-                    onpress2={() => {
-                      navigation.navigate('ScheduleDetail', { data: i });
-                    }}
-                    memId={memId}
-                    checking={() => getEventData()}
-                  />
-                );
-              })}
+                  >
+                    아직 일정이 없습니다 :)
+                  </Text>
+                </View>
+              ) : (
+                eventDetailData.map(i => {
+                  return (
+                    <EventItem
+                      key={i.id}
+                      data={i}
+                      isAdmin={isAdmin}
+                      onpress={() => {
+                        navigation.navigate('AddSchedule', {
+                          date: selectedDate,
+                          groupname: groupname,
+                          eventData: i,
+                        });
+                      }}
+                      onpress2={() => {
+                        navigation.navigate('ScheduleDetail', { data: i });
+                      }}
+                      memId={memId}
+                      checking={() => getEventData()}
+                    />
+                  );
+                })
+              )}
             </View>
           </View>
         )}
