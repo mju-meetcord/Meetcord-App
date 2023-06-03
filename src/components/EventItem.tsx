@@ -108,7 +108,7 @@ const EventItem = ({
           {new Date(data.end_time).getHours()}:
           {data.end_time.split('T')[1].split(':')[1]}
         </Text>
-        <Text style={{ fontSize: 16 }}>장소 : {data.place}</Text>
+        <Text style={{ fontSize: 16 }}>장소 : {data.place || '미정'}</Text>
       </View>
       <View style={styles.right}>
         <TouchableOpacity onPress={onpress2}>

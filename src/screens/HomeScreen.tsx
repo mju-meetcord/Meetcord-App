@@ -277,30 +277,36 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           showsHorizontalScrollIndicator={false}
           style={styles.topContainer}
         >
-          {[0, 1, 2].map(i => {
-            if (data.length < i + 1) {
-              return;
-            }
-            return (
-              <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
-                <View style={styles.notiBox}>
-                  <Text style={styles.notiHead}>{data[i].title}</Text>
-                  <Text style={styles.notiText}>
-                    {new Date(data[i].created_at).getFullYear() +
-                      '년 ' +
-                      new Date(data[i].created_at).getMonth() +
-                      '월 ' +
-                      new Date(data[i].created_at).getDate() +
-                      '일 ' +
-                      new Date(data[i].created_at).getHours() +
-                      '시 ' +
-                      new Date(data[i].created_at).getMinutes() +
-                      '분 '}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+          {data.length == 0 ? (
+            <Text style={{ fontSize: 22, left: 40 }}>
+              등록된 공지가 없습니다.
+            </Text>
+          ) : (
+            [0, 1, 2].map(i => {
+              if (data.length < i + 1) {
+                return;
+              }
+              return (
+                <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
+                  <View style={styles.notiBox}>
+                    <Text style={styles.notiHead}>{data[i].title}</Text>
+                    <Text style={styles.notiText}>
+                      {new Date(data[i].created_at).getFullYear() +
+                        '년 ' +
+                        (new Date(data[i].created_at).getMonth() + 1) +
+                        '월 ' +
+                        new Date(data[i].created_at).getDate() +
+                        '일 ' +
+                        new Date(data[i].created_at).getHours() +
+                        '시 ' +
+                        new Date(data[i].created_at).getMinutes() +
+                        '분 '}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          )}
         </ScrollView>
         <View style={styles.mainContainer}>
           <Text style={styles.calenderText}>일정 캘린더</Text>

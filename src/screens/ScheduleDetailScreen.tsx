@@ -180,7 +180,7 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
                 {dateString + '\n' + timeString}
               </Text>
               <Text style={styles.scheduleInfo}>
-                {route.params.data.place || '장소 미정'}
+                장소: {route.params.data.place || '미정'}
               </Text>
               {hasDescription && (
                 <Text style={styles.scheduleDescriptionText}>

@@ -37,7 +37,12 @@ const MemberModal = ({
           <Text style={styles.modalTitle}>{data.name}</Text>
           <Text style={styles.modalText}>Mobile. {data.phone}</Text>
           <Text style={styles.modalText}>E-mail. {data.email}</Text>
-          <Text style={styles.modalText}>Birth. {data.birthday}</Text>
+          <Text style={styles.modalText}>
+            Birth.{' '}
+            {`${new Date(data.birthday).getFullYear()}년 ${
+              new Date(data.birthday).getMonth() + 1
+            }월 ${new Date(data.birthday).getDate()}일`}
+          </Text>
         </View>
       </View>
     </Modal>
