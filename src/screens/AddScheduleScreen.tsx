@@ -238,7 +238,17 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
               placeholderTextColor={'#878787'}
               value={`${startTime.getFullYear()}년 ${
                 startTime.getMonth() + 1
-              }월 ${startTime.getDate()}일`}
+              }월 ${startTime.getDate()}일 ${
+                [
+                  '일요일',
+                  '월요일',
+                  '화요일',
+                  '수요일',
+                  '목요일',
+                  '금요일',
+                  '토요일',
+                ][startTime.getDay()]
+              }`}
               editable={false}
             />
           </View>

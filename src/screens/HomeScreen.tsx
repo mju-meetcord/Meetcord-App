@@ -365,7 +365,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   {`${selectedDate.split('-')[0]}년 ${
                     selectedDate.split('-')[1]
                   }월 ${selectedDate.split('-')[2]}일 ${
-                    new Date(selectedDate).toDateString().split(' ')[0]
+                    [
+                      '일요일',
+                      '월요일',
+                      '화요일',
+                      '수요일',
+                      '목요일',
+                      '금요일',
+                      '토요일',
+                    ][new Date(selectedDate).getDay()]
                   }`}
                 </Text>
                 {isAdmin && (

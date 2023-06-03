@@ -63,7 +63,12 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
   useEffect(() => {
     const temp = new Date(route.params.data.start_time);
     setDateString(
-      temp.getFullYear() + '년' + temp.getMonth() + '월' + temp.getDate() + '일'
+      temp.getFullYear() +
+        '년' +
+        (temp.getMonth() + 1) +
+        '월' +
+        temp.getDate() +
+        '일'
     );
 
     const temp2 = new Date(route.params.data.start_time);
