@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
   },
   leftBox: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   rightBox: {
     flexDirection: 'row',
@@ -217,13 +219,16 @@ const styles = StyleSheet.create({
   },
   bottomBox: {
     height: 100,
+    position: Platform.select({
+      ios: 'absolute',
+    }),
+    bottom: Platform.select({ ios: 14 }),
   },
   bottomText: {
-    fontSize: 96,
+    fontSize: 95,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#5496FF33',
-    marginTop: -14,
   },
 });
 

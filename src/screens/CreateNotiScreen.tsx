@@ -62,7 +62,6 @@ const CreateNotiScreen = ({ route, navigation }: CreateNotiScreenProps) => {
         })
         .then(response => {
           if (status == 200) {
-            alert(response.message);
             navigation.pop();
           } else if (status == 401) {
             alert(response.message);
@@ -88,8 +87,11 @@ const CreateNotiScreen = ({ route, navigation }: CreateNotiScreenProps) => {
         <View style={[styles.statusBarPlaceholder, { height: top }]}></View>
         <View style={styles.topContainer}>
           <View style={styles.container}>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity style={styles.backBtn}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity
+                style={styles.backBtn}
+                onPress={() => navigation.pop()}
+              >
                 <BackBtn />
               </TouchableOpacity>
               <Text style={styles.NotiDetail}>공지 추가</Text>
@@ -163,8 +165,6 @@ const styles = StyleSheet.create({
     width: '85%',
     fontWeight: 'bold',
     fontSize: 20,
-    borderWidth: 2,
-    borderColor: '#5496FF',
   },
 
   backBtn: {},
@@ -187,19 +187,17 @@ const styles = StyleSheet.create({
     width: '85%',
     marginTop: 14,
     marginHorizontal: 25,
-    borderWidth: 2,
     height: 530,
-    borderColor: '#5496FF',
+    textAlignVertical: 'top',
   },
   bottomBox: {
     height: 100,
   },
   bottomText: {
-    fontSize: 96,
+    fontSize: 95,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#5496FF33',
-    marginTop: -14,
   },
 });
 
