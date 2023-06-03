@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 40,
     backgroundColor: '#aaaaaa',
     overflow: 'hidden',
     borderColor: '#B3B3B3',

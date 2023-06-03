@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
+  Pressable,
+  Keyboard,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -101,89 +103,91 @@ const MypageScreen = ({ route, navigation }: ModifyMypageScreenProps) => {
       edges={['bottom']}
     >
       <View style={[styles.statusBarPlaceholder, { height: top }]} />
-      <View style={styles.topContainer}>
-        <Text style={styles.MyPage}>마이 페이지 수정</Text>
-      </View>
-      <TouchableOpacity onPress={() => navigation.pop()}>
-        <BackBtn style={styles.backBtn} />
-      </TouchableOpacity>
-      <View style={styles.container1}>
-        <TouchableOpacity
-          style={styles.proImg}
-          onPress={() => {
-            selectImage();
-          }}
-        >
-          <Image
-            source={{ uri: image }}
-            style={styles.image}
-            resizeMode='cover'
-          />
-          <CameraIcon style={styles.cameraIcon} />
+      <Pressable onPress={() => Keyboard.dismiss()}>
+        <View style={styles.topContainer}>
+          <Text style={styles.MyPage}>마이 페이지 수정</Text>
+        </View>
+        <TouchableOpacity onPress={() => navigation.pop()}>
+          <BackBtn style={styles.backBtn} />
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.Container2}>
-        <View style={styles.Container3}>
-          <View style={styles.section}>
-            <Text style={styles.box}>이름</Text>
-          </View>
-          <View style={styles.userSection}>
-            <Text style={styles.userBox}>{route.params.name}</Text>
-          </View>
-        </View>
-        <View style={styles.border} />
-        <View style={styles.Container3}>
-          <View style={styles.modifySection}>
-            <Text style={styles.modifyBox}>닉네임</Text>
-          </View>
-          <View style={styles.modifyUserSection}>
-            <TextInput
-              style={styles.modifyNickname}
-              maxLength={15}
-              onChangeText={setNickname}
-              value={nickname}
-              placeholder='닉네임을 입력해주세요'
-              placeholderTextColor={'#676767'}
+        <View style={styles.container1}>
+          <TouchableOpacity
+            style={styles.proImg}
+            onPress={() => {
+              selectImage();
+            }}
+          >
+            <Image
+              source={{ uri: image }}
+              style={styles.image}
+              resizeMode='cover'
             />
+            <CameraIcon style={styles.cameraIcon} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.Container2}>
+          <View style={styles.Container3}>
+            <View style={styles.section}>
+              <Text style={styles.box}>이름</Text>
+            </View>
+            <View style={styles.userSection}>
+              <Text style={styles.userBox}>{route.params.name}</Text>
+            </View>
+          </View>
+          <View style={styles.border} />
+          <View style={styles.Container3}>
+            <View style={styles.modifySection}>
+              <Text style={styles.modifyBox}>닉네임</Text>
+            </View>
+            <View style={styles.modifyUserSection}>
+              <TextInput
+                style={styles.modifyNickname}
+                maxLength={15}
+                onChangeText={setNickname}
+                value={nickname}
+                placeholder='닉네임을 입력해주세요'
+                placeholderTextColor={'#676767'}
+              />
+            </View>
+          </View>
+          <View style={styles.border} />
+          <View style={styles.Container3}>
+            <View style={styles.section}>
+              <Text style={styles.box}>전화번호</Text>
+            </View>
+            <View style={styles.userSection}>
+              <Text style={styles.userBox}>{route.params.phoneNum}</Text>
+            </View>
+          </View>
+          <View style={styles.border} />
+          <View style={styles.Container3}>
+            <View style={styles.section}>
+              <Text style={styles.box}>이메일</Text>
+            </View>
+            <View style={styles.userSection}>
+              <Text style={styles.userBox}>{route.params.email}</Text>
+            </View>
+          </View>
+          <View style={styles.border} />
+          <View style={styles.Container3}>
+            <View style={styles.section}>
+              <Text style={styles.box}>생년월일</Text>
+            </View>
+            <View style={styles.userSection}>
+              <Text style={styles.userBox}>{route.params.birth}</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.border} />
-        <View style={styles.Container3}>
-          <View style={styles.section}>
-            <Text style={styles.box}>전화번호</Text>
-          </View>
-          <View style={styles.userSection}>
-            <Text style={styles.userBox}>{route.params.phoneNum}</Text>
-          </View>
+        <TouchableOpacity style={styles.modifyMypage}>
+          <Text style={styles.modifyMypageBox} onPress={() => submitUserData()}>
+            프로필 저장하기
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.bottomBox}>
+          <Text style={styles.bottomText}>Meetcord</Text>
         </View>
-        <View style={styles.border} />
-        <View style={styles.Container3}>
-          <View style={styles.section}>
-            <Text style={styles.box}>이메일</Text>
-          </View>
-          <View style={styles.userSection}>
-            <Text style={styles.userBox}>{route.params.email}</Text>
-          </View>
-        </View>
-        <View style={styles.border} />
-        <View style={styles.Container3}>
-          <View style={styles.section}>
-            <Text style={styles.box}>생년월일</Text>
-          </View>
-          <View style={styles.userSection}>
-            <Text style={styles.userBox}>{route.params.birth}</Text>
-          </View>
-        </View>
-      </View>
-      <TouchableOpacity style={styles.modifyMypage}>
-        <Text style={styles.modifyMypageBox} onPress={() => submitUserData()}>
-          프로필 저장하기
-        </Text>
-      </TouchableOpacity>
-      <View style={styles.bottomBox}>
-        <Text style={styles.bottomText}>Meetcord</Text>
-      </View>
+      </Pressable>
     </SafeAreaView>
   );
 };
@@ -244,10 +248,10 @@ const styles = StyleSheet.create({
     height: 120,
     overflow: 'hidden',
     alignItems: 'center',
-    borderRadius: 30,
-    backgroundColor: '#aaaaaa',
+    borderRadius: 40,
     borderColor: '#B3B3B3',
     borderWidth: 1,
+    backgroundColor: '#aaaaaa',
   },
   cameraIcon: {
     position: 'absolute',
@@ -314,11 +318,8 @@ const styles = StyleSheet.create({
   },
 
   bottomBox: {
-    marginTop: 126,
+    marginTop: Platform.OS === 'ios' ? 170 : 153,
     height: Platform.OS === 'ios' ? 110 : 100,
-    position: 'absolute',
-    bottom: 0,
-    left: Platform.OS === 'ios' ? 0 : '5%',
   },
   bottomText: {
     fontSize: 95,
