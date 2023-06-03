@@ -50,40 +50,41 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response.data);
-        const meetData = response.data.map(
-          (item: {
-            group_id: number;
-            profile: ImageSourcePropType;
-            name: string;
-            description: string;
-            count: number;
-          }) => {
-            const index = route.params.data
-              .map(i => i.id)
-              .indexOf(item.group_id);
-            return {
-              id: item.group_id,
-              meetImg: {
-                uri: 'http://121.124.131.142:4000/images/' + item.profile,
-              },
-              meetName: item.name,
-              meetIntroduce: item.description,
-              role: 'none',
-              hasJoined:
-                index != -1
-                  ? route.params.data[index].role != 'waiting'
-                  : false,
-              isWaiting:
-                index != -1
-                  ? route.params.data[index].role == 'waiting'
-                  : false,
-              user_num: item.count,
-            };
-          }
-        );
+        if (response.data) {
+          const meetData = response.data.map(
+            (item: {
+              group_id: number;
+              profile: ImageSourcePropType;
+              name: string;
+              description: string;
+              count: number;
+            }) => {
+              const index = route.params.data
+                .map(i => i.id)
+                .indexOf(item.group_id);
+              return {
+                id: item.group_id,
+                meetImg: {
+                  uri: 'http://121.124.131.142:4000/images/' + item.profile,
+                },
+                meetName: item.name,
+                meetIntroduce: item.description,
+                role: 'none',
+                hasJoined:
+                  index != -1
+                    ? route.params.data[index].role != 'waiting'
+                    : false,
+                isWaiting:
+                  index != -1
+                    ? route.params.data[index].role == 'waiting'
+                    : false,
+                user_num: item.count,
+              };
+            }
+          );
 
-        setResultList(meetData);
+          setResultList(meetData);
+        }
       })
       .catch(error => console.error(error));
   };
