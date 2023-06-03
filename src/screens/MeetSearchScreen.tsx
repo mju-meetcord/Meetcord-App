@@ -50,12 +50,14 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
     })
       .then(response => response.json())
       .then(response => {
+        console.log(response.data);
         const meetData = response.data.map(
           (item: {
             group_id: number;
             profile: ImageSourcePropType;
             name: string;
             description: string;
+            count: number;
           }) => {
             const index = route.params.data
               .map(i => i.id)
@@ -76,6 +78,7 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
                 index != -1
                   ? route.params.data[index].role == 'waiting'
                   : false,
+              user_num: item.count,
             };
           }
         );
@@ -130,6 +133,7 @@ const MeetSearchSreen = ({ route }: MeetSearchScreenProps) => {
                     meetInfo={item}
                     userJoinInfo={item}
                     key={item.id}
+                    update={() => handleSubmit()}
                   />
                 ))}
               </ScrollView>

@@ -70,6 +70,10 @@ const MeetScreen = () => {
     getMyMeetList();
   }, []);
 
+  useEffect(() => {
+    //getMyMeetList();
+  }, [joinMeetList]);
+
   const getMyMeetList = () => {
     let status = 0;
 
@@ -159,7 +163,11 @@ const MeetScreen = () => {
           setInputText={setInputText}
           handleSubmit={handleSubmit}
         />
-        <MeetList hasMeet={hasMeet()} resultList={joinMeetList} />
+        <MeetList
+          hasMeet={hasMeet()}
+          resultList={joinMeetList}
+          update={() => getMyMeetList()}
+        />
         <View style={styles.buttonBox}>
           {!hasMeet() && <CreateMeetOfferText />}
           <MeetBtn onPress={onPressMeetBtn} />

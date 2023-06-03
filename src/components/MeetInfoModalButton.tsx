@@ -4,19 +4,21 @@ type MeetModalButtonProps = {
   firstText: string;
   secondText: string;
   onpress: () => void;
+  onpress2: () => void;
 };
 
 const MeetInfoModalButton = ({
   firstText,
   secondText,
   onpress,
+  onpress2,
 }: MeetModalButtonProps) => {
   return (
     <View style={styles.bottomButtonBox}>
       <TouchableOpacity style={styles.hasJoinedButton} onPress={onpress}>
         <Text style={styles.hasJoinedButtonText}>{firstText}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.cancelButton}>
+      <TouchableOpacity style={styles.cancelButton} onPress={onpress2}>
         <Text style={styles.cancelButtonText}>{secondText}</Text>
       </TouchableOpacity>
     </View>
