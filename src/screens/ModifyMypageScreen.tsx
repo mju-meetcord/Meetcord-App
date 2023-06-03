@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -16,6 +17,7 @@ import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
+import CameraIcon from 'assets/camera_icon.svg';
 
 type ModifyMypageScreenProps = StackScreenProps<
   RootStackParamList,
@@ -102,8 +104,8 @@ const MypageScreen = ({ route, navigation }: ModifyMypageScreenProps) => {
       <View style={styles.topContainer}>
         <Text style={styles.MyPage}>마이 페이지 수정</Text>
       </View>
-      <TouchableOpacity>
-        <BackBtn style={styles.backBtn} onPress={() => navigation.pop()} />
+      <TouchableOpacity onPress={() => navigation.pop()}>
+        <BackBtn style={styles.backBtn} />
       </TouchableOpacity>
       <View style={styles.container1}>
         <TouchableOpacity
@@ -117,6 +119,7 @@ const MypageScreen = ({ route, navigation }: ModifyMypageScreenProps) => {
             style={styles.image}
             resizeMode='cover'
           />
+          <CameraIcon style={styles.cameraIcon} />
         </TouchableOpacity>
       </View>
 
@@ -140,6 +143,8 @@ const MypageScreen = ({ route, navigation }: ModifyMypageScreenProps) => {
               maxLength={15}
               onChangeText={setNickname}
               value={nickname}
+              placeholder='닉네임을 입력해주세요'
+              placeholderTextColor={'#676767'}
             />
           </View>
         </View>
@@ -193,7 +198,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginLeft: 25,
-    marginTop: 70,
+    marginTop: 38,
     marginBottom: 20,
   },
 
@@ -235,14 +240,19 @@ const styles = StyleSheet.create({
   },
 
   proImg: {
-    marginTop: 26,
     width: 120,
     height: 120,
     overflow: 'hidden',
     alignItems: 'center',
     borderRadius: 30,
     backgroundColor: '#aaaaaa',
+    borderColor: '#B3B3B3',
     borderWidth: 1,
+  },
+  cameraIcon: {
+    position: 'absolute',
+    bottom: 5,
+    right: 2,
   },
   section: {
     width: '25%',
@@ -288,7 +298,7 @@ const styles = StyleSheet.create({
 
   modifyMypageBox: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: '#5496FF',
   },
 
@@ -306,9 +316,11 @@ const styles = StyleSheet.create({
   bottomBox: {
     marginTop: 126,
     height: 100,
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? 14 : 0,
   },
   bottomText: {
-    fontSize: 96,
+    fontSize: 95,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#5496FF',
@@ -353,7 +365,7 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#676767',
+    color: '#000000',
   },
 });
 export default MypageScreen;
