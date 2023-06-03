@@ -163,8 +163,15 @@ const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
             onPress={() =>
               navigation.navigate('AddActivityRecord', { data: recordData })
             }
+            disabled={!route.params.isAdmin}
           >
-            <Text style={styles.topBarText}>편집</Text>
+            <Text
+              style={
+                route.params.isAdmin ? styles.topBarText : { color: '#5496FF' }
+              }
+            >
+              편집
+            </Text>
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.mainBox}>

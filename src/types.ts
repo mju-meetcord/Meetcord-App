@@ -45,6 +45,7 @@ export type RootStackParamList = {
   };
   ScheduleDetail: {
     data: MeetEvent;
+    isAdmin: boolean;
   };
   AddActivityRecord: {
     data: EventRecord;

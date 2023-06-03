@@ -278,7 +278,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           style={styles.topContainer}
         >
           {data.length == 0 ? (
-            <Text style={{ fontSize: 22, left: 40 }}>
+            <Text style={{ fontSize: 22, marginLeft: 40 }}>
               등록된 공지가 없습니다.
             </Text>
           ) : (
@@ -415,7 +415,10 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                         });
                       }}
                       onpress2={() => {
-                        navigation.navigate('ScheduleDetail', { data: i });
+                        navigation.navigate('ScheduleDetail', {
+                          data: i,
+                          isAdmin: isAdmin,
+                        });
                       }}
                       memId={memId}
                       checking={() => getEventData()}
