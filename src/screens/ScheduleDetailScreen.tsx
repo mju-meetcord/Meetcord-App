@@ -10,30 +10,147 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../../assets/back_btn_white.svg';
-import { TempAcitivityData } from '../data/TempAcitivityRecord';
 import { useNavigation } from '@react-navigation/native';
-import { ActivityDataType, NavigationProp } from '../types';
+import { NavigationProp, RootStackParamList } from '../types';
+import { StackScreenProps } from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
-const ScheduleDetailScreen = () => {
+export type ScheduleDetailProps = StackScreenProps<
+  RootStackParamList,
+  'ScheduleDetail'
+>;
+
+export interface EventRecord {
+  id: number;
+  tag_message: string;
+  main_img: string;
+  detail: string;
+  event_id: number;
+}
+
+const ScheduleDetailScreen = ({ route }: ScheduleDetailProps) => {
+  const [dateString, setDateString] = useState('');
+  const [timeString, setTimeString] = useState('');
   const [hasPlace, setHasPlace] = useState(false);
-  const [hasDescription, setHasDescription] = useState(false);
-  const [activityData, setAcitivityData] = useState<ActivityDataType>({});
+  const [hasDescription, setHasDescription] = useState(true);
+  const [recordData, setRecordData] = useState<EventRecord>({
+    id: -1,
+    tag_message: '',
+    main_img: '',
+    detail: '',
+    event_id: route.params.data.id,
+  });
+  const [joinList, setJoinList] = useState(route.params.data.joinlist);
+
+  const isFoused = useIsFocused();
 
   const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
+    return () => {
+      getActivityData();
+      getEventData();
+    };
+  }, [isFoused]);
+
+  useEffect(() => {
     getActivityData();
-  }, [TempAcitivityData]);
+    getEventData();
+  }, []);
+
+  useEffect(() => {
+    const temp = new Date(route.params.data.start_time);
+    setDateString(
+      temp.getFullYear() +
+        '년 ' +
+        (temp.getMonth() + 1) +
+        '월 ' +
+        temp.getDate() +
+        '일 ' +
+        ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'][
+          temp.getDay()
+        ]
+    );
+
+    const temp2 = new Date(route.params.data.start_time);
+
+    const sh =
+      temp2.getHours().toString().length == 1
+        ? '0' + temp2.getHours().toString()
+        : temp2.getHours();
+    const sm =
+      temp2.getMinutes().toString().length == 1
+        ? '0' + temp2.getMinutes().toString()
+        : temp2.getMinutes();
+
+    const temp3 = new Date(route.params.data.end_time);
+    const eh =
+      temp3.getHours().toString().length == 1
+        ? '0' + temp3.getHours().toString()
+        : temp3.getHours();
+    const em =
+      temp3.getMinutes().toString().length == 1
+        ? '0' + temp3.getMinutes().toString()
+        : temp3.getMinutes();
+
+    setTimeString(sh + ':' + sm + '~' + eh + ':' + em);
+  }, []);
 
   const getActivityData = () => {
-    if (TempAcitivityData) {
-      const resultValues = Object.values(TempAcitivityData);
-      setAcitivityData({
-        image: resultValues[0],
-        hashTag: resultValues[1],
-        detail: resultValues[2],
-      });
-    }
+    fetch(`http://121.124.131.142:4000/record?id=${route.params.data.id}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(response => {
+        if (response.data.length > 0) {
+          const temp = response.data.map(
+            (item: {
+              record_id: number;
+              detail: string;
+              main_img: string;
+              tag_message: string;
+            }) => {
+              return {
+                id: item.record_id,
+                tag_message: item.tag_message,
+                main_img: item.main_img
+                  ? 'http://121.124.131.142:4000/images/record/' + item.main_img
+                  : item.main_img,
+                detail: item.detail,
+                event_id: route.params.data.id,
+              };
+            }
+          );
+          setRecordData(temp[0]);
+        } else {
+          //setData([]);
+        }
+      })
+      .catch(error => console.error(error));
+  };
+
+  const getEventData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      fetch(`http://121.124.131.142:4000/meetEvent?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          const target_data = response.data.filter(
+            (i: { event_id: number }) => i.event_id == route.params.data.id
+          );
+          setJoinList(target_data[0].joinlist);
+        })
+        .catch(error => console.error(error));
+    });
   };
 
   return (
@@ -52,10 +169,17 @@ const ScheduleDetailScreen = () => {
           <TouchableOpacity
             style={styles.topBarRightBox}
             onPress={() =>
-              navigation.navigate('AddActivityRecord', { data: activityData })
+              navigation.navigate('AddActivityRecord', { data: recordData })
             }
+            disabled={!route.params.isAdmin}
           >
-            <Text style={styles.topBarText}>편집</Text>
+            <Text
+              style={
+                route.params.isAdmin ? styles.topBarText : { color: '#5496FF' }
+              }
+            >
+              편집
+            </Text>
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.mainBox}>
@@ -63,28 +187,54 @@ const ScheduleDetailScreen = () => {
             <View style={styles.innerBox}>
               <Text style={styles.subTitle}>일정 설명</Text>
             </View>
-            <View
-              style={[
-                styles.scheduleInnerBox,
-                hasDescription && styles.scheduleDescriptionBox,
-              ]}
-            >
-              <Text style={styles.scheduleTitle}>일정 이름</Text>
-              <Text style={styles.scheduleInfo}>일정 일자</Text>
+            <View style={[styles.scheduleInnerBox]}>
+              <Text style={styles.scheduleTitle}>
+                {route.params.data.title}
+              </Text>
               <Text style={styles.scheduleInfo}>
-                {hasPlace ? '일정 장소' : '장소 미정'}
+                {dateString + '\n' + timeString}
+              </Text>
+              <Text style={styles.scheduleInfo}>
+                장소: {route.params.data.place || '미정'}
               </Text>
               {hasDescription && (
-                <Text style={styles.scheduleDescriptionText}>일정 설명</Text>
+                <Text style={styles.scheduleDescriptionText}>
+                  {route.params.data.description}
+                </Text>
               )}
+            </View>
+          </View>
+          <View style={styles.scheduleOuterBox}>
+            <View style={styles.innerBox}>
+              <Text style={styles.subTitle}>참여 인원</Text>
+            </View>
+            <View style={styles.joinBox}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                {joinList.split(',').filter(i => parseInt(i)).length}명
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Attendance', {
+                    eventData: route.params.data,
+                  })
+                }
+              >
+                <Icon
+                  name={'navigate-next'}
+                  style={{ fontSize: 30, color: '#676767' }}
+                />
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.activityOuterBox}>
             <View style={styles.innerBox}>
               <Text style={styles.subTitle}>활동 기록</Text>
             </View>
-            {activityData.image ? (
-              <Image source={activityData.image} style={styles.activityImage} />
+            {recordData?.main_img ? (
+              <Image
+                source={{ uri: recordData.main_img }}
+                style={styles.activityImage}
+              />
             ) : (
               <View style={styles.activityPhotoBox}>
                 <Text style={styles.activityBlueText}>
@@ -95,15 +245,13 @@ const ScheduleDetailScreen = () => {
             <View style={[styles.innerBox, styles.hashTagBox]}>
               <Text style={styles.activityBlueText}>#</Text>
               <Text style={styles.activityBlueText}>
-                {activityData.hashTag ? activityData.hashTag : ''}
+                {recordData?.tag_message ? recordData.tag_message : ''}
               </Text>
             </View>
           </View>
           <View style={[styles.innerBox, styles.activityRecordBox]}>
-            {activityData.detail ? (
-              <Text style={styles.activityRecordText}>
-                {activityData.detail}
-              </Text>
+            {recordData?.detail ? (
+              <Text style={styles.activityRecordText}>{recordData.detail}</Text>
             ) : (
               <Text style={styles.initAcitivityRecordText}>
                 아직 활동 기록이 없습니다.
@@ -168,11 +316,26 @@ const styles = StyleSheet.create({
   scheduleInnerBox: {
     width: '90%',
     alignSelf: 'center',
-    height: 86,
+    minHeight: 90,
     backgroundColor: '#E9F1FF',
     marginTop: 10,
     paddingTop: '2%',
-    paddingLeft: '2%',
+    paddingLeft: '3%',
+    paddingBottom: '2%',
+    borderRadius: 10,
+  },
+  joinBox: {
+    marginTop: 10,
+    width: '90%',
+    height: 40,
+    borderRadius: 10,
+    backgroundColor: '#E9F1FF',
+    marginLeft: '5%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingLeft: 20,
+    paddingRight: 10,
   },
   scheduleTitle: {
     fontWeight: '600',
@@ -203,6 +366,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9F1FF',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 5,
   },
   activityImage: {
     marginTop: 10,

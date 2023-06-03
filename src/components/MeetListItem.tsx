@@ -23,9 +23,10 @@ interface ListItemProps {
     hasJoined: boolean;
     isWaiting: boolean;
   };
+  update: () => void;
 }
 
-const MeetListItem = ({ meetInfo, userJoinInfo }: ListItemProps) => {
+const MeetListItem = ({ meetInfo, userJoinInfo, update }: ListItemProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handlePress = () => {
@@ -49,6 +50,7 @@ const MeetListItem = ({ meetInfo, userJoinInfo }: ListItemProps) => {
           meetInfo={meetInfo}
           userJoinInfo={userJoinInfo}
           handleBackButtonPress={handlePress}
+          update={update}
         />
       )}
     </TouchableOpacity>

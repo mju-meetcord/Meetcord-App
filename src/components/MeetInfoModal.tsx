@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageSourcePropType,
+  Alert,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import BackButton from './BackButton';
@@ -29,6 +30,7 @@ type MeetInfoModalProps = {
     isWaiting: boolean;
   };
   handleBackButtonPress: () => void;
+  update: () => void;
 };
 
 const MeetInfoModal = ({
@@ -36,6 +38,7 @@ const MeetInfoModal = ({
   meetInfo,
   userJoinInfo,
   handleBackButtonPress,
+  update,
 }: MeetInfoModalProps) => {
   const navigation = useNavigation<NavigationProp>();
 
@@ -55,6 +58,7 @@ const MeetInfoModal = ({
         })
         .then(response => {
           if (status == 200) {
+            update();
             handleBackButtonPress();
             navigation.pop();
           } else if (status == 401) {
@@ -63,6 +67,76 @@ const MeetInfoModal = ({
         })
         .catch(error => console.error(error));
     });
+  };
+
+  const submitDelte = () => {
+    Alert.alert('가입 신청을 취소하시겠습니까?', '', [
+      {
+        text: 'YES',
+        onPress: () => {
+          AsyncStorage.getItem('UserToken', (err, result) => {
+            fetch(`http://121.124.131.142:4000/member`, {
+              method: 'delete',
+              body: JSON.stringify({
+                mem_id: -1,
+                meet_id: meetInfo.id,
+                token: result,
+                creator_id: meetInfo.creator_id,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then(response => response.json())
+              .then(() => {
+                update();
+                handleBackButtonPress();
+              })
+              .catch(error => console.error(error));
+          });
+        },
+        style: 'default',
+      },
+      {
+        text: 'NO',
+        style: 'destructive',
+      },
+    ]);
+  };
+
+  const submitDelte2 = () => {
+    Alert.alert('그룹을 탈퇴하시겠습니까?', '', [
+      {
+        text: 'YES',
+        onPress: () => {
+          AsyncStorage.getItem('UserToken', (err, result) => {
+            fetch(`http://121.124.131.142:4000/member`, {
+              method: 'delete',
+              body: JSON.stringify({
+                mem_id: -1,
+                meet_id: meetInfo.id,
+                token: result,
+                creator_id: meetInfo.creator_id,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then(response => response.json())
+              .then(() => {
+                update();
+                handleBackButtonPress();
+              })
+              .catch(error => console.error(error));
+          });
+        },
+        style: 'default',
+      },
+      {
+        text: 'NO',
+        style: 'destructive',
+      },
+    ]);
   };
 
   return (
@@ -98,6 +172,9 @@ const MeetInfoModal = ({
               onpress={() => {
                 handleBackButtonPress();
               }}
+              onpress2={() => {
+                submitDelte();
+              }}
             />
           ) : userJoinInfo.hasJoined ? (
             <MeetInfoModalButton
@@ -113,6 +190,9 @@ const MeetInfoModal = ({
                   meetInfo.creator_id.toString()
                 );
                 navigation.navigate('BottomTab');
+              }}
+              onpress2={() => {
+                submitDelte2();
               }}
             />
           ) : (

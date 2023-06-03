@@ -11,7 +11,7 @@ const NotiItem = ({ title, date, onpress }: any) => {
           <Text style={styles.dateText}>
             {new Date(date).getFullYear() +
               '년 ' +
-              new Date(date).getMonth() +
+              (new Date(date).getMonth() + 1) +
               '월 ' +
               new Date(date).getDate() +
               '일 ' +

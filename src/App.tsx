@@ -18,6 +18,7 @@ import EditMemberScreen from './screens/EditMemberScreen';
 import AddSchduleScreen from './screens/AddScheduleScreen';
 import ScheduleDetailScreen from './screens/ScheduleDetailScreen';
 import AddActivityRecordScreen from './screens/AddActivityRecordScreen';
+import AttendanceScreen from './screens/AttendanceScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -102,6 +103,11 @@ const App = () => {
         <Stack.Screen
           name='AddActivityRecord'
           component={AddActivityRecordScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Attendance'
+          component={AttendanceScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -127,7 +127,9 @@ const ModifyNotiScreen = ({ route, navigation }: ModifyNotiScreenProps) => {
             }}
             value={title}
           />
-          <Text style={styles.date}>{new Date().toISOString()}</Text>
+          <Text style={styles.date}>{`${new Date().getFullYear()}년 ${
+            new Date().getMonth() + 1
+          }월 ${new Date().getDate()}일`}</Text>
           <View style={styles.border} />
         </View>
         <ScrollView style={{ minHeight: 530 }}>

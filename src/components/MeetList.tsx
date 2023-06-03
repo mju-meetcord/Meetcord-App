@@ -5,9 +5,10 @@ import { Meet } from '../screens/MeetScreen';
 interface MeetListProps {
   hasMeet: boolean;
   resultList: Meet[];
+  update: () => void;
 }
 
-const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
+const MeetList = ({ hasMeet, resultList, update }: MeetListProps) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.listBox}>
@@ -16,7 +17,12 @@ const MeetList = ({ hasMeet, resultList }: MeetListProps) => {
           <ScrollView keyboardDismissMode='on-drag'>
             {hasMeet ? (
               resultList.map((item, index) => (
-                <MeetListItem meetInfo={item} userJoinInfo={item} key={index} />
+                <MeetListItem
+                  meetInfo={item}
+                  userJoinInfo={item}
+                  key={index}
+                  update={update}
+                />
               ))
             ) : (
               <View style={styles.emptyListBox}>

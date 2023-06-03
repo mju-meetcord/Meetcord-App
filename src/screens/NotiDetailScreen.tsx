@@ -120,7 +120,7 @@ const NotiDetailScreen = ({ route, navigation }: NotiDetailScreenProps) => {
         <Text style={styles.date}>
           {new Date(data.created_at).getFullYear() +
             '년 ' +
-            new Date(data.created_at).getMonth() +
+            (new Date(data.created_at).getMonth() + 1) +
             '월 ' +
             new Date(data.created_at).getDate() +
             '일 ' +

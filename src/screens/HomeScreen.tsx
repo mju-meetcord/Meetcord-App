@@ -26,12 +26,15 @@ export interface MeetEvent {
   start_time: string;
   end_time: string;
   place: string;
+  joinlist: string;
 }
 
 const HomeScreen = ({ navigation }: HomeScreenProps) => {
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split('T')[0]
+  );
   const [currentMonth, setCurrentMonth] = useState('');
-  const [schedule, setSchedule] = useState(false);
+  const [schedule, setSchedule] = useState(true);
 
   const [eventData, setEventData] = useState<{
     [key: string]: { marked: boolean; dotColor: string };
@@ -39,17 +42,23 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
 
   const isFoused = useIsFocused();
 
-  const [data, setData] = useState([
-    { title: '', created_at: '', notification_id: '' },
-    { title: '', created_at: '', notification_id: '' },
-    { title: '', created_at: '', notification_id: '' },
-  ]);
+  const [data, setData] = useState<
+    {
+      title: string;
+      created_at: string;
+      notification_id: string;
+    }[]
+  >([]);
+
   const [isAdmin, setIsAdmin] = useState(true);
   const [groupname, setGroupname] = useState('');
 
   const [eventDetailData, setEventDetailData] = useState<MeetEvent[]>([]);
 
   const [showHelp, setShowHelp] = useState(false);
+
+  const [userId, setUserId] = useState(-1);
+  const [memId, setMemId] = useState(-1);
 
   const helpImages = [
     require('assets/HomeHelper01.png'),
@@ -67,14 +76,22 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     return () => {
       getNotiData();
       getEventData();
-      setEventDatailData(selectedDate);
     };
   }, [isFoused]);
 
   useEffect(() => {
     getNotiData();
     getEventData();
+    getUserId();
   }, []);
+
+  useEffect(() => {
+    getMemberData();
+  }, [userId]);
+
+  useEffect(() => {
+    setEventDatailData(selectedDate);
+  }, [eventData]);
 
   const getNotiData = () => {
     AsyncStorage.getItem('group_name', (err, result) => {
@@ -163,7 +180,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
         )
           .then(response => response.json())
           .then(response => {
-            const eventData = response.data.map(
+            const temp = response.data.map(
               (item: {
                 title: string;
                 start_time: string;
@@ -171,6 +188,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                 description: string;
                 event_id: number;
                 place: string;
+                joinlist: string;
               }) => {
                 return {
                   id: item.event_id,
@@ -179,11 +197,11 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   start_time: item.start_time,
                   end_time: item.end_time,
                   place: item.place,
+                  joinlist: item.joinlist,
                 };
               }
             );
-
-            setEventDetailData(eventData);
+            setEventDetailData(temp);
           })
           .catch(error => console.error(error));
       });
@@ -203,6 +221,46 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
     });
   };
 
+  const getUserId = () => {
+    AsyncStorage.getItem('UserToken', (err, result) => {
+      fetch(`http://121.124.131.142:4000/user?token=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          setUserId(response.data.user_id);
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
+  const getMemberData = () => {
+    AsyncStorage.getItem('group_name', (err, result) => {
+      if (result) {
+        setGroupname(result);
+      }
+      fetch(`http://121.124.131.142:4000/member?name=${result}`, {
+        method: 'get',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(response => {
+          response.data.map((i: { user_id: number; member_id: number }) => {
+            if (i.user_id == userId) {
+              setMemId(i.member_id);
+            }
+            return 0;
+          });
+        })
+        .catch(error => console.error(error));
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScrollView>
@@ -219,25 +277,36 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
           showsHorizontalScrollIndicator={false}
           style={styles.topContainer}
         >
-          {[0, 1, 2].map(i => (
-            <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
-              <View style={styles.notiBox}>
-                <Text style={styles.notiHead}>{data[i].title}</Text>
-                <Text style={styles.notiText}>
-                  {new Date(data[i].created_at).getFullYear() +
-                    '년 ' +
-                    new Date(data[i].created_at).getMonth() +
-                    '월 ' +
-                    new Date(data[i].created_at).getDate() +
-                    '일 ' +
-                    new Date(data[i].created_at).getHours() +
-                    '시 ' +
-                    new Date(data[i].created_at).getMinutes() +
-                    '분 '}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+          {data.length == 0 ? (
+            <Text style={{ fontSize: 22, marginLeft: 40 }}>
+              등록된 공지가 없습니다.
+            </Text>
+          ) : (
+            [0, 1, 2].map(i => {
+              if (data.length < i + 1) {
+                return;
+              }
+              return (
+                <TouchableOpacity onPress={() => handleNoti(i)} key={i}>
+                  <View style={styles.notiBox}>
+                    <Text style={styles.notiHead}>{data[i].title}</Text>
+                    <Text style={styles.notiText}>
+                      {new Date(data[i].created_at).getFullYear() +
+                        '년 ' +
+                        (new Date(data[i].created_at).getMonth() + 1) +
+                        '월 ' +
+                        new Date(data[i].created_at).getDate() +
+                        '일 ' +
+                        new Date(data[i].created_at).getHours() +
+                        '시 ' +
+                        new Date(data[i].created_at).getMinutes() +
+                        '분 '}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          )}
         </ScrollView>
         <View style={styles.mainContainer}>
           <Text style={styles.calenderText}>일정 캘린더</Text>
@@ -296,7 +365,15 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   {`${selectedDate.split('-')[0]}년 ${
                     selectedDate.split('-')[1]
                   }월 ${selectedDate.split('-')[2]}일 ${
-                    new Date(selectedDate).toDateString().split(' ')[0]
+                    [
+                      '일요일',
+                      '월요일',
+                      '화요일',
+                      '수요일',
+                      '목요일',
+                      '금요일',
+                      '토요일',
+                    ][new Date(selectedDate).getDay()]
                   }`}
                 </Text>
                 {isAdmin && (
@@ -312,22 +389,51 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
                   </TouchableOpacity>
                 )}
               </View>
-              {eventDetailData.map(i => {
-                return (
-                  <EventItem
-                    key={i.id}
-                    data={i}
-                    isAdmin={isAdmin}
-                    onpress={() => {
-                      navigation.navigate('AddSchedule', {
-                        date: selectedDate,
-                        groupname: groupname,
-                        eventData: i,
-                      });
+              {eventDetailData.length == 0 ? (
+                <View
+                  style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: 80,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#5496FF',
+                      fontSize: 22,
+                      fontWeight: 'bold',
                     }}
-                  />
-                );
-              })}
+                  >
+                    아직 일정이 없습니다 :)
+                  </Text>
+                </View>
+              ) : (
+                eventDetailData.map(i => {
+                  return (
+                    <EventItem
+                      key={i.id}
+                      data={i}
+                      isAdmin={isAdmin}
+                      onpress={() => {
+                        navigation.navigate('AddSchedule', {
+                          date: selectedDate,
+                          groupname: groupname,
+                          eventData: i,
+                        });
+                      }}
+                      onpress2={() => {
+                        navigation.navigate('ScheduleDetail', {
+                          data: i,
+                          isAdmin: isAdmin,
+                        });
+                      }}
+                      memId={memId}
+                      checking={() => getEventData()}
+                    />
+                  );
+                })
+              )}
             </View>
           </View>
         )}

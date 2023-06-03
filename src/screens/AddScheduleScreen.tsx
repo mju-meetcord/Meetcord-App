@@ -236,7 +236,19 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
               style={styles.mainScheduleInfoText}
               placeholder='날짜'
               placeholderTextColor={'#878787'}
-              value={new Date(route.params.date).toDateString()}
+              value={`${startTime.getFullYear()}년 ${
+                startTime.getMonth() + 1
+              }월 ${startTime.getDate()}일 ${
+                [
+                  '일요일',
+                  '월요일',
+                  '화요일',
+                  '수요일',
+                  '목요일',
+                  '금요일',
+                  '토요일',
+                ][startTime.getDay()]
+              }`}
               editable={false}
             />
           </View>
@@ -393,22 +405,6 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
               </>
             )}
           </View>
-        </View>
-        <View style={[styles.notiSettingBox, styles.innerMaginTop]}>
-          <Text style={styles.notiSettingText}>알림</Text>
-          <SelectDropdown
-            data={notiType}
-            onSelect={setSelected}
-            defaultButtonText={notiType[0]}
-            defaultValueByIndex={0}
-            statusBarTranslucent={true}
-            buttonStyle={styles.notiSelectBox}
-            buttonTextStyle={styles.notiSelectText}
-            dropdownStyle={styles.notiDropDownBox}
-            rowStyle={styles.notiDropDownItemBox}
-            rowTextStyle={styles.notiDropDownItemText}
-            selectedRowTextStyle={styles.notiSelectedText}
-          />
         </View>
         <KeyboardAvoidingView
           behavior={Platform.select({ ios: 'padding' })}
