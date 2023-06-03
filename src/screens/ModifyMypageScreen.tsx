@@ -315,9 +315,9 @@ const styles = StyleSheet.create({
 
   bottomBox: {
     marginTop: 126,
-    height: 100,
+    height: Platform.OS === 'ios' ? 110 : 100,
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 14 : 0,
+    bottom: 0,
   },
   bottomText: {
     fontSize: 95,
