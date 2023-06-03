@@ -214,7 +214,7 @@ const Register = ({ navigation }: RegisterScreenProps) => {
                       : styles.doubleCheck_text_end
                   }
                 >
-                  중복확인
+                  {btnDisable ? '인증완료' : '중복확인'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -390,11 +390,11 @@ const styles = StyleSheet.create({
     borderColor: '#676767',
     borderRadius: 5,
     width: '90%',
-    height: 300,
+    height: 240,
     overflow: 'hidden',
   },
   itemBox: {
-    height: 50,
+    height: 40,
     display: 'flex',
     borderBottomWidth: 1,
     borderColor: '#EBEBF0',
@@ -406,13 +406,13 @@ const styles = StyleSheet.create({
   label: {
     flex: 0.3,
     backgroundColor: '#F5F5F5',
-    lineHeight: 50,
+    lineHeight: 40,
     fontSize: 13,
     fontWeight: 500,
   },
   input: {
     flex: 0.7,
-    height: 50,
+    height: 40,
     paddingLeft: 8,
   },
   Container4: {
@@ -458,20 +458,24 @@ const styles = StyleSheet.create({
   },
   doubleCheck_text: {
     borderWidth: 1,
-    width: '70%',
-    height: 30,
+    borderColor: '#878787',
+    width: '65%',
+    height: 25,
     textAlign: 'center',
-    lineHeight: 28,
-    borderRadius: 5,
+    lineHeight: 25,
+    borderRadius: 2,
+    fontSize: 13,
   },
   doubleCheck_text_end: {
     borderWidth: 1,
-    borderColor: 'green',
-    width: '70%',
-    height: 30,
+    borderColor: '#1160FA',
+    color: '#1160FA',
+    width: '65%',
+    height: 25,
     textAlign: 'center',
-    lineHeight: 28,
-    borderRadius: 5,
+    lineHeight: 25,
+    borderRadius: 2,
+    fontSize: 13,
   },
   buttonContainer: {
     maxWidth: 400,
