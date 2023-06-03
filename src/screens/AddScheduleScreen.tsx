@@ -396,22 +396,6 @@ const AddSchduleScreen = ({ route }: AddScheduleProps) => {
             )}
           </View>
         </View>
-        <View style={[styles.notiSettingBox, styles.innerMaginTop]}>
-          <Text style={styles.notiSettingText}>알림</Text>
-          <SelectDropdown
-            data={notiType}
-            onSelect={setSelected}
-            defaultButtonText={notiType[0]}
-            defaultValueByIndex={0}
-            statusBarTranslucent={true}
-            buttonStyle={styles.notiSelectBox}
-            buttonTextStyle={styles.notiSelectText}
-            dropdownStyle={styles.notiDropDownBox}
-            rowStyle={styles.notiDropDownItemBox}
-            rowTextStyle={styles.notiDropDownItemText}
-            selectedRowTextStyle={styles.notiSelectedText}
-          />
-        </View>
         <KeyboardAvoidingView
           behavior={Platform.select({ ios: 'padding' })}
           keyboardVerticalOffset={Platform.select({ ios: 100 })}
