@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Alert,
   ImageSourcePropType,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -302,6 +303,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     bottom: 0,
+    left: Platform.OS === 'ios' ? 0 : '5%',
   },
   bottomText: {
     fontSize: 95,

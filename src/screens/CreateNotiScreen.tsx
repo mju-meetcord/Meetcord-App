@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   Keyboard,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -192,6 +193,7 @@ const styles = StyleSheet.create({
   },
   bottomBox: {
     height: 100,
+    marginTop: Platform.OS === 'ios' ? 0 : -14,
   },
   bottomText: {
     fontSize: 95,

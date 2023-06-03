@@ -318,6 +318,7 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? 110 : 100,
     position: 'absolute',
     bottom: 0,
+    left: Platform.OS === 'ios' ? 0 : '5%',
   },
   bottomText: {
     fontSize: 95,
