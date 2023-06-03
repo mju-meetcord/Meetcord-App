@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     color: '#5496FF',
     fontSize: 16,
     fontWeight: '500',
-    paddingBottom: Platform.OS === 'ios' ? 0 : 5,
   },
 });
 

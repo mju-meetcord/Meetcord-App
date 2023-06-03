@@ -4,7 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import MypageScreen from '../screens/MypageScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import TabBarIcon from './TabBarIcon';
 import { BottomTabParamList, RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -89,8 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#5496FF',
     borderTopWidth: 1,
     borderColor: '#000',
-    height: 100,
-    paddingVertical: 5,
+    height: Platform.OS === 'ios' ? 90 : 80,
     paddingHorizontal: 10,
   },
 });
