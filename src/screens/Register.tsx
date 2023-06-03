@@ -404,14 +404,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   label: {
-    flex: 0.3,
+    flex: 0.25,
     backgroundColor: '#F5F5F5',
     lineHeight: 40,
     fontSize: 13,
     fontWeight: 500,
   },
   input: {
-    flex: 0.7,
+    flex: 0.65,
     height: 40,
     paddingLeft: 8,
   },
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
   doubleCheck: {
     flex: 0.25,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   doubleCheck_text: {
     borderWidth: 1,
