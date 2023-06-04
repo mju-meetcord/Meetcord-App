@@ -79,6 +79,7 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   useFocusEffect(
     useCallback(() => {
       setSelectedDate(new Date().toISOString().split('T')[0]);
+      setEventData({});
     }, [])
   );
 
