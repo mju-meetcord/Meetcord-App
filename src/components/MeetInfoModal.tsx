@@ -10,7 +10,7 @@ import Modal from 'react-native-modal';
 import BackButton from './BackButton';
 import MeetInfoModalButton from './MeetInfoModalButton';
 import { NavigationProp } from '../types';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 
@@ -41,6 +41,7 @@ const MeetInfoModal = ({
   update,
 }: MeetInfoModalProps) => {
   const navigation = useNavigation<NavigationProp>();
+  const route = useRoute();
 
   const registerMeet = () => {
     let status = 0;
@@ -189,7 +190,11 @@ const MeetInfoModal = ({
                   'creator_id',
                   meetInfo.creator_id.toString()
                 );
-                navigation.navigate('BottomTab');
+                {
+                  route.name === 'Meet'
+                    ? navigation.navigate('Home')
+                    : navigation.navigate('BottomTab');
+                }
               }}
               onpress2={() => {
                 submitDelte2();
