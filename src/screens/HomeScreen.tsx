@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Calendar, DateData } from 'react-native-calendars';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList, RootStackParamList } from '../types';
@@ -8,7 +8,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import EventItem from '../components/EventItem';
 import { Direction } from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { CompositeScreenProps, useIsFocused } from '@react-navigation/native';
+import {
+  CompositeScreenProps,
+  useFocusEffect,
+  useIsFocused,
+} from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import HelpButton from '../components/HelpButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -71,6 +75,12 @@ const HomeScreen = ({ navigation }: HomeScreenProps) => {
   const helpButtonPress = () => {
     setShowHelp(!showHelp);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      setSelectedDate(new Date().toISOString().split('T')[0]);
+    }, [])
+  );
 
   useEffect(() => {
     return () => {
