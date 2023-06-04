@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: 'hidden',
     borderWidth: 1,
+    borderColor: '#B3B3B3',
   },
   modalTop: {
     width: '100%',
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     width: 100,
     borderWidth: 1,
     borderRadius: 30,
+    borderColor: '#B3B3B3',
     backgroundColor: '#D9D9D9',
   },
   img: {

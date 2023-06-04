@@ -243,6 +243,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#B3B3B3',
   },
   meetInfoBox: {
     flexDirection: 'row',

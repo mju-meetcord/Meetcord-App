@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    borderColor: '#B3B3B3',
   },
   img: {
     height: 60,

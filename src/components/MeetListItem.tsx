@@ -68,7 +68,9 @@ const styles = StyleSheet.create({
     marginRight: 15,
     width: 40,
     height: 40,
-    borderRadius: 50,
+    borderRadius: 15,
+    borderColor: '#B3B3B3',
+    borderWidth: 1,
   },
   meetInfoBox: {
     justifyContent: 'space-between',
