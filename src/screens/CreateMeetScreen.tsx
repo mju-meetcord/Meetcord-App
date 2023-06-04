@@ -7,6 +7,7 @@ import {
   Image,
   Keyboard,
   Pressable,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -104,7 +105,7 @@ const CreateMeetScreen = () => {
   };
 
   return (
-    <SafeAreaView edges={['bottom']}>
+    <SafeAreaView style={styles.topWrapper} edges={['bottom']}>
       <View style={[styles.statusBarPlaceholder, { height: top }]} />
       <Pressable
         style={styles.wrapper}
@@ -172,48 +173,56 @@ const CreateMeetScreen = () => {
         >
           <Text style={styles.meetCreateBtnTxt}>Meet 시작하기</Text>
         </TouchableOpacity>
+        <View style={styles.bottomLogoBox}>
+          <Text style={styles.bottomLogoText}>Meetcord</Text>
+        </View>
       </Pressable>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  topWrapper: {
+    flex: 1,
+    backgroundColor: '#E9F1FF',
+  },
   statusBarPlaceholder: {
     backgroundColor: '#E9F1FF',
   },
   wrapper: {
     alignItems: 'center',
-    backgroundColor: '#E9F1FF',
     height: '100%',
   },
   backBtn: {
     alignSelf: 'flex-start',
     marginLeft: 25,
+    marginBottom: 74,
   },
   title: {
     fontWeight: '700',
     color: '#5496FF',
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 25,
+    marginBottom: 20,
   },
   meetInfoBox: {
-    width: 325,
-    height: 310,
+    width: 340,
+    height: 340,
     borderRadius: 10,
     backgroundColor: '#ffffff',
     alignItems: 'center',
   },
   meetImg: {
     marginTop: 26,
-    width: 104,
-    height: 104,
-    borderRadius: 52,
-    overflow: 'hidden',
+    width: 100,
+    height: 100,
     alignItems: 'center',
   },
   image: {
-    width: 104,
-    height: 104,
+    width: 100,
+    height: 100,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#B3B3B3',
   },
   nameInputBox: {
     flexDirection: 'row',
@@ -251,7 +260,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8.5,
   },
   meetCreateBtn: {
-    marginTop: 143,
+    marginTop: 30,
     backgroundColor: '#5496ff',
     width: 144,
     height: 45,
@@ -263,6 +272,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     color: '#ffffff',
+  },
+  bottomLogoBox: {
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? 20 : 50,
+    height: 100,
+  },
+  bottomLogoText: {
+    fontSize: 95,
+    fontWeight: 'bold',
+    color: ' rgba(84, 150, 255, 0.3)',
   },
 });
 

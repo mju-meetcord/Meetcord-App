@@ -6,7 +6,6 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import ImageButton from '../components/ImageButton';
 import { Button, CheckBox } from '@rneui/themed';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +13,7 @@ import Modal from 'react-native-modal';
 import PersonalInfoBox from '../components/PersonalInfoBox';
 import { RootStackParamList } from '../types';
 import { StackScreenProps } from '@react-navigation/stack';
+import BackButton from '../components/BackButton';
 
 export type RegisterScreenProps = StackScreenProps<
   RootStackParamList,
@@ -145,11 +145,7 @@ const Register = ({ navigation }: RegisterScreenProps) => {
       <ScrollView style={styles.container}>
         <View style={styles.Container1}>
           <View style={styles.one}>
-            <ImageButton
-              onPress={backBtnHandle}
-              source={require('../../assets/backBtn.png')}
-              color='#FFFFFF'
-            ></ImageButton>
+            <BackButton onPress={backBtnHandle} />
           </View>
           <View style={styles.two}>
             <Text style={styles.mainTitle}>Meetcord</Text>
@@ -162,45 +158,47 @@ const Register = ({ navigation }: RegisterScreenProps) => {
           <Text style={styles.subTitle2}>
             회원가입을 위해 필요한 정보를 입력해주세요.
           </Text>
-          <Text style={styles.subTitle2}>
-            *표시 항목은 필수입력 항목입니다.
-          </Text>
         </View>
         <View style={styles.Container3}>
           <View style={styles.box}>
             <View style={styles.itemBox}>
-              <Text style={styles.label as any}> 이름*</Text>
+              <Text style={styles.label as any}> 이름</Text>
               <TextInput
                 style={styles.input}
                 placeholder='이름을 입력해주세요.'
+                placeholderTextColor={'#C6C6C6'}
                 onChangeText={text => setName(text)}
               />
             </View>
             <View style={styles.itemBox}>
-              <Text style={styles.label as any}> 전화번호*</Text>
+              <Text style={styles.label as any}> 전화번호</Text>
               <TextInput
                 style={styles.input}
-                placeholder='전화번호를 입력해주세요.'
+                placeholder='ex) 01012345678'
+                placeholderTextColor={'#C6C6C6'}
                 onChangeText={text => setPhoneNum(text)}
+                keyboardType='number-pad'
               />
             </View>
             <View style={styles.itemBox}>
-              <Text style={styles.label as any}> 생년월일*</Text>
+              <Text style={styles.label as any}> 생년월일</Text>
               <TextInput
                 keyboardType='numeric'
                 style={styles.input}
-                placeholder='생년월일을 입력해주세요.'
+                placeholder='ex) 20010101'
+                placeholderTextColor={'#C6C6C6'}
                 onChangeText={text => setBirth(text)}
               />
             </View>
             <View style={styles.itemBox}>
-              <Text style={styles.label as any}> 이메일*</Text>
+              <Text style={styles.label as any}> 이메일</Text>
               <TextInput
                 keyboardType='email-address'
                 style={
                   emailcheck ? styles.input_email : styles.input_email_error
                 }
                 placeholder='이메일을 입력해주세요.'
+                placeholderTextColor={'#C6C6C6'}
                 onChangeText={text => setEmail(text)}
                 editable={emailEditable}
               />
@@ -216,25 +214,27 @@ const Register = ({ navigation }: RegisterScreenProps) => {
                       : styles.doubleCheck_text_end
                   }
                 >
-                  중복확인
+                  {btnDisable ? '인증완료' : '중복확인'}
                 </Text>
               </TouchableOpacity>
             </View>
             <View style={styles.itemBox}>
-              <Text style={styles.label as any}> 비밀번호*</Text>
+              <Text style={styles.label as any}> 비밀번호</Text>
               <TextInput
                 secureTextEntry={true}
                 style={styles.input}
                 placeholder='비밀번호를 입력해주세요.'
+                placeholderTextColor={'#C6C6C6'}
                 onChangeText={text => setPassword(text)}
               />
             </View>
-            <View style={styles.itemBox}>
-              <Text style={styles.label as any}> 비밀번호 확인*</Text>
+            <View style={[styles.itemBox, styles.borderNone]}>
+              <Text style={styles.label as any}> 비밀번호 확인</Text>
               <TextInput
                 secureTextEntry={true}
                 style={styles.input}
                 placeholder='비밀번호를 한번 더 입력해주세요.'
+                placeholderTextColor={'#C6C6C6'}
                 onChangeText={text => setPassword2(text)}
               />
             </View>
@@ -266,6 +266,7 @@ const Register = ({ navigation }: RegisterScreenProps) => {
               borderRadius: 10,
               width: 100,
               height: 40,
+              backgroundColor: '#5496FF',
             }}
             onPress={submit}
           />
@@ -326,19 +327,20 @@ const Register = ({ navigation }: RegisterScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
+    flex: 1,
   },
   Container1: {
     display: 'flex',
     flexDirection: 'row',
-    height: 100,
+    marginTop: 10,
   },
   mainTitle: {
-    fontSize: 30,
+    fontSize: 24,
     color: '#5496FF',
     fontWeight: 'bold',
   },
   subTitle: {
-    fontSize: 15,
+    fontSize: 12,
     color: '#5496FF',
   },
   one: {
@@ -365,61 +367,64 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 120,
-    paddingTop: 20,
+    marginTop: 40,
   },
   mainTitle2: {
-    fontSize: 30,
+    fontSize: 24,
     color: '#000',
     fontWeight: 'bold',
   },
   subTitle2: {
-    fontSize: 15,
-    color: '#000',
+    fontSize: 12,
+    color: '#676767',
   },
 
   Container3: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 320,
+    marginTop: 10,
   },
   box: {
     borderWidth: 1,
     borderColor: '#676767',
     borderRadius: 5,
-    width: 360,
-    height: 300,
+    width: '90%',
+    height: 240,
     overflow: 'hidden',
   },
   itemBox: {
-    height: 50,
+    height: 40,
     display: 'flex',
     borderBottomWidth: 1,
     borderColor: '#EBEBF0',
     flexDirection: 'row',
   },
+  borderNone: {
+    borderBottomWidth: 0,
+  },
   label: {
-    flex: 0.3,
+    flex: 0.25,
     backgroundColor: '#F5F5F5',
-    lineHeight: 50,
+    lineHeight: 40,
     fontSize: 13,
     fontWeight: 500,
   },
   input: {
-    flex: 0.7,
-    padding: 12,
+    flex: 0.65,
+    height: 40,
+    paddingLeft: 8,
   },
   Container4: {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    height: 50,
-    padding: 5,
+    marginTop: 60,
   },
   text1: {
     fontWeight: '500',
     fontSize: 15,
+    marginBottom: 10,
   },
   Container5: {
     display: 'flex',
@@ -431,18 +436,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    height: 100,
-    paddingBottom: 10,
+    marginTop: 45,
   },
   input_email: {
     flex: 0.45,
-    padding: 12,
+    paddingLeft: 8,
     borderWidth: 0,
     borderColor: 'red',
   },
   input_email_error: {
     flex: 0.45,
-    padding: 12,
+    paddingLeft: 8,
     borderWidth: 1,
     borderColor: 'red',
   },
@@ -450,24 +454,28 @@ const styles = StyleSheet.create({
   doubleCheck: {
     flex: 0.25,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   doubleCheck_text: {
     borderWidth: 1,
-    width: '70%',
-    height: 30,
+    borderColor: '#878787',
+    width: '65%',
+    height: 25,
     textAlign: 'center',
-    lineHeight: 28,
-    borderRadius: 5,
+    lineHeight: 25,
+    borderRadius: 2,
+    fontSize: 13,
   },
   doubleCheck_text_end: {
     borderWidth: 1,
-    borderColor: 'green',
-    width: '70%',
-    height: 30,
+    borderColor: '#1160FA',
+    color: '#1160FA',
+    width: '65%',
+    height: 25,
     textAlign: 'center',
-    lineHeight: 28,
-    borderRadius: 5,
+    lineHeight: 25,
+    borderRadius: 2,
+    fontSize: 13,
   },
   buttonContainer: {
     maxWidth: 400,

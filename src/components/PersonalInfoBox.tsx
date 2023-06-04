@@ -5,7 +5,7 @@ const PersonalInfoBox = () => {
     <View style={styles.topContainer}>
       <Text style={styles.topInfoText}>
         ● Meetcord의 개인정보 수집·이용 목적은 다음과 같습니다. 내용을 자세히
-        {'\n'} &nbsp; &nbsp;읽어보신 후 동의 여부를 결정하여 주시기 바랍니다.
+        {'\n'} &nbsp; 읽어보신 후 동의 여부를 결정하여 주시기 바랍니다.
       </Text>
       <View>
         <View style={styles.collectInfoTopBox}>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#676767',
     borderRadius: 5,
-    width: 340,
+    width: '90%',
     height: 196,
   },
   topInfoText: {
@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
     lineHeight: 12,
     paddingLeft: 10,
     paddingTop: 10,
-    paddingRight: 13,
-    marginBottom: 12,
+    paddingBottom: 12,
   },
   collectInfoTopBox: {
     flexDirection: 'row',
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
   collectInfoLabelBox: {
     justifyContent: 'center',
     width: 90,
-    height: 27,
+    height: 30,
     backgroundColor: '#F5F5F5',
     paddingLeft: 10,
   },
@@ -85,19 +84,18 @@ const styles = StyleSheet.create({
   },
   collectInfoText: {
     fontSize: 12,
-    lineHeight: 12,
     paddingLeft: 9,
   },
   bottomInfoBox: {
     paddingLeft: 8,
-    paddingVertical: 10,
+    paddingVertical: 8,
   },
   bottomInfoText: {
     fontSize: 10,
     lineHeight: 12,
   },
   textMarginBottom: {
-    marginBottom: 8,
+    marginBottom: 5,
   },
   importantText: {
     fontSize: 10,

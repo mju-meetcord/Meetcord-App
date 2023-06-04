@@ -37,13 +37,13 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='BottomTab'
-          component={BottomTabs}
+          name='Register'
+          component={Register}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name='Register'
-          component={Register}
+          name='BottomTab'
+          component={BottomTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen

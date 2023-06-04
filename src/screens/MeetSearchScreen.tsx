@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ImageSourcePropType,
+  Platform,
 } from 'react-native';
 import MeetSearchInput from '../components/MeetSearchInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -194,9 +195,8 @@ const styles = StyleSheet.create({
   },
   searchScreenLogo: {
     fontWeight: '700',
-    fontSize: 80,
+    fontSize: Platform.OS === 'ios' ? 90 : 95,
     color: 'rgba(84, 150, 255, 0.3)',
-    lineHeight: 80,
     position: 'absolute',
     bottom: 0,
   },

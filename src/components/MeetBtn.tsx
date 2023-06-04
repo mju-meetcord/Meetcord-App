@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 
 type MeetBtnProps = {

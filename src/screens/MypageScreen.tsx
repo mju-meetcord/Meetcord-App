@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Alert,
   ImageSourcePropType,
+  Platform,
 } from 'react-native';
 import {
   SafeAreaView,
@@ -180,7 +181,7 @@ const MypageScreen = ({ navigation }: MypageScreenProps) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.logOut} onPress={logout}>
-        <Text>로그아웃</Text>
+        <Text style={styles.logoutBox}>로그아웃</Text>
       </TouchableOpacity>
       <View style={styles.bottomBox}>
         <Text style={styles.bottomText}>Meetcord</Text>
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FFFFFF',
     marginLeft: 25,
-    marginTop: 70,
+    marginTop: 38,
     marginBottom: 20,
   },
 
@@ -210,16 +211,18 @@ const styles = StyleSheet.create({
   container1: {
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
-    height: '25%',
     justifyContent: 'center',
+    marginTop: 55,
+    marginBottom: 45,
   },
   imageBox: {
     width: 120,
     height: 120,
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 40,
     backgroundColor: '#aaaaaa',
     overflow: 'hidden',
+    borderColor: '#B3B3B3',
   },
   img: { width: '100%', height: '100%', borderRadius: 30 },
   Container2: {
@@ -280,7 +283,7 @@ const styles = StyleSheet.create({
 
   fixBox: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: '#5496FF',
   },
 
@@ -290,18 +293,20 @@ const styles = StyleSheet.create({
   },
 
   logoutBox: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     color: '#676767',
   },
 
   bottomBox: {
     height: 100,
-    marginTop: 58,
     alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: Platform.OS === 'ios' ? 0 : '5%',
   },
   bottomText: {
-    fontSize: 96,
+    fontSize: 95,
     fontWeight: 'bold',
     color: '#5496FF',
     opacity: 0.3,

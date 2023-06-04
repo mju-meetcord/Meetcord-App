@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
 
   listBox: {
     minHeight: 100,
-    maxHeight: 200,
     marginBottom: 60,
   },
   title2: {
