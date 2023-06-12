@@ -1,12 +1,12 @@
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Member } from './screens/MemberScreen';
-import { Meet } from './screens/MeetScreen';
+import { Member } from './screens/member/MemberScreen';
+import { Meet } from './screens/meet/MeetScreen';
 import React from 'react';
-import { MeetEvent } from './screens/HomeScreen';
+import { MeetEvent } from './screens/home/HomeScreen';
 import { ImageSourcePropType } from 'react-native';
-import { EventRecord } from './screens/ScheduleDetailScreen';
+import { EventRecord } from './screens/home/ScheduleDetailScreen';
 
 export type RootStackParamList = {
   ModifyNoti: {

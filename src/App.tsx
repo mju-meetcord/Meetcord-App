@@ -2,23 +2,23 @@ import { registerRootComponent } from 'expo';
 import { StatusBar } from 'expo-status-bar';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from './screens/SplashScreen';
-import SignIn from './screens/SignIn';
-import Register from './screens/Register';
+import SignInScreen from './screens/SignInScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import BottomTabs from './components/BottomTabs';
-import CreateMeetScreen from './screens/CreateMeetScreen';
-import NotiDetail from './screens/NotiDetailScreen';
-import MeetScreen from './screens/MeetScreen';
-import ModifyMypageScreen from './screens/ModifyMypageScreen';
-import CreateNotiScreen from './screens/CreateNotiScreen';
-import ModifyNotiScreen from './screens/ModifyNotiScreen';
-import MeetSearchSreen from './screens/MeetSearchScreen';
+import BottomTabs from './screens/BottomTabs';
+import CreateMeetScreen from './screens/meet/CreateMeetScreen';
+import NotiDetail from './screens/notification/NotiDetailScreen';
+import MeetScreen from './screens/meet/MeetScreen';
+import ModifyMypageScreen from './screens/mypage/ModifyMypageScreen';
+import CreateNotiScreen from './screens/notification/CreateNotiScreen';
+import ModifyNotiScreen from './screens/notification/ModifyNotiScreen';
+import MeetSearchSreen from './screens/meet/MeetSearchScreen';
 import { RootStackParamList } from './types';
-import EditMemberScreen from './screens/EditMemberScreen';
-import AddSchduleScreen from './screens/AddScheduleScreen';
-import ScheduleDetailScreen from './screens/ScheduleDetailScreen';
-import AddActivityRecordScreen from './screens/AddActivityRecordScreen';
-import AttendanceScreen from './screens/AttendanceScreen';
+import EditMemberScreen from './screens/member/EditMemberScreen';
+import AddSchduleScreen from './screens/home/AddScheduleScreen';
+import ScheduleDetailScreen from './screens/home/ScheduleDetailScreen';
+import AddActivityRecordScreen from './screens/home/AddActivityRecordScreen';
+import AttendanceScreen from './screens/home/AttendanceScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -33,12 +33,12 @@ const App = () => {
         />
         <Stack.Screen
           name='SignIn'
-          component={SignIn}
+          component={SignInScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
           name='Register'
-          component={Register}
+          component={RegisterScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
